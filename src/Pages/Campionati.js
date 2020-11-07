@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 
+import { caricaCampionati } from '../API/ApiCampionati'
+
 import Navbar from '../Components/Navbar'
 import Loader from '../Components/Loader'
 import { CampLarge as CampElement } from '../Components/Campionati/CampLarge'
-
-import { caricaCampionati } from '../API/ApiCampionati'
 
 class Campionati extends Component {
 
@@ -36,7 +36,7 @@ class Campionati extends Component {
     render() {
         return (
             <>
-                <Navbar active={"Campionati"} />
+                <Navbar  title={"Campionati"} active={"Campionati"} />
                 <div className="container">
                     <div className="row">
                         {(!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => <CampElement key={i} {...camp} />)}

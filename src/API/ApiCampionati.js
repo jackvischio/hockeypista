@@ -1,4 +1,5 @@
 import { polishString, parseCompleteTag, parseIsleTag, parseParams, extractProp } from './commons'
+import { cacheCampionato } from '../Cache/CacheCampionato'
 
 // data structures
 function CAMPIONATO() {
@@ -21,8 +22,11 @@ export function caricaCampionati(data) {
     }
 
     // filtering Campionati of this season
-    camp = camp.filter(elem => elem.season == "29");
+    camp = camp.filter(elem => elem.season === "29");
     camp = camp.filter(elem => (elem.name != "" && elem.name != "\"" && elem.name != "'" && elem.name != " "));
+
+    // caching campionati
+    camp.map(e => cacheCampionato(e));
 
     return camp;
 }

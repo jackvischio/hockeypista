@@ -18,7 +18,7 @@ const Navbar = (props) => {
         { display: "Salvati", url: "/salvati" }
     ];
 
-    const str = links.map((l, i) => Elem(i, l.display, l.url, (l.display == props.active)));
+    const str = links.map((l, i) => Elem(i, l.display, l.url, (l.display === props.active)));
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light text-uppercase">
@@ -26,7 +26,7 @@ const Navbar = (props) => {
                 <Link className="navbar-brand p-0" to="/">
                     <img src={logo} alt="home" style={{ width: "40px", margin: "0" }} />
                 </Link>
-                <strong className="pl-2">RISULTATI HOCKEY PISTA</strong>
+                <strong className="pl-2"> {props.title} </strong>
             </div>
 
             <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"

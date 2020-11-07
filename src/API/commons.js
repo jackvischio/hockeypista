@@ -20,14 +20,14 @@ export function parseCompleteTag(str) {
     var openTagStr = str.substr(0, str.indexOf(">")).trim();
     tag.type = openTagStr.substr(1, openTagStr.indexOf(" "));
     openTagStr = openTagStr.substr(openTagStr.indexOf(" ") + 1);
-    openTagStr = openTagStr.replaceAll(/=\" /gm, '="');
-    var props = openTagStr.split(/\" /g);
+    openTagStr = openTagStr.replaceAll(/=" /gm, '="');
+    var props = openTagStr.split(/" /g);
     props.forEach(p => {
         tag.props.push(parseProperty(p + '"'));
     });
 
     try {
-        tag.params = parseParams(tag.props.filter(elem => elem.ident == "config_params")[0].value);
+        tag.params = parseParams(tag.props.filter(elem => elem.ident === "config_params")[0].value);
     } catch (e) { }
 
     // content
@@ -46,7 +46,7 @@ export function parseIsleTag(str) {
 
     str = str.substr(0, str.indexOf(">")).trim();
     str = str.replaceAll("'", "\"");
-    var props = str.split(/\" /g);
+    var props = str.split(/" /g);
     props.forEach(p => {
         tag.props.push(parseProperty(p + '"'));
     });
@@ -73,7 +73,7 @@ export function parseParams(str) {
 // ----- EXTRACT PROPERTY VALUE -----
 export function extractProp(tag, prop) {
     try {
-        return tag.props.filter(elem => elem.name == prop)[0].value;
+        return tag.props.filter(elem => elem.name === prop)[0].value;
     } catch (e) { console.log(e); return ""; }
 }
 
@@ -98,6 +98,3 @@ export function removeTags(str, tagname, multiple, removeContent) {
         }
     }
 }
-
-// ----- REDIRECTIONS -----
-function GoToCampionato(id) { window.location.href = "campionato.html?idc=" + id; }

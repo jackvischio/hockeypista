@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+import { getCachedCampionato } from '../Cache/CacheCampionato'
+
 import Loader from '../Components/Loader'
 import Navbar from '../Components/Navbar'
 import MarcatoriBox from '../Components/Marcatori/MarcatoriBox'
@@ -12,6 +14,7 @@ export default class Campionato extends Component {
         super();
         this.id_camp = props.match.params.id;
 
+        this.camp = getCachedCampionato(this.id_camp);
         console.log(props);
 
         this.state = {}
@@ -20,7 +23,7 @@ export default class Campionato extends Component {
     render() {
         return (
             <>
-                <Navbar />
+                <Navbar title={this.camp.name} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-xl-8 col-lg-7 col-md-12">
