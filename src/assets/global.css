@@ -1,0 +1,54 @@
+@import url("https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap");
+
+body {
+  background-image: url("sfondo.jpg");
+  background-attachment: fixed;
+  margin: 0;
+  padding: 0;
+  font-family: "Nunito", sans-serif;
+}
+
+.link-unstyled,
+.link-unstyled:link,
+.link-unstyled:hover {
+  color: inherit;
+  text-decoration: inherit;
+}
+
+.container-fluid,
+.container {
+  padding: 0;
+}
+
+.row {
+  margin: 0;
+}
+
+.col {
+  padding: 0;
+}
+
+.highlight {
+  cursor: pointer;
+}
+
+.highlight:hover,
+.highlight:focus {
+  background-color: #eee;
+}
+
+.card {
+  margin: 10px;
+}
+
+.card-body {
+  padding: 1rem;
+}
+
+h5.card-title {
+  margin: 0;
+}
+
+::-webkit-scrollbar {
+  width: 0px;
+}
