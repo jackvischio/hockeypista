@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-import logo from '../assets/logo.png'
+import logo from '../../assets/logo.png'
 
 const Elem = (i, display, url, active) => {
     return (
@@ -24,9 +24,9 @@ const Navbar = (props) => {
         <nav className="navbar navbar-expand-lg navbar-light bg-light text-uppercase">
             <div className="navbar-brand p-0">
                 <Link className="navbar-brand p-0" to="/">
-                    <img src={logo} alt="home" style={{ width: "40px", margin: "0" }} />
+                    <img src={logo} alt="home" style={{ width: "40px", margin: "0", marginLeft: "15px" }} />
                 </Link>
-                <strong className="pl-2"> {props.title} </strong>
+                <strong> {props.title} </strong>
             </div>
 
             <button className="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"

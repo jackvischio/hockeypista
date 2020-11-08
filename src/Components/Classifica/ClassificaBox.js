@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { caricaClassifica } from "../../API/ApiClassifica"
 
-import Loader from "../Loader"
+import Loader from "../Varie/Loader"
 import { Classifica } from "./Classifica"
 
 export default class ClassificaBox extends Component {

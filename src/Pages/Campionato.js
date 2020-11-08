@@ -3,10 +3,11 @@ import { Link } from 'react-router-dom'
 
 import { getCachedCampionato } from '../Cache/CacheCampionato'
 
-import Loader from '../Components/Loader'
-import Navbar from '../Components/Navbar'
+import Loader from '../Components/Varie/Loader'
+import Navbar from '../Components/Varie/Navbar'
 import MarcatoriBox from '../Components/Marcatori/MarcatoriBox'
 import ClassificaBox from '../Components/Classifica/ClassificaBox'
+import SquadraBox from '../Components/Campionati/SquadraBox'
 
 export default class Campionato extends Component {
 
@@ -14,9 +15,10 @@ export default class Campionato extends Component {
         super();
         this.id_camp = props.match.params.id;
 
+        // recupero il campionato di appartenenza dalla cache
         this.camp = getCachedCampionato(this.id_camp);
-        console.log(props);
 
+        // imposto lo stato della pagina
         this.state = {}
     }
 
@@ -32,8 +34,10 @@ export default class Campionato extends Component {
                                     <h5 className="card-title">SQUADRE</h5>
                                 </div>
                                 <div className="card-body" style={{ padding: "0.75rem" }}>
-                                    <div className="row" id="teams">
-                                        <Loader />
+                                    <div className="row">
+                                        {
+                                            this.camp.teams.map((e, i) => <SquadraBox key={i} {...e} />)
+                                        }
                                     </div>
                                 </div>
                             </div>

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 
 import { caricaMarcatori } from "../../API/ApiMarcatori"
 
-import Loader from "../Loader"
+import Loader from "../Varie/Loader"
 import { Marcatore } from "./Marcatore"
 
 export default class MarcatoriBox extends Component {

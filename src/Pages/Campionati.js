@@ -2,8 +2,8 @@ import React, { Component } from 'react'
 
 import { caricaCampionati } from '../API/ApiCampionati'
 
-import Navbar from '../Components/Navbar'
-import Loader from '../Components/Loader'
+import Navbar from '../Components/Varie/Navbar'
+import Loader from '../Components/Varie/Loader'
 import { CampLarge as CampElement } from '../Components/Campionati/CampLarge'
 
 class Campionati extends Component {

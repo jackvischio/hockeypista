@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom'
 
 import { caricaCampionati } from '../API/ApiCampionati'
 
-import Navbar from '../Components/Navbar'
-import Loader from '../Components/Loader'
+import Navbar from '../Components/Varie/Navbar'
+import Loader from '../Components/Varie/Loader'
 import { CampSmall as CampElement } from '../Components/Campionati/CampSmall'
 
 const Card = (props) => {
@@ -49,7 +49,7 @@ export default class Campionati extends Component {
     render() {
         return (
             <>
-                <Navbar title={"Risultati hockey posta"} active={"Home"} />
+                <Navbar title={"Risultati hockey pista"} active={"Home"} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-6">
@@ -75,7 +75,7 @@ export default class Campionati extends Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="card-body" style={{ maxHeight: "45vh", position: "relative", padding: "0.75rem" }} >
+                                <div className="card-body" style={{ maxHeight: "45vh", position: "relative", padding: "0.75rem", overflow: "auto" }} >
                                     <div style={{ height: "100%", overflow: "auto" }}>
                                         <div className="row" id="card-campionati">
                                             {(!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => <CampElement key={i} {...camp} />)}
