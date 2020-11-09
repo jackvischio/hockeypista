@@ -49,7 +49,7 @@ export default class Campionati extends Component {
     render() {
         return (
             <>
-                <Navbar title={"Risultati hockey pista"} active={"Home"} />
+                <Navbar active={"Home"} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-6">
