@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import { getCachedCampionato } from '../Cache/CacheCampionato'
+import { CaricaCalendario, DueGiornate } from '../API/ApiCalendario'
 
 import Loader from '../Components/Varie/Loader'
 import Navbar from '../Components/Varie/Navbar'
 import MarcatoriBox from '../Components/Marcatori/MarcatoriBox'
 import ClassificaBox from '../Components/Classifica/ClassificaBox'
 import SquadraBox from '../Components/Campionati/SquadraBox'
+import PartiteBox from '../Components/Calendario/PartiteBox'
 
 export default class Campionato extends Component {
 
@@ -19,7 +21,22 @@ export default class Campionato extends Component {
         this.camp = getCachedCampionato(this.id_camp);
 
         // imposto lo stato della pagina
-        this.state = {}
+        this.state = {
+            ultima_giornata: [],
+            prox_giornata: [],
+            calend_loaded: false
+        }
+    }
+
+    componentDidMount() {
+        CaricaCalendario(this.id_camp, (cal) => {
+            cal = DueGiornate(cal);
+            this.setState({
+                ultima_giornata: cal[0],
+                prox_giornata: cal[1],
+                calend_loaded: true
+            });
+        })
     }
 
     render() {
@@ -36,7 +53,7 @@ export default class Campionato extends Component {
                                 <div className="card-body" style={{ padding: "0.75rem" }}>
                                     <div className="row">
                                         {
-                                            this.camp.teams.map((e, i) => <SquadraBox key={i} {...e} />)
+                                            this.camp.teams.sort((a, b) => (a.name > b.name) ? 1 : ((a.name < b.name) ? -1 : 0)).map((e, i) => <SquadraBox key={i} {...e} />)
                                         }
                                     </div>
                                 </div>
@@ -63,12 +80,12 @@ export default class Campionato extends Component {
                                 <div className="card-body">
                                     <h5 className="d-inline-block">Ultima giornata</h5>
                                     <div id="cal-last-day">
-                                        <Loader />
+                                        {(this.state.calend_loaded) ? <PartiteBox giornata={this.state.ultima_giornata} /> : <Loader />}
                                     </div>
                                     <br />
                                     <h5>Prossima giornata</h5>
                                     <div id="cal-next-day">
-                                        <Loader />
+                                        {(this.state.calend_loaded) ? <PartiteBox giornata={this.state.prox_giornata} /> : <Loader />}
                                     </div>
                                 </div>
                             </div>

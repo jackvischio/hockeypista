@@ -1,0 +1,112 @@
+.cal-elem-outer {
+  margin: 5px 0;
+}
+
+.cal-elem-inner {
+  padding: 3px !important;
+}
+
+.highlight {
+  cursor: pointer;
+}
+
+.highlight:hover,
+.highlight:focus {
+  background-color: #eee;
+}
+
+.cal-elem-row,
+.cal-flex {
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -ms-flex-direction: row !important;
+  flex-direction: row !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+}
+
+.cal-flex-rev {
+  display: -webkit-box !important;
+  display: -ms-flexbox !important;
+  display: flex !important;
+  -webkit-box-orient: horizontal !important;
+  -webkit-box-direction: reverse !important;
+  -ms-flex-direction: row-reverse !important;
+  flex-direction: row-reverse !important;
+  -webkit-box-align: center !important;
+  -ms-flex-align: center !important;
+  align-items: center !important;
+}
+
+.cal-date {
+  width: 120px;
+  display: inline-block;
+  text-align: center;
+  padding: 4px;
+  font-size: 0.75em;
+  vertical-align: middle;
+}
+
+.cal-match {
+  width: calc(100% - 120px);
+  display: inline-block;
+  padding: 2px 4px;
+}
+
+.cal-match > table {
+  width: 100%;
+  margin-bottom: 0;
+}
+
+.cal-match > table > tbody > tr > td:nth-child(1),
+.cal-match > table > tbody > tr > td:nth-child(3) {
+  width: 45%;
+}
+
+.cal-match > table > tbody > tr > td:nth-child(2) {
+  width: 10%;
+  min-width: 70px;
+  text-align: center;
+}
+
+.cal-logo {
+  height: 25px;
+}
+
+.cal-team-left {
+  padding: 2px;
+  padding-left: 10px;
+  text-align: left;
+}
+
+.cal-team-right {
+  padding: 2px;
+  padding-right: 10px;
+  text-align: right;
+}
+
+@media only screen and (max-width: 690px) {
+  .cal-date {
+    width: 80px;
+  }
+
+  .cal-match {
+    width: calc(100% - 80px);
+  }
+}
+
+@media only screen and (max-width: 410px) {
+  .cal-elem-row {
+    display: block !important;
+  }
+
+  .cal-date {
+    width: 100%;
+    padding-bottom: 0px;
+  }
+
+  .cal-match {
+    width: 100%;
+    padding-bottom: 0px;
+  }
+}
