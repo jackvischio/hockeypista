@@ -29,7 +29,7 @@ export const Classifica = (obj) => {
                         <td style={td_name}> {obj.nome} </td>
                         <td style={td}> <strong> {obj.punti} </strong> </td>
                         <td style={td}>
-                            <button className="btn btn-link text-primary m-0" onClick={obj.callback}>
+                            <button className="btn btn-link text-primary m-0" onClick={obj.callback} style={{ outline: "none" }}>
                                 <i className="fas fa-plus-circle"></i>
                             </button>
                         </td>

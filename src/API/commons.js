@@ -1,3 +1,5 @@
+import $ from 'jquery'
+
 // ----- TITLE CASE -----
 export function titleCase(str) {
     return str.toLowerCase().split(' ').map(word => (word.charAt(0).toUpperCase() + word.slice(1))).join(' ');
@@ -52,6 +54,55 @@ export function parseIsleTag(str) {
     });
 
     return tag;
+}
+
+// ----- PARSE TABLE -----
+export function parseTable(inp) {
+    var table = { id: "", props: [], rows: [] };
+
+    let str = polishString(inp);
+
+    // retrieving opening tag
+    let openTagStr = str.substr(0, str.indexOf(">") + 1).trim();
+    str = str.replaceAll(openTagStr, "");
+    openTagStr = openTagStr.substr(openTagStr.indexOf(" ") + 1);
+    let props = openTagStr.split(/\" /g);
+    $.each(props, i => {
+        table.props.push(parseProperty(props[i] + '"'));
+    });
+
+    // content
+    let content = str.substr(0, str.indexOf("</table"));
+    content = content.replaceAll("<thead>", "");
+    content = content.replaceAll("</thead>", "");
+    content = content.replaceAll("<tbody>", "");
+    content = content.replaceAll("</tbody>", "");
+    content = content.substr(content.indexOf("<tr>"), content.lastIndexOf("</tr>") + 5);
+
+    do {
+        let current = content.substr(0, content.indexOf("</tr>") + 5);
+        content = content.replaceAll(current, "");
+        current = current.substr(0, current.length - 5).substr(4);
+        var row = { cells: [] };
+        do {
+            let actual = current.substr(0, current.indexOf("</td>") + 5);
+            current = current.replaceAll(actual, "");
+            let openTag = actual.substr(0, actual.indexOf(">") + 1)
+            let contentTag = actual.replaceAll(openTag, "");
+            openTag = openTag.substr(4);
+            var cell = { props: [], content: "" };
+            props = openTagStr.split(/\" /g);
+            props.forEach(i => {
+                cell.props.push(parseProperty(props[i] + '"'));
+            });
+            cell.content = contentTag.substr(0, contentTag.length - 5);
+            row.cells.push(cell);
+
+        } while (current !== "");
+        table.rows.push(row);
+    } while (content !== "");
+
+    return table;
 }
 
 // ------ PARSE A PROPERTY -----

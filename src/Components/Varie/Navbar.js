@@ -43,7 +43,7 @@ export default class Navbar extends Component {
                     <strong> {this.title} </strong>
                 </div>
 
-                <button className="navbar-toggler navbar-toggler-right" onClick={() => this.toggleNavbar()}>
+                <button className="navbar-toggler navbar-toggler-right ml-auto" onClick={() => this.toggleNavbar()}>
                     <span className="navbar-toggler-icon"></span>
                 </button>
 

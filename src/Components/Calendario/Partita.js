@@ -13,7 +13,7 @@ export default function Partita(obj) {
 
 const PartitaDaFare = (obj) => {
     return (
-        <div className="card highlight cal-elem-outer">
+        <div className="card cal-elem-outer">
             <div className="card-body cal-elem-inner">
                 <div className="cal-elem-row">
                     <div className="cal-date">

@@ -3,7 +3,7 @@ import { cacheCampionato } from '../Cache/CacheCampionato'
 
 // data structures
 function CAMPIONATO() {
-    return { id: 0, name: "", teams: [], logo: "", season: "", dur_period: 0, abbr: "" }
+    return { id: 0, name: "", teams: [], logo: "", season: "", dur_tempo: 0, abbr: "" }
 }
 
 export function caricaCampionati(data) {
@@ -37,7 +37,7 @@ function parseCampionato(str) {
     tag.params = parseParams(extractProp(tag, "config_params"));
 
     // creating a new Campionato
-    let camp = { id: 0, name: "", teams: [], logo: "", season: "", dur_period: 0, abbr: "" };
+    let camp = { id: 0, name: "", teams: [], logo: "", season: "", dur_tempo: 0, abbr: "" };
     camp.id = parseInt(extractProp(tag, "id"));
     camp.name = extractProp(tag, "name");
 
@@ -63,7 +63,7 @@ function parseCampionato(str) {
 
     // extracting period duration
     try {
-        camp.dur_period = parseInt(tag.params.filter(elem => elem.name == "tpo_reg")[0].value);
+        camp.dur_tempo = parseInt(tag.params.filter(elem => elem.name == "tpo_reg")[0].value);
     } catch (e) { }
 
     return camp;

@@ -29,7 +29,7 @@ export const Marcatore = (obj) => {
                         <td style={td_name}> {obj.name} </td>
                         <td style={td}> <strong> {obj.goals} </strong> </td>
                         <td style={td}>
-                            <button className="btn btn-link text-primary m-0" onClick={obj.callback}>
+                            <button className="btn btn-link text-primary m-0" onClick={obj.callback} style={{outline: "none"}}>
                                 <i className="fas fa-plus-circle"></i>
                             </button>
                         </td>

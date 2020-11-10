@@ -19,6 +19,7 @@ export default class Campionato extends Component {
 
         // recupero il campionato di appartenenza dalla cache
         this.camp = getCachedCampionato(this.id_camp);
+        console.log(this.id_camp);
 
         // imposto lo stato della pagina
         this.state = {

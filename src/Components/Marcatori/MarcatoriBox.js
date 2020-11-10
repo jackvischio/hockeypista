@@ -29,7 +29,7 @@ export default class MarcatoriBox extends Component {
 
     dettagli = (id) => {
         let showing = this.state.showing;
-        if (id == showing)
+        if (id === showing)
             this.setState({ showing: -1 });
         else
             this.setState({ showing: id });
