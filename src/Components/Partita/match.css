@@ -1,0 +1,113 @@
+.tbl-referees {
+  margin: 0;
+}
+
+.tbl-referees > tbody > tr {
+  border: 0;
+}
+
+.tbl-referees > tbody > tr > td {
+  border: 0;
+  padding: 3px 8px;
+  text-align: center;
+  vertical-align: middle;
+}
+
+h3.SquadraName {
+  font-family: "Sora", sans-serif;
+  margin-top: 10px;
+}
+
+.title-badge {
+  display: inline-block;
+  margin: 0 auto;
+  font-family: "Sora", sans-serif;
+  padding: 0.25em 0.75em;
+  font-weight: 600;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25rem;
+}
+
+.sora {
+  font-family: "Sora", sans-serif;
+}
+
+.table > tbody > tr > td.col1,
+.table > tbody > tr > td.col2,
+.table > tbody > tr > td.col3,
+.table > tbody > tr > td.col5,
+.table > tbody > tr > td.col6,
+.table > tbody > tr > td.col7,
+.table > thead > tr > th.col1,
+.table > thead > tr > th.col2,
+.table > thead > tr > th.col3,
+.table > thead > tr > th.col5,
+.table > thead > tr > th.col6,
+.table > thead > tr > th.col7 {
+  text-align: center;
+  width: 7%;
+  min-width: 34px;
+}
+
+.table-striped {
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 0;
+}
+
+.table > tbody > tr,
+.table > thead > tr {
+  padding: 0;
+}
+
+.table > tbody > tr > td,
+.table > thead > tr > th {
+  padding: 2px 3px;
+  vertical-align: middle;
+}
+
+/* Actions element */
+.action-elem {
+  padding: 0.35rem 0.6rem;
+  margin-bottom: 4px;
+  border: 1px solid #eee;
+  border-right-width: 0.25rem;
+  border-radius: 0.4rem;
+  position: relative;
+  font-weight: 400;
+}
+
+.action-elem > p {
+  margin: 0;
+  font-size: 90%;
+}
+
+.action-elem > h5 {
+  margin: 0;
+  margin-bottom: 2px;
+  font-size: 1.15em;
+  font-weight: 600;
+}
+
+.action-elem > span.badge {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  font-size: 80%;
+}
+
+.action-elem > img {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  height: 35px;
+  border-radius: 0.25rem;
+  width: auto;
+}
+
+.actions-div {
+  max-height: 95vh;
+  overflow: auto;
+  scrollbar-width: 5px;
+}
