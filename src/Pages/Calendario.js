@@ -12,6 +12,8 @@ export default class Calendario extends Component {
     constructor(props) {
         super();
 
+        this.path = props.location.pathname;
+
         this.id_camp = props.match.params.id;
         this.camp = getCachedCampionato(this.id_camp);
         this.title = "CALENDARIO " + this.camp.abbr;
@@ -32,7 +34,7 @@ export default class Calendario extends Component {
     render() {
         return (
             <>
-                <Navbar title={this.title} />
+                <Navbar path={this.path} title={this.title} canBeSaved={true} />
                 <div className="container p-2">
                     <div className="card card-body mt-2 mb-2 p-2">
                         <div className="text-center">

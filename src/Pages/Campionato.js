@@ -10,12 +10,15 @@ import MarcatoriBox from '../Components/Marcatori/MarcatoriBox'
 import ClassificaBox from '../Components/Classifica/ClassificaBox'
 import SquadraBox from '../Components/Campionati/SquadraBox'
 import PartiteBox from '../Components/Calendario/PartiteBox'
+import { timers } from 'jquery'
 
 export default class Campionato extends Component {
 
     constructor(props) {
         super();
+
         this.id_camp = props.match.params.id;
+        this.path = props.location.pathname;
 
         // recupero il campionato di appartenenza dalla cache
         this.camp = getCachedCampionato(this.id_camp);
@@ -43,7 +46,7 @@ export default class Campionato extends Component {
     render() {
         return (
             <>
-                <Navbar title={this.camp.name} />
+                <Navbar title={this.camp.name} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-xl-8 col-lg-7 col-md-12">

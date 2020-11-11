@@ -19,6 +19,7 @@ export default class Partita extends Component {
         super();
 
         this.id_partita = props.match.params.id;
+        this.path = props.location.pathname;
 
         this.state = {
             partita: ProvaPartita(),
@@ -37,7 +38,7 @@ export default class Partita extends Component {
             this.setState({
                 partita: parsedpartita,
                 loaded: true,
-                title: "" + parsedpartita.campionato.abbr + ": " + parsedpartita.teamA.small + " vs " + parsedpartita.teamB.small
+                title: ("" + parsedpartita.campionato.abbr + ": " + parsedpartita.teamA.small + " vs " + parsedpartita.teamB.small)
             });
         });
     }
@@ -46,7 +47,7 @@ export default class Partita extends Component {
         return (
             <>
                 {(this.state.loaded) ? null : <ModalLoader />}
-                <Navbar title={this.state.title} />
+                <Navbar title={this.state.title} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-9">

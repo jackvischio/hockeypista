@@ -2,19 +2,14 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import logo from '../../assets/logo.png'
-
-const Elem = (i, display, url, active) => {
-    return (
-        <Link key={i} className={`nav-item nav-link ${active ? 'active' : ''}`} to={url}>{display}</Link>
-    );
-}
-
+import Preferiti from './Preferiti';
 
 export default class Navbar extends Component {
     constructor(props) {
         super();
 
         this.active = props.active;
+        this.path = props.path;
 
         // links on the navbar
         this.links = [
@@ -26,7 +21,8 @@ export default class Navbar extends Component {
 
         this.state = {
             toggle: false,
-            title: props.title
+            title: props.title,
+            canBeSaved: ((props.canBeSaved) ? true : false)
         }
     }
 
@@ -49,12 +45,19 @@ export default class Navbar extends Component {
                     <span className="navbar-toggler-icon"></span>
                 </button>
 
-                <div className={"collapse navbar-collapse" + ((this.state.toggle) ? " show text-center" : "")}>
+                <div className={"collapse navbar-collapse " + ((this.state.toggle) ? " show text-center" : "")}>
                     <div className="navbar-nav ml-auto mt-2 mt-lg-0 font-weight-bold">
                         {this.links.map((l, i) => Elem(i, l.display, l.url, (l.display === this.active)))}
                     </div>
+                    {((this.state.canBeSaved) ? <Preferiti path={this.path} /> : <></>)}
                 </div>
-            </nav>
+            </nav >
         )
     }
+}
+
+const Elem = (i, display, url, active) => {
+    return (
+        <Link key={i} className={"nav-item nav-link " + (active ? 'active' : '')} to={url}>{display}</Link>
+    );
 }
