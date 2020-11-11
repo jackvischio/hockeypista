@@ -1,10 +1,11 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function Scoreboard(props) {
     return (
         <div className="card" style={{ height: "calc(100% - 10px)" }}>
             <div className="card-body text-center">
-                <div class="h-100 d-flex align-items-center">
+                <div className="h-100 d-flex align-items-center">
                     <ScoreboardSmall {...props} />
                     <ScoreboardLarge {...props} />
                 </div>
@@ -76,9 +77,11 @@ function SquadraSmall(props) {
     return (
         <div className="col col-6" style={props.style}>
             <img src={props.team.logo} alt={props.team.small} width="80px" />
-            <h3 className="SquadraName">
-                {props.team.nome}
-            </h3>
+            <Link style={{ color: "black" }} to={"/squadra/" + props.team.idt} >
+                <h3 className="SquadraName">
+                    {props.team.nome}
+                </h3>
+            </Link>
         </div>
     )
 }
@@ -87,9 +90,11 @@ function SquadraLarge(props) {
     return (
         <>
             <img src={props.team.logo} alt={props.team.small} width="80px" />
-            <h3 className="SquadraName">
-                {props.team.nome}
-            </h3>
+            <Link style={{ color: "black" }} to={"/squadra/" + props.team.idt} >
+                <h3 className="SquadraName">
+                    {props.team.nome}
+                </h3>
+            </Link>
         </>
     )
 }

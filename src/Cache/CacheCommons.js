@@ -12,3 +12,15 @@ export function getCacheArray(name) {
     } while (!ok);
     return arr;
 }
+
+export function expand(arr, label) {
+    let ret = [];
+    arr.forEach(element => {
+        ret[element[label]] = element;
+    });
+    return ret;
+}
+
+export function compress(arr) {
+    return arr.filter(e => e != null);
+}

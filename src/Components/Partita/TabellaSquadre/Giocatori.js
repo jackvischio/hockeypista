@@ -2,7 +2,7 @@ import React from 'react'
 
 export default function Giocatori(props) {
     return (
-        <table className="table table-striped table-bordered" width="100%">
+        <table className="table table-striped table-bordered table-match" width="100%">
             <thead className="thead-light">
                 <tr style={{ borderBottom: "2px solid #BBB" }}>
                     <th className="col1">N°</th>

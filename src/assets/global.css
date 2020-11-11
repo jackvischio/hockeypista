@@ -8,6 +8,11 @@ body {
   font-family: "Nunito", sans-serif;
 }
 
+*,
+*:active {
+  outline: 0 !important;
+}
+
 .link-unstyled,
 .link-unstyled:link,
 .link-unstyled:hover {

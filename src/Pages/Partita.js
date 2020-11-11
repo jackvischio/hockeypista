@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import '../Components/Partita/match.css'
+import '../Components/Partita/TabellaSquadre/match.css'
 
 import ProvaPartita from '../Components/Partita/ProvaPartita'
 import { ParsePartita } from '../API/ApiPartita'
@@ -9,7 +9,7 @@ import LeftPanel from '../Components/Partita/LeftPanel'
 import ModalLoader from '../Components/Varie/ModalLoader'
 import Navbar from '../Components/Varie/Navbar'
 import Scoreboard from '../Components/Partita/Scoreboard'
-import Squadra from '../Components/Partita/Squadra'
+import Squadra from '../Components/Partita/TabellaSquadre/Squadra'
 import TimelineOrizz from '../Components/Partita/Timeline/TimelineOrizz'
 import TimelineVert from '../Components/Partita/Timeline/TimelineVert'
 
@@ -22,7 +22,8 @@ export default class Partita extends Component {
 
         this.state = {
             partita: ProvaPartita(),
-            loaded: false
+            loaded: false,
+            title: "Risultati hockey pista"
         }
     }
 
@@ -31,10 +32,12 @@ export default class Partita extends Component {
             return res.text();
         }).then(data => {
             let parsedpartita = ParsePartita(data);
+            console.log(parsedpartita);
 
             this.setState({
                 partita: parsedpartita,
-                loaded: true
+                loaded: true,
+                title: "" + parsedpartita.campionato.abbr + ": " + parsedpartita.teamA.small + " vs " + parsedpartita.teamB.small
             });
         });
     }
@@ -43,7 +46,7 @@ export default class Partita extends Component {
         return (
             <>
                 {(this.state.loaded) ? null : <ModalLoader />}
-                <Navbar />
+                <Navbar title={this.state.title} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-9">

@@ -1,6 +1,7 @@
 import { polishString, titleCase, removeTags, extractProp, parseIsleTag, parseCompleteTag, parseTable } from './commons'
 import $ from 'jquery'
 import { getCachedCampionatoByName } from '../Cache/CacheCampionato';
+import { getCachedSquadraByName } from '../Cache/CacheSquadra';
 
 function PARTITA() {
     return {
@@ -37,6 +38,7 @@ function SQUADRA() {
         idt: 0,
         nome: "",
         logo: "",
+        small: "",
         giocatori: [],
         tecnici: []
     }
@@ -93,6 +95,18 @@ export function ParsePartita(data) {
     let actionTable = parseTable(polishString(actionStr));
     partita.actions = actionTable.rows.map(parseAzione);
 
+    // recupera il nome abbreviato e l'id delle squadre
+    {
+        let actA = partita.actions.filter(ac => ac.team.name.toLowerCase() == partita.teamA.nome.toLowerCase());
+        let actB = partita.actions.filter(ac => ac.team.name.toLowerCase() == partita.teamB.nome.toLowerCase());
+        let teamA = getCachedSquadraByName(partita.teamA.nome, partita.campionato.idc);
+        let teamB = getCachedSquadraByName(partita.teamB.nome, partita.campionato.idc);
+        partita.teamA.idt = teamA.id;
+        partita.teamB.idt = teamB.id;
+        partita.teamA.small = actA[0].team.small;
+        partita.teamB.small = actB[0].team.small;
+    }
+
     // tabelle dei giocatori
     $("body").append("<div id='contTeam' style='display: none'></div>");
     {
@@ -145,7 +159,7 @@ function inserisciDati1(match, tables) {
     let fullCamp = "";
     if (matchComp.length - 2 === 1) {
         match.campionato.nome = matchComp[0].replace(/[0-9]{4}\/[0-9]{4}/g, "").replaceAll(" E ", " e ").trim();
-        fullCamp = match.campionato.toUpperCase();
+        fullCamp = match.campionato.nome.toUpperCase();
     }
     else {
         match.campionato.nome = matchComp[0].replaceAll(" E ", " e ").trim();
@@ -154,8 +168,8 @@ function inserisciDati1(match, tables) {
     }
     try {
         let cachedCamp = getCachedCampionatoByName(fullCamp);
-        console.log(cachedCamp);
         match.campionato.idc = cachedCamp.id;
+        match.campionato.abbr = cachedCamp.abbr;
         match.campionato.tempo = cachedCamp.dur_tempo;
     } catch (e) { }
 
@@ -396,8 +410,8 @@ function parseTeamTable(table) {
         tecnici.push({
             ruolo: removeTags(getContent(cells[1]), "span", true, false),
             nome: getContent(cells[3]),
-            blu: getContent(cells[5]),
-            rossi: getContent(cells[6])
+            blu: getContent(cells[4]),
+            rossi: getContent(cells[5])
         })
     })
 

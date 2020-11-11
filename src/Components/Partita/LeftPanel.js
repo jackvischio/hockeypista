@@ -12,7 +12,7 @@ export default function LeftPanel(props) {
                     <div className="h-100 d-flex align-items-center">
                         <div className="w-100">
                             <h4>
-                                <Link to={"/campionato/" + props.idc} style={{ color: "black" }}>
+                                <Link to={"/campionato/" + props.campionato.idc} style={{ color: "black" }}>
                                     {props.campionato.nome}
                                 </Link>
                             </h4>

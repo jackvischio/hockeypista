@@ -1,4 +1,5 @@
 import { polishString, removeTags, parseIsleTag, parseCompleteTag, extractProp } from './commons'
+import { cacheSquadra } from '../Cache/CacheSquadra'
 import $ from 'jquery'
 
 // MAIN FUNCTION
@@ -13,9 +14,10 @@ export function CaricaCalendario(idc, then) {
         rem = rem.substr(0, rem.indexOf("</thead>") + 8);
         data = data.replace(rem, "");
         data = data.replaceAll('<td width="25"></td>', '');
-        $("#retrieveCalendario").html(data);
 
+        $("#retrieveCalendario").html(data);
         let calendario = parseCalendario($("#tbl-camp-xxx"), idc);
+        $("#retrieveCalendario").remove();
 
         then(calendario);
     });
@@ -47,6 +49,17 @@ export function DueGiornate(calendario) {
     }
 
     return ret;
+}
+
+export function CampionatoSquadra(calendario, idt) {
+    let arr = [];
+    $.each(calendario, i => {
+        let x = calendario[i].partite.filter(elem => elem.teams.includes(idt));
+        $.each(x, j => {
+            arr.push(x[j]);
+        });
+    });
+    return arr;
 }
 
 // DARK SIDE
@@ -114,6 +127,10 @@ function parseCalendario(table, idc) {
         try {
             partita.idp = parseInt(extractProp(parseCompleteTag($(cells[13]).html()), "idp"));
         } catch (e) { partita.idp = undefined; }
+
+        // caching
+        cacheSquadra(partita.teamA.idt, partita.teamA.fullname, partita.teamA.logo, partita.teamA.smallname, idc);
+        cacheSquadra(partita.teamB.idt, partita.teamB.fullname, partita.teamB.logo, partita.teamB.smallname, idc);
 
         //cacheSquadra(teams_id[0], partita.teamA.fullname, partita.teamA.logo, partita.teamA.smallname, idc);
 

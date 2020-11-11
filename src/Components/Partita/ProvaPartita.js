@@ -22,18 +22,20 @@ export default function ProvaPartita() {
             ref2: ""
         },
         teamA: {
-            logo: "https://via.placeholder.com/30x30.png?text=A",
+            idt: 0,
+            logo: "https://via.placeholder.com/80x80.png?text=A",
             nome: "A",
             small: "A",
             giocatori: [],
             tecnici: []
         },
         teamB: {
-            logo: "https://via.placeholder.com/30x30.png?text=B",
+            idt: 0,
+            logo: "https://via.placeholder.com/80x80.png?text=B",
             nome: "B",
             small: "B",
             giocatori: [],
             tecnici: []
-        },
+        }
     }
 }

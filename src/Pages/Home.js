@@ -6,6 +6,7 @@ import { caricaCampionati } from '../API/ApiCampionati'
 import Navbar from '../Components/Varie/Navbar'
 import Loader from '../Components/Varie/Loader'
 import { CampSmall as CampElement } from '../Components/Campionati/CampSmall'
+import { creaSocieta } from '../Cache/CacheSocieta'
 
 const Card = (props) => {
     return (
@@ -15,7 +16,7 @@ const Card = (props) => {
                     {props.title}
                 </h5>
             </div>
-            <div className="card-body" id={props.id}>
+            <div className="card-body">
                 {props.children}
             </div>
         </div>
@@ -27,9 +28,12 @@ export default class Campionati extends Component {
     constructor() {
         super();
 
+        this.societa = creaSocieta();
+
         this.state = {
             campionati: [],
-            loaded: false
+            loaded: false,
+            societa_ok: (this.societa != [])
         };
     }
 
@@ -44,12 +48,19 @@ export default class Campionati extends Component {
             this.setState({
                 loaded: true
             });
+
+            if (this.state.societa_ok) {
+                this.societa = creaSocieta();
+                this.setState({
+                    societa_ok: true
+                });
+            }
         });
     }
     render() {
         return (
             <>
-                <Navbar active={"Home"} />
+                <Navbar title="RISULTATI HOCKEY PISTA" active={"Home"} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-6">
@@ -91,32 +102,7 @@ export default class Campionati extends Component {
                                 </div>
                                 <div className="card-body">
                                     <div className="row">
-                                        <div className="col col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3" >
-                                            <div className="card card-body highlight" style={{ margin: "0.25rem", borderRadius: "10px" }}>
-                                                <img src="https://ns3104249.ip-54-37-85.eu/fisr/images//logos_clubes/149.png"
-                                                    style={{ margin: "0 auto", height: "40px" }} />
-                                                <h5 className="mb-0">BRE</h5>
-                                            </div>
-                                        </div>
-                                        <div className="col col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
-                                            <div className="card card-body" style={{ margin: "0.25rem", borderRadius: "10px" }}>
-                                                <img src="https://ns3104249.ip-54-37-85.eu/fisr/images//logos_clubes/149.png"
-                                                    style={{ margin: "0 auto", height: "40px" }} />
-                                                <h5 className="mb-0">BRE</h5>
-                                            </div>
-                                        </div><div className="col col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
-                                            <div className="card card-body" style={{ margin: "0.25rem", borderRadius: "10px" }}>
-                                                <img src="https://ns3104249.ip-54-37-85.eu/fisr/images//logos_clubes/149.png"
-                                                    style={{ margin: "0 auto", height: "40px" }} />
-                                                <h5 className="mb-0">BRE</h5>
-                                            </div>
-                                        </div><div className="col col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
-                                            <div className="card card-body" style={{ margin: "0.25rem", borderRadius: "10px" }}>
-                                                <img src="https://ns3104249.ip-54-37-85.eu/fisr/images//logos_clubes/149.png"
-                                                    style={{ margin: "0 auto", height: "40px" }} />
-                                                <h5 className="mb-0">BRE</h5>
-                                            </div>
-                                        </div>
+                                        {(this.state.societa_ok) ? this.societa.map((s, i) => <Societa key={i} {...s} />) : <Loader />}
                                     </div>
                                 </div>
                             </div>
@@ -126,4 +112,15 @@ export default class Campionati extends Component {
             </>
         )
     }
+}
+
+function Societa(props) {
+    return (
+        <div className="col col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
+            <div className="card card-body p-2" style={{ margin: "0.25rem", borderRadius: "10px" }}>
+                <img src={props.logo} style={{ margin: "0 auto", height: "40px" }} alt={props.small} />
+                <h5 className="mb-0 mt-1 text-center">{props.small}</h5>
+            </div>
+        </div>
+    )
 }

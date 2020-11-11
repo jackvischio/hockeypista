@@ -14,7 +14,6 @@ export default class Navbar extends Component {
     constructor(props) {
         super();
 
-        this.title = (props.title !== undefined) ? props.title : "risultati hockey pista";
         this.active = props.active;
 
         // links on the navbar
@@ -25,7 +24,10 @@ export default class Navbar extends Component {
             { display: "Salvati", url: "/salvati" }
         ];
 
-        this.state = { toggle: false }
+        this.state = {
+            toggle: false,
+            title: props.title
+        }
     }
 
     toggleNavbar() {
@@ -40,7 +42,7 @@ export default class Navbar extends Component {
                     <Link className="navbar-brand p-0" to="/">
                         <img src={logo} alt="home" style={{ width: "40px", margin: "0" }} />
                     </Link>
-                    <strong> {this.title} </strong>
+                    <strong> {this.state.title} </strong>
                 </div>
 
                 <button className="navbar-toggler navbar-toggler-right ml-auto" onClick={() => this.toggleNavbar()}>

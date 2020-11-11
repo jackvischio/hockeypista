@@ -34,35 +34,35 @@ h3.SquadraName {
   font-family: "Sora", sans-serif;
 }
 
-.table > tbody > tr > td.col1,
-.table > tbody > tr > td.col2,
-.table > tbody > tr > td.col3,
-.table > tbody > tr > td.col5,
-.table > tbody > tr > td.col6,
-.table > tbody > tr > td.col7,
-.table > thead > tr > th.col1,
-.table > thead > tr > th.col2,
-.table > thead > tr > th.col3,
-.table > thead > tr > th.col5,
-.table > thead > tr > th.col6,
-.table > thead > tr > th.col7 {
+.table-match > tbody > tr > td.col1,
+.table-match > tbody > tr > td.col2,
+.table-match > tbody > tr > td.col3,
+.table-match > tbody > tr > td.col5,
+.table-match > tbody > tr > td.col6,
+.table-match > tbody > tr > td.col7,
+.table-match > thead > tr > th.col1,
+.table-match > thead > tr > th.col2,
+.table-match > thead > tr > th.col3,
+.table-match > thead > tr > th.col5,
+.table-match > thead > tr > th.col6,
+.table-match > thead > tr > th.col7 {
   text-align: center;
   width: 7%;
   min-width: 34px;
 }
 
-.table-striped {
+.table-match-striped {
   border-bottom: 1px solid #ccc;
   margin-bottom: 0;
 }
 
-.table > tbody > tr,
-.table > thead > tr {
+.table-match > tbody > tr,
+.table-match > thead > tr {
   padding: 0;
 }
 
-.table > tbody > tr > td,
-.table > thead > tr > th {
+.table-match > tbody > tr > td,
+.table-match > thead > tr > th {
   padding: 2px 3px;
   vertical-align: middle;
 }
