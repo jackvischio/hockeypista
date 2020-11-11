@@ -8,21 +8,6 @@ import Loader from '../Components/Varie/Loader'
 import { CampSmall as CampElement } from '../Components/Campionati/CampSmall'
 import { creaSocieta } from '../Cache/CacheSocieta'
 
-const Card = (props) => {
-    return (
-        <div className="card">
-            <div className="card-header">
-                <h5 className="card-title text-uppercase">
-                    {props.title}
-                </h5>
-            </div>
-            <div className="card-body">
-                {props.children}
-            </div>
-        </div>
-    );
-}
-
 export default class Campionati extends Component {
 
     constructor() {
@@ -64,48 +49,45 @@ export default class Campionati extends Component {
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-6">
-                            <Card title="partite in corso">
+                            <HomeCard>
+                                <h5 className="card-title">PARTITE IN CORSO</h5>
                                 <Loader />
-                            </Card>
+                            </HomeCard>
 
-                            <Card title="partite recenti">
+                            <HomeCard>
+                                <h5 className="card-title">PARTITE RECENTI</h5>
                                 <Loader />
-                            </Card>
+                            </HomeCard>
                         </div>
                         <div className="col col-12 col-lg-6">
-
-                            <div className="card">
-                                <div className="card-header">
-                                    <div className="d-flex justify-content-between align-items-center">
-                                        <h5 className="m-0">CAMPIONATI</h5>
-                                        <div>
-                                            <button className="btn btn-link" style={{ padding: "0 5px" }}> gestisci </button>
-                                            <Link to="/campionati" className="btn btn-link" style={{ padding: "0 5px" }}>
-                                                espandi
+                            <HomeCard>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <h5 className="card-title">CAMPIONATI</h5>
+                                    <div>
+                                        <button className="btn btn-link link-title"> gestisci </button>
+                                        <Link to="/campionati" className="btn btn-link link-title">
+                                            espandi
                                             </Link>
-                                        </div>
                                     </div>
                                 </div>
-                                <div className="card-body" style={{ maxHeight: "45vh", position: "relative", padding: "0.75rem", overflow: "auto" }} >
-                                    <div style={{ height: "100%", overflow: "auto" }}>
-                                        <div className="row" id="card-campionati">
-                                            {(!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => <CampElement key={i} {...camp} />)}
-                                        </div>
+                                <div className="row">
+                                    {(!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => <CampElement key={i} {...camp} />)}
+                                </div>
+                            </HomeCard>
+                            <HomeCard>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <h5 className="card-title">SOCIET&Agrave;</h5>
+                                    <div>
+                                        <button className="btn btn-link link-title"> gestisci </button>
+                                        <Link to="/campionati" className="btn btn-link link-title">
+                                            espandi
+                                            </Link>
                                     </div>
                                 </div>
-                            </div>
-                            <div className="card">
-                                <div className="card-header">
-                                    <h5 className="card-title">
-                                        SOCIETA'
-                        </h5>
+                                <div className="row">
+                                    {(this.state.societa_ok) ? this.societa.map((s, i) => <Societa key={i} {...s} />) : <Loader />}
                                 </div>
-                                <div className="card-body">
-                                    <div className="row">
-                                        {(this.state.societa_ok) ? this.societa.map((s, i) => <Societa key={i} {...s} />) : <Loader />}
-                                    </div>
-                                </div>
-                            </div>
+                            </HomeCard>
                         </div>
                     </div>
                 </div>
@@ -120,6 +102,21 @@ function Societa(props) {
             <div className="card card-body p-2" style={{ margin: "0.25rem", borderRadius: "10px" }}>
                 <img src={props.logo} style={{ margin: "0 auto", height: "40px" }} alt={props.small} />
                 <h5 className="mb-0 mt-1 text-center">{props.small}</h5>
+            </div>
+        </div>
+    )
+}
+
+function HomeCard(props) {
+    return (
+        <div className="card">
+            <div className="card-header">
+                {props.children[0]}
+            </div>
+            <div className="card-body">
+                <div className="scrollbox">
+                    {props.children[1]}
+                </div>
             </div>
         </div>
     )

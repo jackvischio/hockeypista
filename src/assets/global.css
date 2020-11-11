@@ -54,6 +54,23 @@ h5.card-title {
   margin: 0;
 }
 
+.link-title {
+  padding: 0 5px;
+}
+
+.scrollbox {
+  overflow: auto;
+  width: 100%;
+  max-height: 35vh;
+  border-top: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  border-radius: 0.75rem;
+}
+
+.scrollbox:hover {
+  border-color: #ddd;
+}
+
 ::-webkit-scrollbar {
   width: 0px;
 }
