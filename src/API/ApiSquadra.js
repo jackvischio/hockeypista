@@ -48,8 +48,8 @@ function parseTableGiocatori(table, id_team) {
     var rows = table.find("tbody tr");
     var giocatori = [];
 
-    let parseWdef = (str, def) => { if (str == "") return def; return parseInt(str); }
-    let setWdef = (str, def) => { if (str == "") return def; return str; }
+    let parseWdef = (str, def) => { if (str === "") return def; return parseInt(str); }
+    let setWdef = (str, def) => { if (str === "") return def; return str; }
 
     $.each(rows, i => {
         let cells = $(rows[i]).find("td");
@@ -68,7 +68,7 @@ function parseTableGiocatori(table, id_team) {
         gioc.blu = parseWdef($(cells[14]).html(), 0);
         gioc.rossi = parseWdef($(cells[16]).html(), 0);
 
-        if (this_sq == id_team) { giocatori.push(gioc); }
+        if (this_sq === id_team) { giocatori.push(gioc); }
     });
 
     return giocatori;
@@ -78,8 +78,8 @@ function parseTableTecnici(table, id_team) {
     var rows = table.find("tbody tr");
     var tecnici = [];
 
-    let parseWdef = (str, def) => { if (str == "") return def; return parseInt(str); }
-    let setWdef = (str, def) => { if (str == "") return def; return str; }
+    let parseWdef = (str, def) => { if (str === "") return def; return parseInt(str); }
+    let setWdef = (str, def) => { if (str === "") return def; return str; }
 
     $.each(rows, i => {
         let cells = $(rows[i]).find("td");
@@ -90,14 +90,14 @@ function parseTableTecnici(table, id_team) {
 
         let this_sq = $(rows[i]).attr("class").replace(" fila_stats_player", "").replace("teamid_", "");
 
-        if (this_sq == id_team) { tecnici.push(tecn); }
+        if (this_sq === id_team) { tecnici.push(tecn); }
     });
 
     return tecnici;
 }
 
 function creaRowGiocatori(obj) {
-    let f = (str, nv) => { if (str == nv) return "<nv>" + str + "</nv>"; return str; }
+    let f = (str, nv) => { if (str === nv) return "<nv>" + str + "</nv>"; return str; }
     return '<tr> <td class="col1"> <img src="' + obj.naz + '"> </td> <td class="col2">' + obj.nome + '</td> <td class="col3">' + f(obj.presenze, "0") + '</td>' +
         '<td class="col4">' + f(obj.gol, "0") + '</td> <td class="col5">' + f(obj.assist, "0") + '</td> <td class="col6">' + f(obj.rigori, "0/0") + '</td>' +
         '<td class="col7">' + f(obj.diretti, "0/0") + '</td> <td class="col7">' + f(obj.blu, "0") + '</td> <td class="col7">' + f(obj.rossi, "0") + '</td> </tr>';

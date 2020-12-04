@@ -1,17 +1,12 @@
 import { polishString, parseCompleteTag, parseIsleTag, parseParams, extractProp } from './commons'
 import { cacheCampionato } from '../Cache/CacheCampionato'
 
-// data structures
-function CAMPIONATO() {
-    return { id: 0, name: "", teams: [], logo: "", season: "", dur_tempo: 0, abbr: "" }
-}
-
 export function caricaCampionati(data) {
 
     data = polishString(data);
     let camp = [];
     let ind = data.indexOf("</a>");
-    while (ind != -1) {
+    while (ind !== -1) {
         // get and process the current block
         let working = data.substr(0, ind + 4);
         camp.push(parseCampionato(working));
@@ -23,7 +18,7 @@ export function caricaCampionati(data) {
 
     // filtering Campionati of this season
     camp = camp.filter(elem => elem.season === "29");
-    camp = camp.filter(elem => (elem.name != "" && elem.name != "\"" && elem.name != "'" && elem.name != " "));
+    camp = camp.filter(elem => (elem.name !== "" && elem.name !== "\"" && elem.name !== "'" && elem.name !== " "));
 
     // caching campionati
     camp.map(e => cacheCampionato(e));
@@ -42,7 +37,7 @@ function parseCampionato(str) {
     camp.name = extractProp(tag, "name");
 
     // create abbreviation for the campionato
-    let ret = camp.name.match(/\ (A1)|(A2)|(B)|(FEMM)|U[0-9]*\ /);
+    let ret = camp.name.match(/ (A1)|(A2)|(B)|(FEMM)|U[0-9]* /);
     camp.abbr = (ret != null) ? ret[0].trim() : "";
 
     // extracting season
@@ -56,14 +51,14 @@ function parseCampionato(str) {
     // extracting teams
     let teams_tag = parseIsleTag(tag.content.substr(tag.content.indexOf("<input")));
     let teams_str = extractProp(teams_tag, "value");
-    camp.teams = teams_str.split(";").filter(elem => elem != "\"").map(elem => {
+    camp.teams = teams_str.split(";").filter(elem => elem !== "\"").map(elem => {
         let info = elem.split(",");
         return { name: info[2], id: info[1], logo: "https://ns3104249.ip-54-37-85.eu/fisr/images/logos_clubes/" + info[0] };
     })
 
     // extracting period duration
     try {
-        camp.dur_tempo = parseInt(tag.params.filter(elem => elem.name == "tpo_reg")[0].value);
+        camp.dur_tempo = parseInt(tag.params.filter(elem => elem.name === "tpo_reg")[0].value);
     } catch (e) { }
 
     return camp;

@@ -2,7 +2,7 @@ import { getCacheArray } from './CacheCommons'
 
 export function IsSaved(path) {
     let salvati = getCacheArray("ns_salvati");
-    let salva = salvati.filter(e => e == path);
+    let salva = salvati.filter(e => e === path);
     if (salva.length > 0)
         return true;
     else
@@ -20,7 +20,7 @@ export function Salva(path) {
 export function DisSalva(path) {
     if (IsSaved(path)) {
         let salvati = getCacheArray("ns_salvati");
-        salvati = salvati.filter(e => e != path);
+        salvati = salvati.filter(e => e !== path);
         localStorage.setItem("ns_salvati", JSON.stringify(salvati));
     }
 }

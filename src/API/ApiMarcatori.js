@@ -20,8 +20,8 @@ export function caricaMarcatori(idc, then) {
 function parseMarcatori(table) {
     let rows = table.find("tbody tr");
 
-    let parseWdef = (str, def) => { if (str == "") return def; return parseInt(str); }
-    let setWdef = (str, def) => { if (str == "") return def; return str; }
+    let parseWdef = (str, def) => { if (str === "") return def; return parseInt(str); }
+    let setWdef = (str, def) => { if (str === "") return def; return str; }
 
     let marcatori = [];
     $.each(rows, (i) => {

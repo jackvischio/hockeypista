@@ -8,7 +8,7 @@ import { CampLarge as CampElement } from '../Components/Campionati/CampLarge'
 
 class Campionati extends Component {
 
-    constructor() {
+    constructor(props) {
         super();
 
         this.state = {

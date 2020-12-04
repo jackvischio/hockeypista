@@ -138,5 +138,7 @@ function parseCalendario(table, idc) {
     });
     calendario.push(giornata);
     calendario.splice(0, 1);
+    let pdate = (d) => { let x = d.split('/'); return new Date(x[2] + '-' + x[1] + '-' + x[0]); }
+    calendario = calendario.sort((a, b) => ((pdate(a.data) > pdate(b.data)) ? 1 : -1));
     return calendario;
 }

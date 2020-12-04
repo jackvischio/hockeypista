@@ -66,7 +66,7 @@ export function parseTable(inp) {
     let openTagStr = str.substr(0, str.indexOf(">") + 1).trim();
     str = str.replaceAll(openTagStr, "");
     openTagStr = openTagStr.substr(openTagStr.indexOf(" ") + 1);
-    let props = openTagStr.split(/\" /g);
+    let props = openTagStr.split(/" /g);
     $.each(props, i => {
         table.props.push(parseProperty(props[i] + '"'));
     });
@@ -91,7 +91,7 @@ export function parseTable(inp) {
             let contentTag = actual.replaceAll(openTag, "");
             openTag = openTag.substr(4);
             var cell = { props: [], content: "" };
-            props = openTagStr.split(/\" /g);
+            props = openTagStr.split(/" /g);
             props.forEach(i => {
                 cell.props.push(parseProperty(props[i] + '"'));
             });

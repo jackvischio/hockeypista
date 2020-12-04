@@ -12,27 +12,25 @@ export function caricaClassifica(idc, then) {
         data = data.replace(rem, "");
 
         $("#retrieveClassifica").html(data);
-
-        let classifica = parseClassifica($("#tbl-class-xxx"));
-
+        let classifica = parseClassifica($("#tbl-class-xxx"), idc);
         $("#retrieveClassifica").remove();
 
         then(classifica);
     });
 }
 
-function parseClassifica(table) {
+function parseClassifica(table, idc) {
     let rows = table.find("tbody tr");
     let classifica = [];
     $.each(rows, (i) => {
         let newobj = { pos: 0, logo: "", nome: "", punti: 0, gte: 0, vte: 0, pte: 0, pse: 0, rft: 0, rst: 0, diff: 0, pen: 0 };
         let cells = $(rows[i]).find("td");
 
-        newobj.logo = parseIsleTag(parseCompleteTag($(cells[1]).html()).content).props.filter(elem => elem.name == "src")[0].value;
+        newobj.logo = parseIsleTag(parseCompleteTag($(cells[1]).html()).content).props.filter(elem => elem.name === "src")[0].value;
         let x = parseCompleteTag(($(cells[2]).html())).content;
         newobj.nome = x.substr(0, x.indexOf("</div>"));
 
-        let check = (val) => (val == "") ? 0 : parseInt(val);
+        let check = (val) => (val === "") ? 0 : parseInt(val);
 
         // crea una funzione check(val) return (val=="") ? 0 : parseInt(val); } e sostituiscila qua, che credo che y faccia casino
         newobj.pos = (i + 1);
@@ -45,6 +43,7 @@ function parseClassifica(table) {
         newobj.rst = check(parseCompleteTag($(cells[9]).html()).content);
         newobj.diff = check(parseCompleteTag($(cells[10]).html()).content);
         newobj.pen = check(parseCompleteTag($(cells[11]).html()).content);
+        newobj.camp = idc;
 
         classifica.push(newobj);
     });

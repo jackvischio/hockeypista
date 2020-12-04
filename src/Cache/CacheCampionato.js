@@ -17,7 +17,7 @@ export function getCachedCampionati() {
 }
 
 export function getCachedCampionato(id) {
-    return getCacheArray("ns_campionati").filter(e => e.id == id)[0];
+    return getCacheArray("ns_campionati").filter(e => e.id === id)[0];
 }
 
 export function getCachedCampionatoByName(name) {
