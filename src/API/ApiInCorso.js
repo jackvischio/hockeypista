@@ -180,3 +180,13 @@ export function CaricaPartiteRecentiSocieta(ids, then) {
         then(partite);
     });
 }
+
+export function CaricaPartiteFutureSocieta(ids, then) {
+    caricaPartite((campionati) => {
+        let partite = [];
+        campionati.forEach(elem => {
+            partite = partite.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "NON INIZIATA")));
+        });
+        then(partite);
+    });
+}

@@ -20,7 +20,10 @@ export function creaSocieta() {
 
         societa.push(soc);
     });
-
+    societa = societa.filter(s => s.small !== "").sort((a, b) => (a.small > b.small) ? 1 : -1).map(s => {
+        if (s.nome == "") s.nome = s.small;
+        return s;
+    });
     localStorage.setItem("ns_societa", JSON.stringify(squadre));
     return societa;
 }

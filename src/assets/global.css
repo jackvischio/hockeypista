@@ -74,3 +74,28 @@ h5.card-title {
 ::-webkit-scrollbar {
   width: 0px;
 }
+
+/* CLASSIFICA SQUADRA ELEMENTO */
+.cls-card {
+  padding: 0.5em;
+}
+
+.cls-col1{
+  width: 15%;
+  text-align: center;
+}
+
+.cls-col3 {
+  width: 10%;
+  text-align: center;
+}
+
+.cls-col2 {
+  width: 60%;
+  text-align: left;
+}
+
+.cls-col4 {
+  width: 15%;
+  text-align: center;
+}

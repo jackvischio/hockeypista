@@ -49,7 +49,7 @@ export default function Azione(elem) {
     else if (elem.action === "rosso") {
         return createElement('danger', "Cartellino rosso", null, titleCase(elem.player.name) + " (" + elem.player.number + ")", elem.period + " - " + elem.time, elem.team.logo);
     }
-    else if (elem.action === "warning") {
+    else if (elem.action === "ammonizione") {
         return createElement('warning', "Ammonizione verbale", null, titleCase(elem.player.name) + " (" + elem.player.number + ")", elem.period + " - " + elem.time, elem.team.logo);
     }
     else if (elem.action === "diretto") {

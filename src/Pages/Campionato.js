@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { getCachedCampionato } from '../Cache/CacheCampionato'
 import { CaricaCalendario, DueGiornate } from '../API/ApiCalendario'
+import { CaricaPartiteRecentiCampionato } from '../API/ApiInCorso'
 
 import Loader from '../Components/Varie/Loader'
 import Navbar from '../Components/Varie/Navbar'
@@ -10,14 +11,14 @@ import MarcatoriBox from '../Components/Marcatori/MarcatoriBox'
 import ClassificaBox from '../Components/Classifica/ClassificaBox'
 import SquadraBox from '../Components/Campionati/SquadraBox'
 import PartiteBox from '../Components/Calendario/PartiteBox'
-import { timers } from 'jquery'
+import Partita from '../Components/Calendario/Partita'
 
 export default class Campionato extends Component {
 
     constructor(props) {
         super();
 
-        this.id_camp = props.match.params.id;
+        this.id_camp = parseInt(props.match.params.id);
         this.path = props.location.pathname;
 
         // recupero il campionato di appartenenza dalla cache
@@ -28,7 +29,9 @@ export default class Campionato extends Component {
         this.state = {
             ultima_giornata: [],
             prox_giornata: [],
-            calend_loaded: false
+            calend_loaded: false,
+            incorso: [],
+            incorso_load: false
         }
     }
 
@@ -40,6 +43,11 @@ export default class Campionato extends Component {
                 prox_giornata: cal[1],
                 calend_loaded: true
             });
+        });
+        CaricaPartiteRecentiCampionato(this.id_camp, (partite) => {
+            console.log(partite);
+            this.state.incorso = partite;
+            this.setState({ incorso_load: true });
         })
     }
 
@@ -66,13 +74,13 @@ export default class Campionato extends Component {
                                     </div>
                                 </div>
                                 <div className="col col-12">
-                                    <div id="playing-parent" className="card d-none">
+                                    <div className={"card " + ((this.state.incorso_load && this.state.incorso.length !== 0) ? "" : "d-none")} >
                                         <div className="card-header">
                                             <h5 className="card-title">PARTITE IN CORSO</h5>
                                         </div>
                                         <div className="card-body">
-                                            <div className="row" id="playing">
-
+                                            <div>
+                                                {this.state.incorso.map((e, i) => <Partita key={i} {...e} />)}
                                             </div>
                                         </div>
                                     </div>

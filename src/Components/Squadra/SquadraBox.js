@@ -48,7 +48,7 @@ export default function SquadraBox(props) {
 function Giocatore(obj) {
     let f = (str, nv) => {
         if (str == nv)
-            return (<nv> {str}</nv>);
+            return (<span className="nv"> {str}</span>);
         return str;
     }
 

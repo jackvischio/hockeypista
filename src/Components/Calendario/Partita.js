@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import './Calendario.css'
 
 export default function Partita(obj) {
+    console.log(obj.campAbbr);
     if (obj.idp !== undefined && obj.idp !== "") {
         return <PartitaAttiva {...obj} />
     }
@@ -17,7 +18,7 @@ const PartitaDaFare = (obj) => {
             <div className="card-body cal-elem-inner">
                 <div className="cal-elem-row">
                     <div className="cal-date">
-                        {obj.day + " " + obj.hour}
+                        {obj.day + " " + obj.hour + ((obj.campAbbr === undefined) ? "" : " : " + obj.campAbbr)}
                     </div>
                     <div className="cal-match">
                         <table>
@@ -57,7 +58,7 @@ const PartitaAttiva = (obj) => {
                 <div className="card-body cal-elem-inner">
                     <div className="cal-elem-row">
                         <div className="cal-date">
-                            {obj.day + " " + obj.hour}
+                            {obj.day + " " + obj.hour + ((obj.campAbbr === undefined) ? "" : " : " + obj.campAbbr)}
                         </div>
                         <div className="cal-match">
                             <table>

@@ -25,7 +25,7 @@ export function CampSmall(props) {
             <div className="card highlight" style={cardStyle} >
                 <Link className="link-unstyled" to={"/campionato/" + props.id} >
                     <div className="card-body" style={bodyStyle}>
-                        <h5 className="card-title text-center"> {titleCase(props.name)} </h5>
+                        <h5 className="card-title text-center"> {titleCase(props.name).replace(' E ', ' e ')} </h5>
                     </div>
                 </Link>
             </div>

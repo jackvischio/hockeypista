@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { IsSaved, Salva, DisSalva } from '../../Cache/CachePreferiti'
 
-export default class Preferiti extends Component {
+export class Preferiti extends Component {
 
     constructor(props) {
         super();
@@ -40,8 +40,10 @@ export default class Preferiti extends Component {
     }
 }
 
-const SalvaSM = () => {
+export function PreferitiFake() {
     return (
-        <i className="fas fa-star" title="Salva come preferito"></i>
+        <button className="btn btn-light d-none d-md-block" disabled>
+            <i className="fas fa-star text-light"></i>
+        </button>
     )
 }

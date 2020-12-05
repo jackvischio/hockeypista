@@ -5,7 +5,7 @@ import { getSocieta } from '../Cache/CacheSocieta'
 import Navbar from '../Components/Varie/Navbar';
 import Loader from '../Components/Varie/Loader';
 import ClassificaSocieta from '../Components/Classifica/ClassificaSocieta';
-import { CaricaPartiteRecentiSocieta, CaricaPartiteInCorsoSocieta } from '../API/ApiInCorso';
+import { CaricaPartiteRecentiSocieta, CaricaPartiteInCorsoSocieta, CaricaPartiteFutureSocieta } from '../API/ApiInCorso';
 import Partita from '../Components/Calendario/Partita';
 
 export default class Societa extends Component {
@@ -21,6 +21,8 @@ export default class Societa extends Component {
         this.state = {
             recenti: [],
             recenti_load: false,
+            future: [],
+            future_load: false,
             incorso: [],
             incorso_load: false
         };
@@ -34,6 +36,10 @@ export default class Societa extends Component {
         CaricaPartiteInCorsoSocieta(this.id_soc, (partite) => {
             this.state.incorso = partite;
             this.setState({ incorso_load: true });
+        });
+        CaricaPartiteFutureSocieta(this.id_soc, (partite) => {
+            this.state.future = partite;
+            this.setState({ future_load: true });
         });
     }
 
@@ -82,6 +88,16 @@ export default class Societa extends Component {
                                     (!this.state.recenti_load) ? <Loader /> :
                                         (this.state.recenti.length == 0) ? <p className="m-2 text-center"><i>Nessuna partita recente</i></p> :
                                             this.state.recenti.map((e, i) => <Partita key={i} {...e} />)
+                                }
+                            </Card>
+                            <Card title="partite in programma">
+                                {
+                                    (!this.state.future_load) ? <Loader /> :
+                                        (this.state.future.length == 0) ? <p className="m-2 text-center"><i>Nessuna partita in programa</i></p> :
+                                            this.state.future.map((e, i) => {
+                                                e.idp = undefined;
+                                                return <Partita key={i} {...e} />
+                                            })
                                 }
                             </Card>
                         </div>

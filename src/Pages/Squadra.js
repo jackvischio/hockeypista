@@ -22,12 +22,13 @@ export default class Squadra extends Component {
         super();
 
         this.id_team = props.match.params.id;
+        this.path = props.location.pathname;
         this.cached_team = getCachedSquadra(this.id_team);
 
         // campionato
         this.id_camp = this.cached_team.camp;
         this.cached_camp = getCachedCampionato(this.id_camp);
-        console.log(this.cached_camp);
+        //console.log(this.cached_camp);
 
         // società
         this.societa = getSocietaByIDT(this.id_team);
@@ -65,7 +66,7 @@ export default class Squadra extends Component {
     render() {
         return (
             <>
-                <Navbar title={this.cached_camp.abbr + ": " + this.cached_team.nome} />
+                <Navbar title={this.cached_camp.abbr + ": " + this.cached_team.nome} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-7 col-xl-8">

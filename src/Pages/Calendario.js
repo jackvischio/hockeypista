@@ -14,7 +14,7 @@ export default class Calendario extends Component {
 
         this.path = props.location.pathname;
 
-        this.id_camp = props.match.params.id;
+        this.id_camp = parseInt(props.match.params.id);
         this.camp = getCachedCampionato(this.id_camp);
         this.title = "CALENDARIO " + this.camp.abbr;
         this.state = { calendario: [], loaded: false }

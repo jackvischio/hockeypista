@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 
-import { caricaClassifica, caricaClassificaSquadra } from '../../API/ApiClassifica';
+import { caricaClassificaSquadra } from '../../API/ApiClassifica';
 
 export default class ClassificaSocieta extends Component {
 
@@ -28,7 +28,7 @@ export default class ClassificaSocieta extends Component {
     render() {
         return (
             <div>
-                {this.state.classifiche.map(c => <ClassificaElem {...c} />)}
+                {this.state.classifiche.map((c, i) => <ClassificaElem {...c} key={i} />)}
             </div>
         )
     }

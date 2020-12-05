@@ -2,11 +2,13 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import { caricaCampionati } from '../API/ApiCampionati'
+import { CaricaPartiteInCorso, CaricaPartiteRecenti } from '../API/ApiInCorso'
 
 import Navbar from '../Components/Varie/Navbar'
 import Loader from '../Components/Varie/Loader'
 import { CampSmall as CampElement } from '../Components/Campionati/CampSmall'
 import { creaSocieta } from '../Cache/CacheSocieta'
+import Partita from '../Components/Calendario/Partita'
 
 export default class Campionati extends Component {
 
@@ -18,12 +20,14 @@ export default class Campionati extends Component {
         this.state = {
             campionati: [],
             loaded: false,
-            societa_ok: (this.societa != [])
+            societa_ok: (this.societa != []),
+            incorso: [], incorso_load: false,
+            recenti: [], recenti_load: false
         };
     }
 
     componentDidMount() {
-        fetch("http://www.server2.sidgad.es/fisr/fisr_ls_1.php").then((res) => {
+        fetch("http://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
             return res.text();
         }).then(data => {
             let camp = caricaCampionati(data);
@@ -41,6 +45,14 @@ export default class Campionati extends Component {
                 });
             }
         });
+        CaricaPartiteInCorso((x) => {
+            this.state.incorso = x;
+            this.setState({ incorso_load: true });
+        });
+        CaricaPartiteRecenti((x) => {
+            this.state.recenti = x;
+            this.setState({ recenti_load: true });
+        });
     }
     render() {
         return (
@@ -51,12 +63,20 @@ export default class Campionati extends Component {
                         <div className="col col-12 col-lg-6">
                             <HomeCard>
                                 <h5 className="card-title">PARTITE IN CORSO</h5>
-                                <Loader />
+                                {
+                                    (!this.state.incorso_load) ? <Loader /> :
+                                        (this.state.incorso.length == 0) ? <p className="m-2 text-center"><i>Nessuna partita in corso</i></p> :
+                                            this.state.incorso.map((e, i) => <Partita key={i} {...e} />)
+                                }
                             </HomeCard>
 
                             <HomeCard>
                                 <h5 className="card-title">PARTITE RECENTI</h5>
-                                <Loader />
+                                {
+                                    (!this.state.recenti_load) ? <Loader /> :
+                                        (this.state.recenti.length == 0) ? <p className="m-2 text-center"><i>Nessuna partita recente</i></p> :
+                                            this.state.recenti.map((e, i) => <Partita key={i} {...e} />)
+                                }
                             </HomeCard>
                         </div>
                         <div className="col col-12 col-lg-6">
@@ -67,7 +87,7 @@ export default class Campionati extends Component {
                                         <button className="btn btn-link link-title"> gestisci </button>
                                         <Link to="/campionati" className="btn btn-link link-title">
                                             espandi
-                                            </Link>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -81,7 +101,7 @@ export default class Campionati extends Component {
                                         <button className="btn btn-link link-title"> gestisci </button>
                                         <Link to="/campionati" className="btn btn-link link-title">
                                             espandi
-                                            </Link>
+                                        </Link>
                                     </div>
                                 </div>
                                 <div className="row">
@@ -99,23 +119,29 @@ export default class Campionati extends Component {
 function Societa(props) {
     return (
         <div className="col col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
-            <div className="card card-body p-2" style={{ margin: "0.25rem", borderRadius: "10px" }}>
-                <img src={props.logo} style={{ margin: "0 auto", height: "40px" }} alt={props.small} />
-                <h5 className="mb-0 mt-1 text-center">{props.small}</h5>
-            </div>
+            <Link to={"/societa/" + props.id} className="link-unstyled">
+                <div className="card card-body p-2 highlight" style={{ margin: "0.25rem", borderRadius: "10px" }}>
+                    <img src={props.logo} style={{ margin: "0 auto", height: "40px" }} alt={props.small} />
+                    <h5 className="mb-0 mt-1 text-center">{props.small}</h5>
+                </div>
+            </Link>
         </div>
     )
 }
 
 function HomeCard(props) {
     return (
-        <div className="card">
-            <div className="card-header">
-                {props.children[0]}
-            </div>
-            <div className="card-body">
-                <div className="scrollbox">
-                    {props.children[1]}
+        <div className="row">
+            <div className="col col-12">
+                <div className="card">
+                    <div className="card-header">
+                        {props.children[0]}
+                    </div>
+                    <div className="card-body">
+                        <div className="scrollbox">
+                            {props.children[1]}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

@@ -29,7 +29,7 @@ export default class Partita extends Component {
     }
 
     componentDidMount() {
-        fetch("http://www.server2.sidgad.es/fisr/fisr_gr_" + this.id_partita + "_1.php").then((res) => {
+        fetch("https://www.server2.sidgad.es/fisr/fisr_gr_" + this.id_partita + "_1.php").then((res) => {
             return res.text();
         }).then(data => {
             let parsedpartita = ParsePartita(data);

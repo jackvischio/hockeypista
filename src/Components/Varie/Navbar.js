@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
 import logo from '../../assets/logo.png'
-import Preferiti from './Preferiti';
+import { Preferiti, PreferitiFake } from './Preferiti';
 
 export default class Navbar extends Component {
     constructor(props) {
@@ -34,7 +34,7 @@ export default class Navbar extends Component {
     render() {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light text-uppercase">
-                <div className="navbar-brand p-0">
+                <div className="navbar-brand p-0 m-0">
                     <Link className="navbar-brand p-0" to="/">
                         <img src={logo} alt="home" style={{ width: "40px", margin: "0" }} />
                     </Link>
@@ -49,7 +49,7 @@ export default class Navbar extends Component {
                     <div className="navbar-nav ml-auto mt-2 mt-lg-0 font-weight-bold">
                         {this.links.map((l, i) => Elem(i, l.display, l.url, (l.display === this.active)))}
                     </div>
-                    {((this.state.canBeSaved) ? <Preferiti path={this.path} /> : <></>)}
+                    {((this.state.canBeSaved) ? <Preferiti path={this.path} /> : <PreferitiFake />)}
                 </div>
             </nav >
         )
