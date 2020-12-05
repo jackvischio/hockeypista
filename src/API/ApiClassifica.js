@@ -15,6 +15,7 @@ export function caricaClassifica(idc, then) {
         let classifica = parseClassifica($("#tbl-class-xxx"), idc);
         $("#retrieveClassifica").remove();
 
+        //console.log(classifica);
         then(classifica);
     });
 }
@@ -23,12 +24,13 @@ function parseClassifica(table, idc) {
     let rows = table.find("tbody tr");
     let classifica = [];
     $.each(rows, (i) => {
-        let newobj = { pos: 0, logo: "", nome: "", punti: 0, gte: 0, vte: 0, pte: 0, pse: 0, rft: 0, rst: 0, diff: 0, pen: 0 };
+        let newobj = { pos: 0, logo: "", nome: "", small: "", punti: 0, gte: 0, vte: 0, pte: 0, pse: 0, rft: 0, rst: 0, diff: 0, pen: 0 };
         let cells = $(rows[i]).find("td");
 
         newobj.logo = parseIsleTag(parseCompleteTag($(cells[1]).html()).content).props.filter(elem => elem.name === "src")[0].value;
         let x = parseCompleteTag(($(cells[2]).html())).content;
         newobj.nome = x.substr(0, x.indexOf("</div>"));
+        newobj.small = x.substr(x.indexOf("\">") + 2);
 
         let check = (val) => (val === "") ? 0 : parseInt(val);
 
@@ -49,4 +51,11 @@ function parseClassifica(table, idc) {
     });
 
     return classifica;
+}
+
+export function caricaClassificaSquadra(idc, abbr, then) {
+    caricaClassifica(idc, (clas) => {
+        let obj = clas.filter(e => e.small.toUpperCase() == abbr.toUpperCase())[0];
+        then(obj);
+    });
 }

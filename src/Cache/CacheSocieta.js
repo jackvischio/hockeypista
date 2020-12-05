@@ -3,79 +3,50 @@ import { getCacheArray } from './CacheCommons'
 
 export function creaSocieta() {
     let squadre = getCacheArray("ns_squadre");
-    let campionati = getCacheArray("ns_campionati");
 
-    let allSquadre = [];
-    $.each(campionati, (i) => {
-        let sq_camp = campionati[i].teams;
-        $.each(sq_camp, (j) => {
-            let newsq = sq_camp[j];
-            newsq.small = sq_camp[j].name;
-            newsq.camp = campionati[i].id;
-            newsq.camp_abbr = campionati[i].abbr;
+    let ids = groupBy(squadre, "soc");
+    let societa = [];
+    Object.keys(ids).forEach(id => {
+        id = parseInt(id);
+        let soc = { id: id, nome: "", logo: "", small: "", squadre: [] };
 
-            let cachedName = "";
-            try {
-                cachedName = squadre.filter(e => e.id == newsq.id)[0].nome;
-                cachedName = cachedName.replace(/\ [A-Z]{1}$/, '');
-            } catch (e) { }
-            newsq.nome = cachedName;
+        // recupero le squadre della società
+        soc.squadre = squadre.filter(e => e.soc === id);
 
-            allSquadre.push(newsq);
-        });
+        // recupero il valore migliore per le varie proprietà dalle squadre
+        soc.nome = selectBestValue(soc.squadre, "nome");
+        soc.small = selectBestValue(soc.squadre, "abbr");
+        soc.logo = selectBestValue(soc.squadre, "logo");
+
+        societa.push(soc);
     });
 
-    var groupBy = function (xs, key) {
-        return xs.reduce(function (rv, x) {
-            (rv[x[key]] = rv[x[key]] || []).push(x);
-            return rv;
-        }, {});
-    };
-    var societa = groupBy(allSquadre, 'logo');
-
-    let allSocieta = []
-    $.each(Object.keys(societa), i => {
-        let logo = Object.keys(societa)[i];
-        if (logo != "") {
-            let id_club = logo.match(/\/[0-9]*(_[0-9]+)*\./g)[0];
-            id_club = parseInt(id_club.match(/[0-9]+/g)[0]);
-            allSocieta.push({ id: id_club, nome: "", logo: logo, squadre: societa[logo] })
-        }
-    });
-
-    allSocieta = selectBestNameForProp(allSocieta, "nome", groupBy);
-    allSocieta = selectBestNameForProp(allSocieta, "small", groupBy);
-
-    localStorage.setItem("ns_societa", JSON.stringify(allSocieta));
-    console.log(allSocieta);
-    return allSocieta;
+    localStorage.setItem("ns_societa", JSON.stringify(squadre));
+    return societa;
 }
 
-function selectBestNameForProp(allSocieta, prop, groupBy) {
-    $.each(allSocieta, i => {
-        let newnames = Object.keys(groupBy(allSocieta[i].squadre, prop));
-        let arrnames = [];
-        $.each(newnames, j => {
-            if (newnames[j] != "") {
-                let count = (allSocieta[i].squadre.filter(e => e[prop] == newnames[j])).length;
-                arrnames.push({ name: newnames[j], count: count });
-            }
-        });
+function groupBy(xs, key) {
+    return xs.reduce(function (rv, x) {
+        (rv[x[key]] = rv[x[key]] || []).push(x);
+        return rv;
+    }, {});
+};
 
-        let selectBestName = (arr) => {
-            let best = "";
-            let c = -1;
-            for (let j = 0; j < arr.length; j++) {
-                if (arr[j].count > c) {
-                    c = arr[j].count;
-                    best = arr[j].name;
-                }
-            }
-            return best;
+function selectBestValue(squadre, prop) {
+    let values = groupBy(squadre, prop);
+    let names = [{ key: "", count: 0 }];
+    Object.keys(values).forEach(val => {
+        if (val != "") {
+            names.push({ key: val, count: squadre.filter(s => s[prop] === val).length });
         }
-        allSocieta[i][prop] = selectBestName(arrnames);
     });
-    return allSocieta;
+    names = names.sort((a, b) => (a.count > b.count) ? -1 : 1);
+    return names[0].key;
+}
+
+export function getSocieta(ids) {
+    let cacheSocieta = creaSocieta();
+    return cacheSocieta.filter(e => e.id == ids)[0];
 }
 
 export function getSocietaByIDT(idt) {

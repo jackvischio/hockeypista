@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { caricaClassifica } from '../../API/ApiClassifica';
+import { caricaClassificaSquadra } from '../../API/ApiClassifica';
 import { getCachedSquadra } from '../../Cache/CacheSquadra';
 import Loader from '../Varie/Loader';
 
@@ -9,7 +9,8 @@ export default class ClassificaSquadra extends Component {
 
         this.id_team = props.team;
         this.id_camp = props.camp;
-        this.logo = getCachedSquadra(this.id_team).logo;
+        this.nome = getCachedSquadra(this.id_team).nome;
+        this.abbr = getCachedSquadra(this.id_team).abbr;
 
         this.state = {
             classifica: {},
@@ -18,10 +19,9 @@ export default class ClassificaSquadra extends Component {
     }
 
     componentDidMount() {
-        caricaClassifica(this.id_camp, (clas) => {
-            let obj = clas.filter(e => e.logo.substr(e.logo.lastIndexOf("/")) == this.logo.substr(this.logo.lastIndexOf("/")))[0];
+        caricaClassificaSquadra(this.id_camp, this.abbr, (clas) => {
             this.setState({
-                classifica: obj,
+                classifica: clas,
                 loaded: true
             })
         });
@@ -46,7 +46,7 @@ function ActualClassifica(clas) {
         <div className="text-center">
             <h1 className="m-0">{clas.pos}<sup>o</sup></h1>
             <h3>POSTO</h3>
-            <p style={{ fontSize: "1.4em" }}>punti: <strong>{clas.punti}</strong></p>
+            <p style={{ fontSize: "1.4em" }}><strong>{clas.punti}</strong> {clas.punti == 1 ? "punto" : "punti"}</p>
             <div className="row text-center m-0" style={{ fontSize: "0.8em" }}>
                 <div className="col"> <strong>GTE </strong> {clas.gte} </div>
                 <div className="col"> <strong>VTE </strong> {clas.vte} </div>

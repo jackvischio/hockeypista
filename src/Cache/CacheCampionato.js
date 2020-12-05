@@ -5,7 +5,7 @@ export function cacheCampionato(obj) {
     let camp = getCacheArray("ns_campionati");
     camp = expand(camp, "id");
     obj.teams.forEach(team => {
-        cacheSquadra(team.id, null, team.logo, team.name, obj.id);
+        cacheSquadra(team.id, null, team.logo, team.name, obj.id, obj.abbr);
     });
     camp[obj.id] = obj;
     camp = compress(camp);

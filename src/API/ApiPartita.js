@@ -97,8 +97,8 @@ export function ParsePartita(data) {
 
     // recupera il nome abbreviato e l'id delle squadre
     {
-        let actA = partita.actions.filter(ac => ac.team.name.toLowerCase() == partita.teamA.nome.toLowerCase());
-        let actB = partita.actions.filter(ac => ac.team.name.toLowerCase() == partita.teamB.nome.toLowerCase());
+        let actA = partita.actions.filter(ac => ac.team.name.toLowerCase() === partita.teamA.nome.toLowerCase());
+        let actB = partita.actions.filter(ac => ac.team.name.toLowerCase() === partita.teamB.nome.toLowerCase());
         let teamA = getCachedSquadraByName(partita.teamA.nome, partita.campionato.idc);
         let teamB = getCachedSquadraByName(partita.teamB.nome, partita.campionato.idc);
         partita.teamA.idt = teamA.id;
