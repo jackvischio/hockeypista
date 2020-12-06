@@ -28,7 +28,26 @@ export default class Partita extends Component {
         }
     }
 
+    intervalID;
+
     componentDidMount() {
+        this.getData();
+        this.intervalID = setInterval(this.CaricaPartita.bind(this), 20000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalID);
+    }
+
+    componentDidMount() {
+        this.CaricaPartita();
+        // da attivare solo quando la partita è ancora in corso
+        setInterval(() => {
+            this.CaricaPartita();
+        }, 20000);
+    }
+
+    CaricaPartita() {
         fetch("https://www.server2.sidgad.es/fisr/fisr_gr_" + this.id_partita + "_1.php").then((res) => {
             return res.text();
         }).then(data => {

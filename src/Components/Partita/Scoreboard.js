@@ -29,7 +29,11 @@ function ScoreboardSmall(props) {
                 <br />
                 <h5 className="title-badge badge-secondary mt-2">
                     {props.currentTime}
-                </h5>
+                </h5> &nbsp;
+                {
+                    (props.currentTimestamp !== undefined) ?
+                        <h5 className="title-badge badge-secondary mt-2"> {props.currentTimestamp} </h5> : ""
+                }
             </div>
             <br />
             <table className="w-100 mb-0">
@@ -58,6 +62,11 @@ function ScoreboardLarge(props) {
                             <h5 className="title-badge badge-secondary" style={{ marginTop: "10px", fontWeight: "400" }}>
                                 {props.currentTime}
                             </h5>
+                            <br />
+                            {
+                                (props.currentTimestamp !== undefined && props.currentTimestamp !== "") ?
+                                    <h6 className="title-badge badge-secondary" style={{ marginTop: "10px", fontWeight: "400" }}> {props.currentTimestamp} </h6> : ""
+                            }
                         </td>
                         <td width="35%">
                             <SquadraLarge team={props.teamB} />
@@ -89,7 +98,7 @@ function SquadraSmall(props) {
 function SquadraLarge(props) {
     return (
         <>
-            <img src={props.team.logo} alt={props.team.small} width="80px" />
+            <img src={props.team.logo} alt={props.team.small} width="90px" />
             <Link style={{ color: "black" }} to={"/squadra/" + props.team.idt} >
                 <h3 className="SquadraName">
                     {props.team.nome}

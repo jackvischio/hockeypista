@@ -18,7 +18,7 @@ class Campionati extends Component {
     }
 
     componentDidMount() {
-        fetch("http://www.server2.sidgad.es/fisr/fisr_ls_1.php").then((res) => {
+        fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php").then((res) => {
             return res.text();
         }).then(data => {
             let camp = caricaCampionati(data);

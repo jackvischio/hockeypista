@@ -96,7 +96,7 @@ export function ParsePartita(data) {
     partita.actions = actionTable.rows.map(parseAzione);
 
     // recupera il nome abbreviato e l'id delle squadre
-    {
+    try {
         let actA = partita.actions.filter(ac => ac.team.name.toLowerCase() === partita.teamA.nome.toLowerCase());
         let actB = partita.actions.filter(ac => ac.team.name.toLowerCase() === partita.teamB.nome.toLowerCase());
         let teamA = getCachedSquadraByName(partita.teamA.nome, partita.campionato.idc);
@@ -105,7 +105,7 @@ export function ParsePartita(data) {
         partita.teamB.idt = teamB.id;
         partita.teamA.small = actA[0].team.small;
         partita.teamB.small = actB[0].team.small;
-    }
+    } catch (e) { }
 
     // tabelle dei giocatori
     $("body").append("<div id='contTeam' style='display: none'></div>");
@@ -173,15 +173,19 @@ function inserisciDati1(match, tables) {
         match.campionato.tempo = cachedCamp.dur_tempo;
     } catch (e) { }
 
-    match.teamA.nome = titleCase(removeTags($(cells2[0]).html(), "div", true, false));
-    match.teamA.logo = extractProp(parseIsleTag(removeTags($(cells2[1]).html(), "div", true, false)), "src");
-    match.teamB.nome = titleCase(removeTags($(cells2[6]).html(), "div", true, false));
-    match.teamB.logo = extractProp(parseIsleTag(removeTags($(cells2[5]).html(), "div", true, false)), "src");
+    try {
+        match.teamA.nome = titleCase(removeTags($(cells2[0]).html(), "div", true, false));
+        match.teamA.logo = extractProp(parseIsleTag(removeTags($(cells2[1]).html(), "div", true, false)), "src");
+        match.teamB.nome = titleCase(removeTags($(cells2[6]).html(), "div", true, false));
+        match.teamB.logo = extractProp(parseIsleTag(removeTags($(cells2[5]).html(), "div", true, false)), "src");
+    } catch (e) { }
 
     let scoreStr = $(cells2[3]).html();
     let div1 = scoreStr.substr(0, scoreStr.indexOf("</div>") + 6);
-    let div2 = scoreStr.replace(div1, "");
-    div2 = div2.substr(0, div2.indexOf("</div>") + 6);
+    scoreStr = scoreStr.replace(div1, "");
+    let div2 = scoreStr.substr(0, scoreStr.indexOf("</div>") + 6);
+    let div3 = scoreStr.replace(div2, "");
+    match.currentTimestamp = removeTags(div3, "div", true, false);
     let scores = parseCompleteTag(div1).content.split("-").map(elem => removeTags(elem, "span", true, false));
     match.goalsA = parseInt(scores[0]);
     match.goalsB = parseInt(scores[1]);
@@ -214,59 +218,63 @@ function parseAzione(row) {
 
     let azione = new AZIONE();
 
-    // period and time of the action
-    let cell = row.cells[0].content;
-    let cell1 = cell.substr(0, cell.indexOf("</div>") + 6);
-    let cell2 = cell.replace(cell1, "");
-    azione.period = removeTags(cell1, "div", true, false);
-    azione.time = removeTags(cell2, "div", true, false);
+    try {
 
-    // team
-    cell = row.cells[1].content;
-    cell1 = cell.substr(0, cell.indexOf("<div"));
-    cell2 = cell.replace(cell1, "");
-    azione.team.logo = parseIsleTag(cell1).props[0].value;
-    azione.team.small = removeTags(cell2, "div", true, false);
+        // period and time of the action
+        let cell = row.cells[0].content;
+        let cell1 = cell.substr(0, cell.indexOf("</div>") + 6);
+        let cell2 = cell.replace(cell1, "");
+        azione.period = removeTags(cell1, "div", true, false);
+        azione.time = removeTags(cell2, "div", true, false);
 
-    // azione
-    cell = row.cells[7].content;
-    cell1 = cell.substr(0, cell.indexOf("</div>") + 6);     // action -> also retrieve the full name of the team
-    cell2 = cell.replace(cell1, "");                        // other info
-    // based on action, I look for other params
-    if (cell1.includes("TIMEOUT")) {
-        azione.action = "timeout";
-    }
-    else if (cell1.includes("AMMONIZIONE VERBALE")) {
-        azione.action = "ammonizione";
-        azione.player = lookForPlayer(cell2, row.cells[6].content);
-    }
-    else if (cell1.includes("CARTELLINO BLU")) {
-        azione.action = "blu";
-        azione.player = lookForPlayer(cell2, row.cells[6].content);
-    }
-    else if (cell1.includes("CARTELLINO ROSSO")) {
-        azione.action = "rosso";
-        azione.player = lookForPlayer(cell2, row.cells[6].content);
-    }
-    else if (cell1.includes("GOL")) {
-        azione.action = "gol";
-        azione.player = lookForPlayer(cell2, row.cells[6].content);
-        azione.action_supp = removeTags(row.cells[3].content, "div", true, false);
-    }
-    else if (cell1.includes("FALLI")) {
-        azione.action = "fallo";
-        azione.player = lookForPlayer(cell2, row.cells[6].content);
-        azione.action_supp = removeTags(row.cells[3].content, "div", true, false);
-    }
-    else if (cell1.includes("TIRO DIRETTO")) {
-        azione.action = "diretto";
-        azione.player = lookForPlayerRecursive(cell2, row.cells[6].content);
-    }
-    else if (cell1.includes("RIGORE")) {
-        azione.action = "rigore";
-        azione.player = lookForPlayerRecursive(cell2, row.cells[6].content);
-    }
-    azione.team.name = removeTags(removeTags(removeTags(cell1, "span", true, true), "strong", true, true), "div", true, false);
+        // team
+        cell = row.cells[1].content;
+        cell1 = cell.substr(0, cell.indexOf("<div"));
+        cell2 = cell.replace(cell1, "");
+        azione.team.logo = parseIsleTag(cell1).props[0].value;
+        azione.team.small = removeTags(cell2, "div", true, false);
+
+        // azione
+        cell = row.cells[7].content;
+        cell1 = cell.substr(0, cell.indexOf("</div>") + 6);     // action -> also retrieve the full name of the team
+        cell2 = cell.replace(cell1, "");                        // other info
+        // based on action, I look for other params
+        if (cell1.includes("TIMEOUT")) {
+            azione.action = "timeout";
+        }
+        else if (cell1.includes("AMMONIZIONE VERBALE")) {
+            azione.action = "ammonizione";
+            azione.player = lookForPlayer(cell2, row.cells[6].content);
+        }
+        else if (cell1.includes("CARTELLINO BLU")) {
+            azione.action = "blu";
+            azione.player = lookForPlayer(cell2, row.cells[6].content);
+        }
+        else if (cell1.includes("CARTELLINO ROSSO")) {
+            azione.action = "rosso";
+            azione.player = lookForPlayer(cell2, row.cells[6].content);
+        }
+        else if (cell1.includes("GOL")) {
+            azione.action = "gol";
+            azione.player = lookForPlayer(cell2, row.cells[6].content);
+            azione.action_supp = removeTags(row.cells[3].content, "div", true, false);
+        }
+        else if (cell1.includes("FALLI")) {
+            azione.action = "fallo";
+            azione.player = lookForPlayer(cell2, row.cells[6].content);
+            azione.action_supp = removeTags(row.cells[3].content, "div", true, false);
+        }
+        else if (cell1.includes("TIRO DIRETTO")) {
+            azione.action = "diretto";
+            azione.player = lookForPlayerRecursive(cell2, row.cells[6].content);
+        }
+        else if (cell1.includes("RIGORE")) {
+            azione.action = "rigore";
+            azione.player = lookForPlayerRecursive(cell2, row.cells[6].content);
+        }
+        azione.team.name = removeTags(removeTags(removeTags(cell1, "span", true, true), "strong", true, true), "div", true, false);
+
+    } catch (e) { console.log(e) }
 
     return azione;
 }

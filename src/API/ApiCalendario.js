@@ -5,7 +5,7 @@ import $ from 'jquery'
 // MAIN FUNCTION
 export function CaricaCalendario(idc, then) {
     $("body").append("<div id='retrieveCalendario' style='display: none'></div>");
-    $('#retrieveCalendario').load("http://www.server2.sidgad.es/fisr/fisr_cal_1_29.php", { idc: idc }, (data) => {
+    $('#retrieveCalendario').load("https://www.server2.sidgad.es/fisr/fisr_cal_1_29.php", { idc: idc }, (data) => {
 
         data = polishString(data);
         data = data.substr(data.indexOf("<table"));

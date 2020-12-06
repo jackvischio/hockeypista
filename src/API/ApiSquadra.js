@@ -9,7 +9,7 @@ function TECNICO() { return { nome: "", naz: "" }; }
 
 export function CaricaSquadra(idt, idc, then) {
     $("body").append("<div id='retrieveSquadra' style='display: none'></div>");
-    $('#retrieveSquadra').load('http://www.server2.sidgad.es/fisr/fisr_stats_1_' + idc + '.php', {
+    $('#retrieveSquadra').load('https://www.server2.sidgad.es/fisr/fisr_stats_1_' + idc + '.php', {
         idc: idc,
         idq: idt,
         filter: 3,

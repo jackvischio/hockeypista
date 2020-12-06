@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './Calendario.css'
 
 export default function Partita(obj) {
-    console.log(obj.campAbbr);
+    //console.log(obj.campAbbr);
     if (obj.idp !== undefined && obj.idp !== "") {
         return <PartitaAttiva {...obj} />
     }
@@ -32,7 +32,7 @@ const PartitaDaFare = (obj) => {
                                         </div>
                                     </td>
                                     <td className="text-center">
-                                        {obj.score}
+                                        {obj.score.replace(':', ' - ')}
                                     </td>
                                     <td>
                                         <div className="cal-flex-rev">
@@ -72,7 +72,7 @@ const PartitaAttiva = (obj) => {
                                             </div>
                                         </td>
                                         <td className="text-center">
-                                            {obj.score}
+                                            {obj.score.replace(':', ' - ')}
                                         </td>
                                         <td>
                                             <div className="cal-flex-rev">

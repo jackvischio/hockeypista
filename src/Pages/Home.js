@@ -9,6 +9,7 @@ import Loader from '../Components/Varie/Loader'
 import { CampSmall as CampElement } from '../Components/Campionati/CampSmall'
 import { creaSocieta } from '../Cache/CacheSocieta'
 import Partita from '../Components/Calendario/Partita'
+import GestisciCampionati from '../Components/Modals/GestisciCampionati'
 
 export default class Campionati extends Component {
 
@@ -27,7 +28,7 @@ export default class Campionati extends Component {
     }
 
     componentDidMount() {
-        fetch("http://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
+        fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
             return res.text();
         }).then(data => {
             let camp = caricaCampionati(data);
@@ -111,6 +112,7 @@ export default class Campionati extends Component {
                         </div>
                     </div>
                 </div>
+                <GestisciCampionati />
             </>
         )
     }
