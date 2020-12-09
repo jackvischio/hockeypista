@@ -4,57 +4,68 @@ import { Link } from 'react-router-dom'
 import { caricaCampionati } from '../API/ApiCampionati'
 import { CaricaPartiteInCorso, CaricaPartiteRecenti } from '../API/ApiInCorso'
 
+import { creaSocieta } from '../Cache/CacheSocieta'
+import { getCachedVisCamp, getCachedVisSocieta } from '../Cache/CacheVisualizzazioni'
+
 import Navbar from '../Components/Varie/Navbar'
 import Loader from '../Components/Varie/Loader'
 import { CampSmall as CampElement } from '../Components/Campionati/CampSmall'
-import { creaSocieta } from '../Cache/CacheSocieta'
 import Partita from '../Components/Calendario/Partita'
+
 import GestisciCampionati from '../Components/Modals/GestisciCampionati'
+import GestisciSocieta from '../Components/Modals/GestisciSocieta'
 
 export default class Campionati extends Component {
 
     constructor() {
         super();
 
-        this.societa = creaSocieta();
-
         this.state = {
             campionati: [],
             loaded: false,
-            societa_ok: (this.societa != []),
+            societa: creaSocieta(), societa_ok: (this.societa != []),
             incorso: [], incorso_load: false,
-            recenti: [], recenti_load: false
+            recenti: [], recenti_load: false,
+            showCampionati: getCachedVisCamp(), showCampionati_modal: false,
+            showSocieta: getCachedVisSocieta(), showSocieta_modal: false
         };
     }
 
     componentDidMount() {
+        // caricamento dei campionati
         fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
             return res.text();
         }).then(data => {
-            let camp = caricaCampionati(data);
-
-            camp.forEach(c => this.state.campionati.push(c));
-
-            this.setState({
-                loaded: true
-            });
+            this.state.campionati = caricaCampionati(data);
+            this.setState({ loaded: true });
 
             if (this.state.societa_ok) {
-                this.societa = creaSocieta();
-                this.setState({
-                    societa_ok: true
-                });
+                this.state.societa = creaSocieta();
+                this.setState({ societa_ok: true });
             }
         });
+        // caricamento partite in corso
         CaricaPartiteInCorso((x) => {
             this.state.incorso = x;
             this.setState({ incorso_load: true });
         });
+        // caricamento partite recenti
         CaricaPartiteRecenti((x) => {
             this.state.recenti = x;
             this.setState({ recenti_load: true });
         });
     }
+
+    updateVisCampionato(arr) {
+        this.state.showCampionati = getCachedVisCamp();
+        this.setState({ showCampionati_modal: false });
+    }
+
+    updateVisSocieta(arr) {
+        this.state.showSocieta = getCachedVisSocieta();
+        this.setState({ showSocieta_modal: false });
+    }
+
     render() {
         return (
             <>
@@ -85,34 +96,56 @@ export default class Campionati extends Component {
                                 <div className="d-flex justify-content-between align-items-center">
                                     <h5 className="card-title">CAMPIONATI</h5>
                                     <div>
-                                        <button className="btn btn-link link-title"> gestisci </button>
+                                        <button className="btn btn-link link-title" onClick={() => { this.setState({ showCampionati_modal: true }); }}>
+                                            gestisci
+                                        </button>
                                         <Link to="/campionati" className="btn btn-link link-title">
                                             espandi
                                         </Link>
                                     </div>
                                 </div>
                                 <div className="row">
-                                    {(!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => <CampElement key={i} {...camp} />)}
+                                    {
+                                        (!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => {
+                                            if (this.state.showCampionati[camp.id].show) {
+                                                return <CampElement key={i} {...camp} />
+                                            }
+                                        })
+                                    }
                                 </div>
                             </HomeCard>
                             <HomeCard>
                                 <div className="d-flex justify-content-between align-items-center">
                                     <h5 className="card-title">SOCIET&Agrave;</h5>
                                     <div>
-                                        <button className="btn btn-link link-title"> gestisci </button>
-                                        <Link to="/campionati" className="btn btn-link link-title">
+                                        <button className="btn btn-link link-title" onClick={() => { this.setState({ showSocieta_modal: true }); }}>
+                                            gestisci
+                                        </button>
+                                        <Link to="/societa" className="btn btn-link link-title">
                                             espandi
                                         </Link>
                                     </div>
                                 </div>
                                 <div className="row">
-                                    {(this.state.societa_ok) ? this.societa.map((s, i) => <Societa key={i} {...s} />) : <Loader />}
+                                    {(this.state.societa_ok) ?
+                                        this.state.societa.map((s, i) => {
+                                            if (this.state.showSocieta[s.id].show) {
+                                                return <Societa key={i} {...s} />
+                                            }
+                                        }) : <Loader />}
                                 </div>
                             </HomeCard>
                         </div>
                     </div>
                 </div>
-                <GestisciCampionati />
+                {
+                    (this.state.showCampionati_modal) ?
+                        <GestisciCampionati callback={() => this.updateVisCampionato()} camp={this.state.campionati} show={this.state.showCampionati} /> : null
+                }
+                {
+                    (this.state.showSocieta_modal) ?
+                        <GestisciSocieta callback={() => this.updateVisSocieta()} soc={this.state.societa} show={this.state.showSocieta} /> : null
+                }
             </>
         )
     }

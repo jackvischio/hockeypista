@@ -1,14 +1,14 @@
 import React, { Component } from 'react'
 import { titleCase } from '../../API/commons';
-import { cacheVisCamp } from '../../Cache/CacheVisualizzazioni';
+import { cacheVisCamp, cacheVisSocieta } from '../../Cache/CacheVisualizzazioni';
 
-export default class GestisciCampionati extends Component {
+export default class GestisciSocieta extends Component {
 
     constructor(props) {
         super();
 
         this.state = {
-            camp: props.camp,
+            soc: props.soc,
             show: props.show,
             update: true
         }
@@ -31,7 +31,7 @@ export default class GestisciCampionati extends Component {
     }
 
     save() {
-        cacheVisCamp(this.state.show);
+        cacheVisSocieta(this.state.show);
         this.close();
     }
 
@@ -51,14 +51,14 @@ export default class GestisciCampionati extends Component {
                         </div>
                         <div className="scrollbox mt-2 mb-2" style={{ maxHeight: "80vh", overflow: "auto" }}>
                             {
-                                this.state.camp.map((e, i) => {
+                                this.state.soc.map((e, i) => {
                                     let show = (this.state.show[e.id].show);
                                     let btnStyle = { padding: "4px 10px", margin: "0 3px" }
                                     return (
                                         <div className="card card-body p-1 pl-3" key={i}>
                                             <div className="d-flex justify-content-between align-items-center">
                                                 <h5 className="m-0">
-                                                    {titleCase(e.name).replace(' E ', ' e ')}
+                                                    {titleCase(e.nome).replace(' E ', ' e ')}
                                                 </h5>
                                                 <div style={{ minWidth: "100px", textAlign: "right" }}>
                                                     <button className={"btn " + ((show) ? "btn-primary" : "btn-light")} style={btnStyle} onClick={() => this.mostra(e.id)}>
