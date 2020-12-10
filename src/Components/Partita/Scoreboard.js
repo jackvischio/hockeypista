@@ -31,7 +31,7 @@ function ScoreboardSmall(props) {
                     {props.currentTime}
                 </h5> &nbsp;
                 {
-                    (props.currentTimestamp !== undefined) ?
+                    (props.currentTimestamp !== undefined && props.currentTimestamp !== "") ?
                         <h5 className="title-badge badge-secondary mt-2"> {props.currentTimestamp} </h5> : ""
                 }
             </div>

@@ -21,6 +21,7 @@ export default class Partita extends Component {
 
         this.id_partita = props.match.params.id;
         this.path = props.location.pathname;
+        this.intervalID = null;
 
         this.state = {
             partita: ProvaPartita(),
@@ -30,10 +31,9 @@ export default class Partita extends Component {
         }
     }
 
-    intervalID;
-
     componentDidMount() {
-        this.getData();
+        window.scrollTo(0, 0);
+        this.CaricaPartita();
         this.intervalID = setInterval(this.CaricaPartita.bind(this), 20000);
     }
 
@@ -41,17 +41,7 @@ export default class Partita extends Component {
         clearInterval(this.intervalID);
     }
 
-    componentDidMount() {
-        this.CaricaPartita();
-        // da attivare solo quando la partita è ancora in corso
-        setInterval(() => {
-            this.CaricaPartita();
-        }, 20000);
-    }
-
     CaricaPartita() {
-        window.scrollTo(0, 0);
-        
         fetch("https://www.server2.sidgad.es/fisr/fisr_gr_" + this.id_partita + "_1.php").then((res) => {
             return res.text();
         }).then(data => {
@@ -64,6 +54,7 @@ export default class Partita extends Component {
                 loaded: true,
                 title: ("" + parsedpartita.campionato.abbr + ": " + parsedpartita.teamA.small + " vs " + parsedpartita.teamB.small)
             });
+            if (parsedpartita.currentTime === "FINALE") clearInterval(this.intervalID);
         }).catch(() => {
             this.setState({
                 loaded: true,

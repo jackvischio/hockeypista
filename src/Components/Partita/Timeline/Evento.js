@@ -19,49 +19,49 @@ export default function Evento(elem) {
     }
     else if (elem.action === "timeout") {
         return (
-            <EventoBlock row="tl-row1" pos={pos}>
+            <EventoBlock row="tl-row5" pos={pos}>
                 <Timeout />
             </EventoBlock>
         )
     }
     else if (elem.action === "gol") {
         return (
-            <EventoBlock row="tl-row2" pos={pos}>
+            <EventoBlock row="tl-row1" pos={pos}>
                 <Gol />
             </EventoBlock>
         )
     }
     else if (elem.action === "blu") {
         return (
-            <EventoBlock row="tl-row1" pos={pos}>
+            <EventoBlock row="tl-row3" pos={pos}>
                 <Blu />
             </EventoBlock>
         )
     }
     else if (elem.action === "rosso") {
         return (
-            <EventoBlock row="tl-row1" pos={pos}>
+            <EventoBlock row="tl-row3" pos={pos}>
                 <Rosso />
             </EventoBlock>
         )
     }
     else if (elem.action === "ammonizione") {
         return (
-            <EventoBlock row="tl-row1" pos={pos}>
+            <EventoBlock row="tl-row3" pos={pos}>
                 <Ammonizione />
             </EventoBlock>
         )
     }
     else if (elem.action === "diretto") {
         return (
-            <EventoBlock row="tl-row1" pos={pos}>
+            <EventoBlock row="tl-row4" pos={pos}>
                 <Diretto />
             </EventoBlock>
         )
     }
     else if (elem.action === "rigore") {
         return (
-            <EventoBlock row="tl-row1" pos={pos}>
+            <EventoBlock row="tl-row4" pos={pos}>
                 <Rigore />
             </EventoBlock>
         )
