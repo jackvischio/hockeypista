@@ -21,6 +21,8 @@ export default class Calendario extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
+        
         CaricaCalendario(this.id_camp, (cal) => {
             cal.forEach(g => {
                 this.state.calendario.push(g);

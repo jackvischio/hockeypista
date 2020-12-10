@@ -32,6 +32,8 @@ export default class Campionati extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
+        
         // caricamento dei campionati
         fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
             return res.text();

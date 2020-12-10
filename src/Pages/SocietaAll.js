@@ -6,8 +6,15 @@ import { creaSocieta } from '../Cache/CacheSocieta';
 import Navbar from '../Components/Varie/Navbar'
 
 export default class SocietaAll extends Component {
-    render() {
+    constructor() {
+        super();
+    }
 
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+    
+    render() {
         const societa = creaSocieta();
         return (
             <>

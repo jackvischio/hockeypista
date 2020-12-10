@@ -163,7 +163,7 @@ function inserisciDati1(match, tables) {
     }
     else {
         match.campionato.nome = matchComp[0].replaceAll(" E ", " e ").trim();
-        match.campionato.girone = matchComp[1].replace(/[0-9]{4}\/[0-9]{4}/g, "").trim();
+        match.campionato.girone = matchComp[1].replace(/[0-9]{4}\/[0-9]{4}/g, "").replaceAll(" E ", " e ").trim();
         fullCamp = match.campionato.nome.toUpperCase() + " - " + match.campionato.girone.toUpperCase();
     }
     try {

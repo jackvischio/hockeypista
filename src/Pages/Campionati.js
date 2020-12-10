@@ -18,6 +18,8 @@ class Campionati extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
+        
         fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php").then((res) => {
             return res.text();
         }).then(data => {

@@ -52,14 +52,16 @@ export default class MarcatoriBox extends Component {
                     </div>
                 </div>
                 <div className="card-body">
-                    <div id="marcatori" style={{ borderBottom: "1px solid #dee2e6" }}>
-                        {
-                            (!this.state.loaded) ? <Loader /> : ((this.state.mostra_tutti) ? (this.state.marcatori.map((marc, i) =>
-                                <Marcatore key={i} {...marc} show={(marc.pos === this.state.showing)} callback={() => this.dettagli(marc.pos)} />
-                            )) : (this.state.marcatori.slice(0, 5).map((marc, i) =>
-                                <Marcatore key={i} {...marc} show={(marc.pos === this.state.showing)} callback={() => this.dettagli(marc.pos)} />
-                            )))
-                        }
+                    <div className="scrollbox" style={{ maxHeight: "95vh" }} >
+                        <div style={{ borderBottom: "1px solid #dee2e6" }}>
+                            {
+                                (!this.state.loaded) ? <Loader /> : ((this.state.mostra_tutti) ? (this.state.marcatori.map((marc, i) =>
+                                    <Marcatore key={i} {...marc} show={(marc.pos === this.state.showing)} callback={() => this.dettagli(marc.pos)} />
+                                )) : (this.state.marcatori.slice(0, 5).map((marc, i) =>
+                                    <Marcatore key={i} {...marc} show={(marc.pos === this.state.showing)} callback={() => this.dettagli(marc.pos)} />
+                                )))
+                            }
+                        </div>
                     </div>
                 </div>
             </div>

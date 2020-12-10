@@ -33,9 +33,9 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light text-uppercase">
+            <nav className="navbar navbar-expand-lg navbar-light bg-light text-uppercase" style={{ padding: "10px" }}>
                 <div className="navbar-brand p-0 m-0">
-                    <Link className="navbar-brand p-0" to="/">
+                    <Link className="navbar-brand p-0 mr-2" to="/">
                         <img src={logo} alt="home" style={{ width: "40px", margin: "0" }} />
                     </Link>
                     <strong> {this.state.title} </strong>

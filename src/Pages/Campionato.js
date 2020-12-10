@@ -36,6 +36,8 @@ export default class Campionato extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
+        
         CaricaCalendario(this.id_camp, (cal) => {
             cal = DueGiornate(cal);
             this.setState({
@@ -65,10 +67,12 @@ export default class Campionato extends Component {
                                             <h5 className="card-title">SQUADRE</h5>
                                         </div>
                                         <div className="card-body" style={{ padding: "0.75rem" }}>
-                                            <div className="row">
-                                                {
-                                                    this.camp.teams.sort((a, b) => (a.name > b.name) ? 1 : ((a.name < b.name) ? -1 : 0)).map((e, i) => <SquadraBox key={i} {...e} />)
-                                                }
+                                            <div className="scrollbox" style={{ maxHeight: "45vh" }} >
+                                                <div className="row">
+                                                    {
+                                                        this.camp.teams.sort((a, b) => (a.name > b.name) ? 1 : ((a.name < b.name) ? -1 : 0)).map((e, i) => <SquadraBox key={i} {...e} />)
+                                                    }
+                                                </div>
                                             </div>
                                         </div>
                                     </div>

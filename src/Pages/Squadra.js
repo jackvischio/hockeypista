@@ -44,6 +44,8 @@ export default class Squadra extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
+
         CaricaCalendario(this.id_camp, (cal) => {
             cal = CampionatoSquadra(cal, this.id_team);
             cal.forEach(g => {
@@ -69,7 +71,7 @@ export default class Squadra extends Component {
                 <Navbar title={this.cached_camp.abbr + ": " + this.cached_team.nome} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">
-                        <div className="col col-12 col-lg-7 col-xl-8">
+                        <div className="col col-12 col-lg-7 col-xl-8 order-2 order-lg-1">
                             <div className="row">
                                 <div className="col col-12">
                                     <div className="card">
@@ -99,22 +101,24 @@ export default class Squadra extends Component {
                                             <h5 className="card-title">CALENDARIO</h5>
                                         </div>
                                         <div className="card-body">
-                                            {(this.state.calend_loaded) ? <PartiteBox giornata={this.state.calendario} /> : <Loader />}
+                                            <div className="scrollbox" style={{ maxHeight: "70vh" }} >
+                                                {(this.state.calend_loaded) ? <PartiteBox giornata={this.state.calendario} /> : <Loader />}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div className="col col-12 col-lg-5 col-xl-4">
+                        <div className="col col-12 col-lg-5 col-xl-4 order-1 order-lg-2">
                             <div className="row">
-                                <div className="col col-12 col-md-6 col-lg-12 col-xl-6">
-                                    <Campionato {...this.cached_camp} />
+                                <div className="col col-12">
+                                    <ClassificaSquadra team={this.id_team} camp={this.id_camp} />
                                 </div>
                                 <div className="col col-12 col-md-6 col-lg-12 col-xl-6">
                                     <Societa {...this.societa} />
                                 </div>
-                                <div className="col col-12">
-                                    <ClassificaSquadra team={this.id_team} camp={this.id_camp} />
+                                <div className="col col-12 col-md-6 col-lg-12 col-xl-6">
+                                    <Campionato {...this.cached_camp} />
                                 </div>
                                 <div className="col col-12">
                                     <MarcatoriSquadra team={this.id_team} camp={this.id_camp} />

@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component, useEffect } from 'react'
 
 import { getSocieta } from '../Cache/CacheSocieta'
 
@@ -29,6 +29,8 @@ export default class Societa extends Component {
     }
 
     componentDidMount() {
+        window.scrollTo(0, 0);
+        
         CaricaPartiteRecentiSocieta(this.id_soc, (partite) => {
             this.state.recenti = partite;
             this.setState({ recenti_load: true });

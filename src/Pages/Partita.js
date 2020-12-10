@@ -12,6 +12,7 @@ import Scoreboard from '../Components/Partita/Scoreboard'
 import Squadra from '../Components/Partita/TabellaSquadre/Squadra'
 import TimelineOrizz from '../Components/Partita/Timeline/TimelineOrizz'
 import TimelineVert from '../Components/Partita/Timeline/TimelineVert'
+import ErrorePartita from '../Components/Partita/ErrorePartita'
 
 export default class Partita extends Component {
 
@@ -24,7 +25,8 @@ export default class Partita extends Component {
         this.state = {
             partita: ProvaPartita(),
             loaded: false,
-            title: "Risultati hockey pista"
+            title: "Risultati hockey pista",
+            error: false
         }
     }
 
@@ -48,9 +50,12 @@ export default class Partita extends Component {
     }
 
     CaricaPartita() {
+        window.scrollTo(0, 0);
+        
         fetch("https://www.server2.sidgad.es/fisr/fisr_gr_" + this.id_partita + "_1.php").then((res) => {
             return res.text();
         }).then(data => {
+            data = data.replaceAll(/https:\/\/www.sidgad.com\/fisr\/images\/logo_print.gif/g, "");
             let parsedpartita = ParsePartita(data);
             console.log(parsedpartita);
 
@@ -59,13 +64,20 @@ export default class Partita extends Component {
                 loaded: true,
                 title: ("" + parsedpartita.campionato.abbr + ": " + parsedpartita.teamA.small + " vs " + parsedpartita.teamB.small)
             });
-        });
+        }).catch(() => {
+            this.setState({
+                loaded: true,
+                error: true
+            });
+            console.log("partita non iniziata");
+        })
     }
 
     render() {
         return (
             <>
                 {(this.state.loaded) ? null : <ModalLoader />}
+                {(!this.state.error) ? null : <ErrorePartita callBack={() => { this.props.history.goBack(); }} />}
                 <Navbar title={this.state.title} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">

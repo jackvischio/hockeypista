@@ -43,12 +43,14 @@ export default class ClassificaBox extends Component {
                     </div>
                 </div>
                 <div className="card-body">
-                    <div id="marcatori" style={{ borderBottom: "1px solid #dee2e6" }}>
-                        {
-                            (!this.state.loaded) ? <Loader /> : this.state.classifica.map((camp, i) =>
-                                <Classifica key={i} {...camp} show={(camp.pos === this.state.showing)} callback={() => this.dettagli(camp.pos)} />
-                            )
-                        }
+                    <div className="scrollbox" style={{ maxHeight: "65vh" }} >
+                        <div style={{ borderBottom: "1px solid #dee2e6" }}>
+                            {
+                                (!this.state.loaded) ? <Loader /> : this.state.classifica.map((camp, i) =>
+                                    <Classifica key={i} {...camp} show={(camp.pos === this.state.showing)} callback={() => this.dettagli(camp.pos)} />
+                                )
+                            }
+                        </div>
                     </div>
                 </div>
             </div>
