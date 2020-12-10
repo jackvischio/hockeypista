@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import '../Components/Partita/TabellaSquadre/match.css'
 
 import ProvaPartita from '../Components/Partita/ProvaPartita'
-import { ParsePartita } from '../API/ApiPartita'
+import { CaricaPartita, ParsePartita } from '../API/ApiPartita'
 
 import Azione from '../Components/Partita/Azione'
 import LeftPanel from '../Components/Partita/LeftPanel'
@@ -33,15 +33,30 @@ export default class Partita extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        this.CaricaPartita();
-        this.intervalID = setInterval(this.CaricaPartita.bind(this), 20000);
+        this.CaricaDati();
+        this.intervalID = setInterval(this.CaricaDati.bind(this), 20000);
     }
 
     componentWillUnmount() {
         clearInterval(this.intervalID);
     }
 
-    CaricaPartita() {
+    CaricaDati() {
+        CaricaPartita(this.id_partita, (partita) => {
+            if (partita.currentTime === "FINALE") clearInterval(this.intervalID);
+            this.setState({
+                partita: partita,
+                loaded: true,
+                title: ("" + partita.campionato.abbr + ": " + partita.teamA.small + " vs " + partita.teamB.small)
+            });
+        }, () => {
+            this.setState({
+                loaded: true,
+                error: true
+            });
+            console.log("partita non iniziata");
+        });
+        /*
         fetch("https://www.server2.sidgad.es/fisr/fisr_gr_" + this.id_partita + "_1.php").then((res) => {
             return res.text();
         }).then(data => {
@@ -61,7 +76,7 @@ export default class Partita extends Component {
                 error: true
             });
             console.log("partita non iniziata");
-        })
+        })*/
     }
 
     render() {

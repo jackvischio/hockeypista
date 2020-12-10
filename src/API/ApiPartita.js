@@ -2,11 +2,11 @@ import { polishString, titleCase, removeTags, extractProp, parseIsleTag, parseCo
 import $ from 'jquery'
 import { getCachedCampionatoByName } from '../Cache/CacheCampionato';
 import { getCachedSquadraByName } from '../Cache/CacheSquadra';
+import { CachePartita, CheckIfCachedMatch } from '../Cache/CachePartita';
 
 function PARTITA() {
     return {
         id: 0,
-        idc: 0,
         referees: {
             ref1: "",
             ref2: "",
@@ -63,8 +63,38 @@ function AZIONE() {
     };
 }
 
-export function ParsePartita(data) {
+export function CaricaPartita(idp, then, error) {
+    let cache = CheckIfCachedMatch(idp);
+    if (cache !== null) {
+        // partita memorizzata in cache
+        console.log("found in cache");
+        console.log(cache);
+        then(cache);
+    }
+    else {
+        // partita non già memorizzata
+        fetch("https://www.server2.sidgad.es/fisr/fisr_gr_" + idp + "_1.php").then((res) => {
+            return res.text();
+        }).then(data => {
+            let partita = parsePartita(data);
+            partita.id = parseInt(idp);
+            console.log(partita);
+
+            // se possibile (= partita finita), la memorizzo in cache
+            if (partita.currentTime === "FINALE") CachePartita(partita);
+
+            // restituisco il controllo al componente
+            then(partita);
+        }).catch(() => { error(); });
+    }
+}
+
+export function parsePartita(data) {
+    // pulizia iniziale
     data = polishString(data);
+    data = data.replaceAll(/https:\/\/www.sidgad.com\/fisr\/images\/logo_print.gif/g, "");
+
+    // Oggetto finale
     let partita = new PARTITA();
 
     // First table => luogo, # giornata, data, campionato
