@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import './Calendario.css'
 
 export default function Partita(obj) {
-    //console.log(obj.campAbbr);
+    console.log(obj);
     if (obj.idp !== undefined && obj.idp !== "") {
         return <PartitaAttiva {...obj} />
     }

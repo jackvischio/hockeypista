@@ -19,26 +19,17 @@ class Campionati extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        
-        fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php").then((res) => {
-            return res.text();
-        }).then(data => {
-            let camp = caricaCampionati(data);
 
-            camp.forEach(c => this.state.campionati.push(c));
-
-            this.setState({
-                loaded: true
-            });
-
-            console.log(this.state);
+        caricaCampionati(false, (camps) => {
+            this.state.campionati = camps;
+            this.setState({ loaded: true });
         });
     }
 
     render() {
         return (
             <>
-                <Navbar  title={"Campionati"} active={"Campionati"} />
+                <Navbar title={"Campionati"} active={"Campionati"} />
                 <div className="container">
                     <div className="row">
                         {(!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => <CampElement key={i} {...camp} />)}

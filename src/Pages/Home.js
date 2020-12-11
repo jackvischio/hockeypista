@@ -1,21 +1,27 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
+// API
 import { caricaCampionati } from '../API/ApiCampionati'
 import { CaricaPartiteInCorso, CaricaPartiteRecenti } from '../API/ApiInCorso'
 
+// CACHE
 import { creaSocieta } from '../Cache/CacheSocieta'
 import { getCachedVisCamp, getCachedVisSocieta } from '../Cache/CacheVisualizzazioni'
 
+// COMPONENTS
 import Navbar from '../Components/Varie/Navbar'
 import Loader from '../Components/Varie/Loader'
 import { CampSmall as CampElement } from '../Components/Campionati/CampSmall'
 import Partita from '../Components/Calendario/Partita'
+import HomeCard from '../Components/Salvati/HomeCard'
+import Societa from '../Components/Salvati/Societa'
 
+// MODALS
 import GestisciCampionati from '../Components/Modals/GestisciCampionati'
 import GestisciSocieta from '../Components/Modals/GestisciSocieta'
 
-export default class Campionati extends Component {
+export default class Home extends Component {
 
     constructor() {
         super();
@@ -33,12 +39,10 @@ export default class Campionati extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        
+
         // caricamento dei campionati
-        fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
-            return res.text();
-        }).then(data => {
-            this.state.campionati = caricaCampionati(data);
+        caricaCampionati(true, (camps) => {
+            this.state.campionati = camps;
             this.setState({ loaded: true });
 
             if (this.state.societa_ok) {
@@ -151,36 +155,4 @@ export default class Campionati extends Component {
             </>
         )
     }
-}
-
-function Societa(props) {
-    return (
-        <div className="col col-6 col-sm-4 col-md-3 col-lg-4 col-xl-3">
-            <Link to={"/societa/" + props.id} className="link-unstyled">
-                <div className="card card-body p-2 highlight" style={{ margin: "0.25rem", borderRadius: "10px" }}>
-                    <img src={props.logo} style={{ margin: "0 auto", height: "40px" }} alt={props.small} />
-                    <h5 className="mb-0 mt-1 text-center">{props.small}</h5>
-                </div>
-            </Link>
-        </div>
-    )
-}
-
-function HomeCard(props) {
-    return (
-        <div className="row">
-            <div className="col col-12">
-                <div className="card">
-                    <div className="card-header">
-                        {props.children[0]}
-                    </div>
-                    <div className="card-body">
-                        <div className="scrollbox">
-                            {props.children[1]}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    )
 }

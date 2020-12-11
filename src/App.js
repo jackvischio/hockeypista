@@ -11,6 +11,7 @@ import Partita from './Pages/Partita';
 import Squadra from './Pages/Squadra';
 import SocietaAll from './Pages/SocietaAll';
 import Societa from './Pages/Societa';
+import Salvati from './Pages/Salvati';
 
 export default class App extends Component {
 	render() {
@@ -25,6 +26,7 @@ export default class App extends Component {
 					<Route path="/squadra/:id" component={Squadra} />
 					<Route exact path="/societa" component={SocietaAll} />
 					<Route path="/societa/:id" component={Societa} />
+					<Route path="/salvati" component={Salvati} />
 				</Router>
 			</>
 		)
