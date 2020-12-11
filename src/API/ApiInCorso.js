@@ -127,7 +127,7 @@ export function CaricaPartiteInCorso(then) {
     caricaPartite((campionati) => {
         let partite = [];
         campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => ((e.type !== "FINALE") && (e.type !== "RINVIATA") && (e.type !== "NON INIZIATA"))));
+            partite = partite.concat(elem.matches.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
         })
         then(partite);
     });
@@ -147,7 +147,7 @@ export function CaricaPartiteRecentiCampionato(idc, then) {
     caricaPartite((campionati) => {
         let campionato = campionati.filter(e => e.id === idc)[0];
         let partite = [];
-        if (campionato != null) partite = campionato.matches.filter(e => ((e.type !== "FINALE") && (e.type !== "RINVIATA") && (e.type !== "NON INIZIATA")));
+        if (campionato != null) partite = campionato.matches.filter(e => (e.type === "FINALE"));
         then(partite);
     })
 }
@@ -165,7 +165,7 @@ export function CaricaPartiteInCorsoSocieta(ids, then) {
     caricaPartite((campionati) => {
         let partite = [];
         campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "FINALE")));
+            partite = partite.concat(elem.matches.filter(e => fun(e, ids) && ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
         });
         then(partite);
     });
@@ -175,7 +175,7 @@ export function CaricaPartiteRecentiSocieta(ids, then) {
     caricaPartite((campionati) => {
         let partite = [];
         campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => fun(e, ids) && ((e.type !== "FINALE") && (e.type !== "RINVIATA") && (e.type !== "NON INIZIATA"))));
+            partite = partite.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "FINALE")));
         });
         then(partite);
     });

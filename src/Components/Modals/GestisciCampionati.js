@@ -49,7 +49,7 @@ export default class GestisciCampionati extends Component {
                                 <i className="fas fa-times"></i>
                             </a>
                         </div>
-                        <div className="scrollbox mt-2 mb-2" style={{ maxHeight: "80vh", overflow: "auto" }}>
+                        <div className="scrollbox mt-2 mb-2" style={{ maxHeight: "70vh", overflow: "auto" }}>
                             {
                                 this.state.camp.map((e, i) => {
                                     let show = (this.state.show[e.id].show);
@@ -89,44 +89,3 @@ export default class GestisciCampionati extends Component {
         )
     }
 }
-/*
-function Elemento(props) {
-    const btnStyle = {
-        padding: "4px 10px",
-        margin: "0 3px"
-    }
-
-    return (
-
-    )
-}
-
-
-
-
-
-    this.camp = getCacheArray("vis_h_campionati");
-this.camp = expand(camp, "id");
-this.state = {
-    camp =
-        }
-
-const salva = () => {
-
-}
-
-return (
-    <>
-        <div className="modal fade show" role="dialog" style={{ display: "block", backgroundColor: "#4445" }}>
-            <div className="modal-dialog modal-lg">
-                <div className="modal-content">
-                    <div className="card">
-                        <div className="card-header">
-                            <h5>Seleziona campionati da visualizzare</h5>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </>
-)*/

@@ -49,7 +49,7 @@ export default class GestisciSocieta extends Component {
                                 <i className="fas fa-times"></i>
                             </a>
                         </div>
-                        <div className="scrollbox mt-2 mb-2" style={{ maxHeight: "80vh", overflow: "auto" }}>
+                        <div className="scrollbox mt-2 mb-2" style={{ maxHeight: "70vh", overflow: "auto" }}>
                             {
                                 this.state.soc.map((e, i) => {
                                     let show = (this.state.show[e.id].show);
