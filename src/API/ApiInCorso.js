@@ -143,11 +143,11 @@ export function CaricaPartiteRecenti(then) {
     });
 }
 
-export function CaricaPartiteRecentiCampionato(idc, then) {
+export function CaricaPartiteInCorsoCampionato(idc, then) {
     caricaPartite((campionati) => {
         let campionato = campionati.filter(e => e.id === idc)[0];
         let partite = [];
-        if (campionato != null) partite = campionato.matches.filter(e => (e.type === "FINALE"));
+        if (campionato != null) partite = campionato.matches.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2")));
         then(partite);
     })
 }

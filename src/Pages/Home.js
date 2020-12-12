@@ -102,10 +102,10 @@ export default class Home extends Component {
                                 <div className="d-flex justify-content-between align-items-center">
                                     <h5 className="card-title">CAMPIONATI</h5>
                                     <div>
-                                        <button className="btn btn-link link-title" onClick={() => { this.setState({ showCampionati_modal: true }); }}>
+                                        <button className="btn btn-link link-title m-0" onClick={() => { this.setState({ showCampionati_modal: true }); }}>
                                             gestisci
                                         </button>
-                                        <Link to="/campionati" className="btn btn-link link-title">
+                                        <Link to="/campionati" className="btn btn-link link-title m-0">
                                             espandi
                                         </Link>
                                     </div>
@@ -113,7 +113,12 @@ export default class Home extends Component {
                                 <div className="row">
                                     {
                                         (!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => {
-                                            if (this.state.showCampionati[camp.id].show) {
+                                            try {
+                                                if (this.state.showCampionati[camp.id].show) {
+                                                    return <CampElement key={i} {...camp} />
+                                                }
+                                            }
+                                            catch (e) {
                                                 return <CampElement key={i} {...camp} />
                                             }
                                         })

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 import { getCachedCampionato } from '../Cache/CacheCampionato'
 import { CaricaCalendario, DueGiornate } from '../API/ApiCalendario'
-import { CaricaPartiteRecentiCampionato } from '../API/ApiInCorso'
+import { CaricaPartiteInCorsoCampionato } from '../API/ApiInCorso'
 
 import Loader from '../Components/Varie/Loader'
 import Navbar from '../Components/Varie/Navbar'
@@ -37,7 +37,7 @@ export default class Campionato extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        
+
         CaricaCalendario(this.id_camp, (cal) => {
             cal = DueGiornate(cal);
             this.setState({
@@ -46,7 +46,7 @@ export default class Campionato extends Component {
                 calend_loaded: true
             });
         });
-        CaricaPartiteRecentiCampionato(this.id_camp, (partite) => {
+        CaricaPartiteInCorsoCampionato(this.id_camp, (partite) => {
             console.log(partite);
             this.state.incorso = partite;
             this.setState({ incorso_load: true });

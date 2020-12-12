@@ -88,19 +88,19 @@ table.timeline-vert > tbody > tr.head > td:nth-child(3) {
 
 .tl-oriz-cont {
   width: 100%;
-  height: 80px;
+  height: 85px;
   position: relative;
   margin-right: 30px;
 }
 
-.tl-oriz-cont.tl-top > .tl-elem { transform: translate(0, 50%); }
+.tl-oriz-cont.tl-top > .tl-elem { transform: translate(-50%, 0); }
 .tl-oriz-cont.tl-top > .tl-elem.tl-row1 { bottom: 4px; }
 .tl-oriz-cont.tl-top > .tl-elem.tl-row2 { bottom: 26px; }
 .tl-oriz-cont.tl-top > .tl-elem.tl-row3 { bottom: 48px; }
 .tl-oriz-cont.tl-top > .tl-elem.tl-row4 { bottom: 70px; }
 .tl-oriz-cont.tl-top > .tl-elem.tl-row5 { bottom: 70px; }
 
-.tl-oriz-cont.tl-bottom > .tl-elem { transform: translate(0, -50%); }
+.tl-oriz-cont.tl-bottom > .tl-elem { transform: translate(-50%, 0); }
 .tl-oriz-cont.tl-bottom > .tl-elem.tl-row1 { top: 4px; }
 .tl-oriz-cont.tl-bottom > .tl-elem.tl-row2 { top: 26px; }
 .tl-oriz-cont.tl-bottom > .tl-elem.tl-row3 { top: 48px; }

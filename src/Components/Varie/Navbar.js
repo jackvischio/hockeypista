@@ -50,6 +50,7 @@ export default class Navbar extends Component {
                         {this.links.map((l, i) => Elem(i, l.display, l.url, (l.display === this.active)))}
                     </div>
                     {((this.state.canBeSaved) ? <Preferiti path={this.path} /> : <PreferitiFake />)}
+                    <Config />
                 </div>
             </nav >
         )
@@ -60,4 +61,19 @@ const Elem = (i, display, url, active) => {
     return (
         <Link key={i} className={"nav-item nav-link " + (active ? 'active' : '')} to={url}>{display}</Link>
     );
+}
+
+const Config = () => {
+    return (
+        <>
+            <Link to="/configura" className="btn btn-light d-none d-md-block" title="Impostazioni" >
+                <i className={"fas fa-cog"}></i>
+            </Link>
+            <div className="navbar-nav ml-auto mt-0 mt-lg-0 font-weight-bold d-block d-md-none">
+                <Link to="/configura" className="nav-item nav-link" >
+                    Impostazioni
+                </Link>
+            </div>
+        </>
+    )
 }
