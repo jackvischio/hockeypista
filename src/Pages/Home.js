@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import ReactGA from 'react-ga'
 
 // API
 import { caricaCampionati } from '../API/ApiCampionati'
@@ -37,6 +38,10 @@ export default class Home extends Component {
             showSocieta: getCachedVisSocieta(), showSocieta_modal: false,
             erroreAttivazione: false
         };
+
+        // google analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview("home");
     }
 
     componentDidMount() {

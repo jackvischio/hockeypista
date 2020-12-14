@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import ReactGA from 'react-ga'
 
 import { getCachedCampionato } from '../Cache/CacheCampionato'
 import { CaricaCalendario, DueGiornate } from '../API/ApiCalendario'
@@ -33,6 +34,10 @@ export default class Campionato extends Component {
             incorso: [],
             incorso_load: false
         }
+
+        // google analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview("campionato_" + this.id_camp);
     }
 
     componentDidMount() {

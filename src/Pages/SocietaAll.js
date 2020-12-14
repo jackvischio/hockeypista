@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import ReactGA from 'react-ga'
 
 import { creaSocieta } from '../Cache/CacheSocieta';
 
@@ -8,6 +9,10 @@ import Navbar from '../Components/Varie/Navbar'
 export default class SocietaAll extends Component {
     constructor() {
         super();
+
+        // google analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview("società");
     }
 
     componentDidMount() {

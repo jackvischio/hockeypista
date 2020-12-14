@@ -1,4 +1,5 @@
 import React, { Component, useEffect } from 'react'
+import ReactGA from 'react-ga'
 
 import { getSocieta } from '../Cache/CacheSocieta'
 
@@ -26,11 +27,15 @@ export default class Societa extends Component {
             incorso: [],
             incorso_load: false
         };
+
+        // google analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview("società_" + this.id_soc);
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        
+
         CaricaPartiteRecentiSocieta(this.id_soc, (partite) => {
             this.state.recenti = partite;
             this.setState({ recenti_load: true });

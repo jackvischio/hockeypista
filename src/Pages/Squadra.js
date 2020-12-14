@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactGA from 'react-ga'
 import '../Components/Squadra/squadra.css'
 
 import { CaricaCalendario, CampionatoSquadra } from '../API/ApiCalendario';
@@ -41,6 +42,10 @@ export default class Squadra extends Component {
             squadra_loaded: false,
             calend_loaded: false
         }
+
+        // google analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview("squadra_" + this.id_team);
     }
 
     componentDidMount() {

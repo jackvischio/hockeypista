@@ -1,13 +1,16 @@
 import React, { Component } from 'react'
+import ReactGA from 'react-ga'
+
 import '../Components/Partita/TabellaSquadre/match.css'
 
 import ProvaPartita from '../Components/Partita/ProvaPartita'
 import { CaricaPartita } from '../API/ApiPartita'
 
+import Navbar from '../Components/Varie/Navbar'
+
 import Azione from '../Components/Partita/Azione'
 import LeftPanel from '../Components/Partita/LeftPanel'
 import ModalLoader from '../Components/Varie/ModalLoader'
-import Navbar from '../Components/Varie/Navbar'
 import Scoreboard from '../Components/Partita/Scoreboard'
 import Squadra from '../Components/Partita/TabellaSquadre/Squadra'
 import TimelineOrizz from '../Components/Partita/Timeline/TimelineOrizz'
@@ -29,6 +32,10 @@ export default class Partita extends Component {
             title: "Risultati hockey pista",
             error: false
         }
+
+        // google analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview("partita_" + this.id_partita);
     }
 
     componentDidMount() {

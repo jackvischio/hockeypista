@@ -1,5 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
+import ReactGA from 'react-ga'
+
 import { CaricaCalendario } from '../API/ApiCalendario';
 
 import { getCachedCampionato } from '../Cache/CacheCampionato'
@@ -18,6 +20,10 @@ export default class Calendario extends Component {
         this.camp = getCachedCampionato(this.id_camp);
         this.title = "CALENDARIO " + this.camp.abbr;
         this.state = { calendario: [], loaded: false }
+
+        // google analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview("calendario_" + this.id_camp);
     }
 
     componentDidMount() {

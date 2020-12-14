@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import ReactGA from 'react-ga'
 
 import { caricaCampionati } from '../API/ApiCampionati'
 
@@ -15,6 +16,10 @@ class Campionati extends Component {
             campionati: [],
             loaded: false
         };
+
+        // google analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview("campionati");
     }
 
     componentDidMount() {
