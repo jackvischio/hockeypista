@@ -1,23 +1,23 @@
 import { polishString, parseCompleteTag, parseIsleTag, parseParams, extractProp } from './commons'
 import { cacheCampionato, getCachedCampionati } from '../Cache/CacheCampionato'
 
-export function caricaCampionati(cache, then) {
+export function caricaCampionati(cache, then, error) {
     if (cache) {
         let camps = getCachedCampionati();
         if (camps.length !== 0)
             then(camps);
         else
-            caricaWrapper(then);
+            caricaWrapper(then, error);
     }
     else {
-        caricaWrapper(then);
+        caricaWrapper(then, error);
     }
 }
 
-function caricaWrapper(then) {
+function caricaWrapper(then, error) {
     fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
         return res.text();
-    }).then(data => { then(carica(data)); });
+    }).then(data => { then(carica(data)); }).catch(e => { console.log(e); error() })
 }
 
 function carica(data) {

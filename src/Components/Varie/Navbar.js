@@ -35,15 +35,14 @@ export default class Navbar extends Component {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light text-uppercase" style={{ padding: "10px" }}>
                 <div className="navbar-brand p-0 m-0">
-                    <Link className="navbar-brand p-0 mr-2" to="/">
+                    <button className="navbar-toggler navbar-toggler-right ml-auto" onClick={() => this.toggleNavbar()}>
+                        <span className="navbar-toggler-icon"></span>
+                    </button>
+                    <Link className="navbar-brand p-0 mr-2 d-none d-md-inline-block" to="/">
                         <img src={logo} alt="home" style={{ width: "40px", margin: "0" }} />
                     </Link>
                     <strong> {this.state.title} </strong>
                 </div>
-
-                <button className="navbar-toggler navbar-toggler-right ml-auto" onClick={() => this.toggleNavbar()}>
-                    <span className="navbar-toggler-icon"></span>
-                </button>
 
                 <div className={"collapse navbar-collapse " + ((this.state.toggle) ? " show text-center" : "")}>
                     <div className="navbar-nav ml-auto mt-2 mt-lg-0 font-weight-bold">
@@ -66,11 +65,11 @@ const Elem = (i, display, url, active) => {
 const Config = () => {
     return (
         <>
-            <Link to="/configura" className="btn btn-light d-none d-md-block" title="Impostazioni" >
+            <Link to="/impostazioni" className="btn btn-light d-none d-md-block" title="Impostazioni" >
                 <i className={"fas fa-cog"}></i>
             </Link>
             <div className="navbar-nav ml-auto mt-0 mt-lg-0 font-weight-bold d-block d-md-none">
-                <Link to="/configura" className="nav-item nav-link" >
+                <Link to="/impostazioni" className="nav-item nav-link">
                     Impostazioni
                 </Link>
             </div>

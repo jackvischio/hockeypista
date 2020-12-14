@@ -4,6 +4,8 @@ import './Calendario.css'
 
 export default function Partita(obj) {
     console.log(obj);
+    if (obj.teamA.fullname === "") obj.teamA.fullname = obj.teamA.smallname;
+    if (obj.teamB.fullname === "") obj.teamB.fullname = obj.teamB.smallname;
     if (obj.idp !== undefined && obj.idp !== "") {
         return <PartitaAttiva {...obj} />
     }

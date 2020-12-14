@@ -12,7 +12,8 @@ import Squadra from './Pages/Squadra';
 import SocietaAll from './Pages/SocietaAll';
 import Societa from './Pages/Societa';
 import Salvati from './Pages/Salvati';
-import Configura from './Pages/Configura';
+import Guida from './Pages/Guida';
+import Impostazioni from './Pages/Impostazioni';
 
 export default class App extends Component {
 	render() {
@@ -28,7 +29,8 @@ export default class App extends Component {
 					<Route exact path="/societa" component={SocietaAll} />
 					<Route path="/societa/:id" component={Societa} />
 					<Route path="/salvati" component={Salvati} />
-					<Route path="/configura" component={Configura} />
+					<Route path="/guida" component={Guida} />
+					<Route path="/impostazioni" component={Impostazioni} />
 				</Router>
 			</>
 		)

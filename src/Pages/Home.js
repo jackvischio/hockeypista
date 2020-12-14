@@ -20,6 +20,7 @@ import Societa from '../Components/Salvati/Societa'
 // MODALS
 import GestisciCampionati from '../Components/Modals/GestisciCampionati'
 import GestisciSocieta from '../Components/Modals/GestisciSocieta'
+import ErroreAttivazione from '../Components/Modals/ErroreAttivazione'
 
 export default class Home extends Component {
 
@@ -33,7 +34,8 @@ export default class Home extends Component {
             incorso: [], incorso_load: false,
             recenti: [], recenti_load: false,
             showCampionati: getCachedVisCamp(), showCampionati_modal: false,
-            showSocieta: getCachedVisSocieta(), showSocieta_modal: false
+            showSocieta: getCachedVisSocieta(), showSocieta_modal: false,
+            erroreAttivazione: false
         };
     }
 
@@ -49,6 +51,8 @@ export default class Home extends Component {
                 this.state.societa = creaSocieta();
                 this.setState({ societa_ok: true });
             }
+        }, () => {
+            this.setState({ erroreAttivazione: true })
         });
         // caricamento partite in corso
         CaricaPartiteInCorso((x) => {
@@ -62,12 +66,12 @@ export default class Home extends Component {
         });
     }
 
-    updateVisCampionato(arr) {
+    updateVisCampionato() {
         this.state.showCampionati = getCachedVisCamp();
         this.setState({ showCampionati_modal: false });
     }
 
-    updateVisSocieta(arr) {
+    updateVisSocieta() {
         this.state.showSocieta = getCachedVisSocieta();
         this.setState({ showSocieta_modal: false });
     }
@@ -140,7 +144,12 @@ export default class Home extends Component {
                                 <div className="row">
                                     {(this.state.societa_ok) ?
                                         this.state.societa.map((s, i) => {
-                                            if (this.state.showSocieta[s.id].show) {
+                                            try {
+                                                if (this.state.showSocieta[s.id].show) {
+                                                    return <Societa key={i} {...s} />
+                                                }
+                                            }
+                                            catch (e) {
                                                 return <Societa key={i} {...s} />
                                             }
                                         }) : <Loader />}
@@ -156,6 +165,10 @@ export default class Home extends Component {
                 {
                     (this.state.showSocieta_modal) ?
                         <GestisciSocieta callback={() => this.updateVisSocieta()} soc={this.state.societa} show={this.state.showSocieta} /> : null
+                }
+                {
+                    (this.state.erroreAttivazione) ?
+                        <ErroreAttivazione /> : null
                 }
             </>
         )
