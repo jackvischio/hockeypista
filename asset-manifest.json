@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/hockeypista/static/css/main.9d295781.chunk.css",
-    "main.js": "/hockeypista/static/js/main.bd0f5fe5.chunk.js",
-    "main.js.map": "/hockeypista/static/js/main.bd0f5fe5.chunk.js.map",
+    "main.js": "/hockeypista/static/js/main.b95f951c.chunk.js",
+    "main.js.map": "/hockeypista/static/js/main.b95f951c.chunk.js.map",
     "runtime-main.js": "/hockeypista/static/js/runtime-main.8eab8680.js",
     "runtime-main.js.map": "/hockeypista/static/js/runtime-main.8eab8680.js.map",
     "static/css/2.20aa2d7b.chunk.css": "/hockeypista/static/css/2.20aa2d7b.chunk.css",
@@ -20,6 +20,6 @@
     "static/css/2.20aa2d7b.chunk.css",
     "static/js/2.481cdc78.chunk.js",
     "static/css/main.9d295781.chunk.css",
-    "static/js/main.bd0f5fe5.chunk.js"
+    "static/js/main.b95f951c.chunk.js"
   ]
 }
