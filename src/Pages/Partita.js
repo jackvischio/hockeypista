@@ -33,6 +33,14 @@ export default class Partita extends Component {
             error: false
         }
 
+
+
+        // understand refresh
+        this.reloaded = false;
+        if ((window.performance) && (performance.navigation.type == 1)) {
+            this.reloaded = true;
+        }
+
         // google analytics
         ReactGA.initialize('G-QGJ6R11WYD');
         ReactGA.pageview("partita_" + this.id_partita);
@@ -49,7 +57,7 @@ export default class Partita extends Component {
     }
 
     CaricaDati() {
-        CaricaPartita(this.id_partita, (partita) => {
+        CaricaPartita(this.id_partita, this.reloaded, (partita) => {
             if (partita.currentTime === "FINALE") clearInterval(this.intervalID);
             this.setState({
                 partita: partita,

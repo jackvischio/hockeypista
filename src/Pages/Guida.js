@@ -40,8 +40,9 @@ export default class Guida extends Component {
                                  Purtroppo, però, se non procedi non potrai usufruire di Hockeypista 2.0.
                             </div>
 
-                            <h4 className="mt-4">0. Assicurati di utilizzare Google Chrome</h4>
-                            <p>Questo passaggio è fondamentale soprattutto se vuoi utilizzare questa piattaforma su smartphone e/o tablet.</p>
+                            <h4 className="mt-4">0. Se possibile, utilizza Google Chrome</h4>
+                            <p>Specialmente se stai utilizzando questa piattaforma su smartphone e/o tablet, utilizza Google Chrome come browser.</p>
+                            <p>L'utilizzo di altri browser <i>potrebbe</i> portare a comportamenti indesiderati da parte della piattaforma.</p>
 
                             <h4 className="mt-4">1. Apri il link di attivazione</h4>
                             <p>Clicca sul seguente pulsante rosso. Si aprirà la pagina in una nuova scheda.</p>
@@ -54,7 +55,7 @@ export default class Guida extends Component {
                             <ol>
                                 <li>Clicca su "avanzate".</li>
                                 <li>Clicca su "Procedi".</li>
-                                <li>Nel momento in cui visualizzi la pagina bianca, hai completato la procedura.</li>
+                                <li>Nel momento in cui visualizzi la pagina bianca, hai completato la procedura. Puoi chiudere la scheda e tornare su questa pagina</li>
                             </ol>
                             <div className="row">
                                 <div className="col col-12 col-md-4 text-center">
@@ -76,7 +77,7 @@ export default class Guida extends Component {
                             <Link to="/" className="btn btn-primary">Vai alla home</Link>
 
                             <hr />
-                            <p style={{ fontSize: "0.9em" }}>
+                            <p>
                                 Per segnalare malfunzionamenti e/o bug, utilizza la scheda <a href="https://github.com/gvischio/hockeypista/issues">issues</a> della repository di github.
                             </p>
                             <p>

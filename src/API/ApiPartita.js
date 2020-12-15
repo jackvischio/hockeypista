@@ -63,9 +63,9 @@ function AZIONE() {
     };
 }
 
-export function CaricaPartita(idp, then, error) {
+export function CaricaPartita(idp, forceRefresh, then, error) {
     let cache = CheckIfCachedMatch(idp);
-    if (cache !== null) {
+    if (!forceRefresh && cache !== null) {
         // partita memorizzata in cache
         console.log("found in cache");
         console.log(cache);

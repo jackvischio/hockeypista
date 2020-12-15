@@ -1,5 +1,4 @@
 import $ from 'jquery';
-import { CacheGiocatori, CheckIfCachedTeam } from '../Cache/CacheGiocatori';
 import { polishString, extractProp, parseIsleTag, parseCompleteTag, titleCase, removeTags } from './commons'
 
 function GIOCATORE() {
@@ -9,24 +8,6 @@ function GIOCATORE() {
 function TECNICO() { return { nome: "", naz: "" }; }
 
 export function CaricaSquadra(idt, idc, then) {
-    let cache = CheckIfCachedTeam(idt);
-    console.log(cache);
-    if (cache !== null) {
-        // partita memorizzata in cache
-        console.log("team members list found in cache");
-        console.log(cache);
-        then(cache.gioc, cache.tecn);
-    }
-    else {
-        console.log("looking for it")
-        caricaSquadraOnline(idt, idc, (giocatori, tecnici) => {
-            CacheGiocatori({ id: parseInt(idt), gioc: giocatori, tecn: tecnici });
-            then(giocatori, tecnici);
-        });
-    }
-}
-
-export function caricaSquadraOnline(idt, idc, then) {
     $("body").append("<div id='retrieveSquadra' style='display: none'></div>");
     $('#retrieveSquadra').load('https://www.server2.sidgad.es/fisr/fisr_stats_1_' + idc + '.php', {
         idc: idc,

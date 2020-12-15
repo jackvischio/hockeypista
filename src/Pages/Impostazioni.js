@@ -52,7 +52,7 @@ export default class Impostazioni extends Component {
                                     </h1>
                                     <h4>
                                         Attivazione del sito
-                                        </h4>
+                                    </h4>
                                     <span>Per attivare completamente il sito, è necessario eseguire un paio di passaggi</span>
                                     <br />
                                     <Link to="/guida" className="btn btn-primary btn-sm mt-2">

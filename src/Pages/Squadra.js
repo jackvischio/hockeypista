@@ -4,21 +4,23 @@ import '../Components/Squadra/squadra.css'
 
 import { CaricaCalendario, CampionatoSquadra } from '../API/ApiCalendario';
 import { CaricaSquadra } from '../API/ApiSquadra'
+import { CaricaPartiteInCorsoSquadra } from '../API/ApiInCorso';
+
 import { getCachedSquadra } from '../Cache/CacheSquadra';
 import { getCachedCampionato } from '../Cache/CacheCampionato';
 import { getSocietaByIDT } from '../Cache/CacheSocieta';
 
 import Navbar from '../Components/Varie/Navbar'
 import Loader from '../Components/Varie/Loader'
+import ErroreNotFound from '../Components/Modals/ErroreNotFound';
+
 import PartiteBox from '../Components/Calendario/PartiteBox';
 import Campionato from '../Components/Squadra/Campionato'
 import Societa from '../Components/Squadra/Societa';
 import ClassificaSquadra from '../Components/Classifica/ClassificaSquadra';
 import MarcatoriSquadra from '../Components/Marcatori/MarcatoriSquadra';
 import SquadraBox from '../Components/Squadra/SquadraBox';
-import ErroreNotFound from '../Components/Modals/ErroreNotFound';
 import Partita from '../Components/Calendario/Partita';
-import { CaricaPartiteInCorsoSquadra } from '../API/ApiInCorso';
 
 export default class Squadra extends Component {
 
