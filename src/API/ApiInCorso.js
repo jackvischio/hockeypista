@@ -152,6 +152,17 @@ export function CaricaPartiteInCorsoCampionato(idc, then) {
     })
 }
 
+export function CaricaPartiteInCorsoSquadra(idt, then) {
+    let fun3 = (e, idt) => (e.teamA.idt === idt || e.teamB.idt === idt);
+    caricaPartite((campionati) => {
+        let partite = [];
+        campionati.forEach(elem => {
+            partite = partite.concat(elem.matches.filter(e => fun3(e, idt) && ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
+        });
+        then(partite);
+    });
+}
+
 function fun(e, ids) {
     let fun2 = (str) => {
         let x = str.split('/');

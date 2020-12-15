@@ -9,6 +9,7 @@ import { getCachedCampionato } from '../Cache/CacheCampionato'
 import Giornata from '../Components/Calendario/Giornata';
 import Loader from '../Components/Varie/Loader';
 import Navbar from '../Components/Varie/Navbar';
+import ErroreNotFound from '../Components/Modals/ErroreNotFound';
 
 export default class Calendario extends Component {
     constructor(props) {
@@ -18,7 +19,9 @@ export default class Calendario extends Component {
 
         this.id_camp = parseInt(props.match.params.id);
         this.camp = getCachedCampionato(this.id_camp);
-        this.title = "CALENDARIO " + this.camp.abbr;
+        this.error = (this.camp === undefined);
+
+        this.title = (!this.error ? ("CALENDARIO " + this.camp.abbr) : "CALENDARIO");
         this.state = { calendario: [], loaded: false }
 
         // google analytics
@@ -28,20 +31,23 @@ export default class Calendario extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
-        
-        CaricaCalendario(this.id_camp, (cal) => {
-            cal.forEach(g => {
-                this.state.calendario.push(g);
+
+        if (!this.error) {
+            CaricaCalendario(this.id_camp, (cal) => {
+                cal.forEach(g => {
+                    this.state.calendario.push(g);
+                });
+                this.setState({
+                    loaded: true
+                });
             });
-            this.setState({
-                loaded: true
-            });
-        })
+        }
     }
 
     render() {
         return (
             <>
+                {(!this.error) ? null : <ErroreNotFound title="Calendario non trovato" callBack={() => { this.props.history.goBack(); }} />}
                 <Navbar path={this.path} title={this.title} canBeSaved={true} />
                 <div className="container p-2">
                     <div className="card card-body mt-2 mb-2 p-2">

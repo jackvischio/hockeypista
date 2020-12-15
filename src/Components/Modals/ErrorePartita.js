@@ -7,11 +7,14 @@ export default function ErrorePartita(props) {
             <div className="modal-dialog" style={{ marginTop: "120px" }}>
                 <div className="modal-content">
                     <div className="card card-body text-center">
-                        <h5 className="text-bold">Partita non iniziata</h5>
+                        <h1 className="m-0 text-danger">
+                            <i class="fas fa-hourglass-start"></i>
+                        </h1>
+                        <h4 className="mt-1">Partita non iniziata</h4>
                         <br />
                         <button onClick={props.callBack} className="btn btn-primary" style={{ width: "100%", maxWidth: "200px", margin: "0 auto" }}>
                             indietro
-                    </button>
+                        </button>
                     </div>
                 </div>
             </div>

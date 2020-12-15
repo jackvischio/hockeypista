@@ -7,6 +7,7 @@ import ProvaPartita from '../Components/Partita/ProvaPartita'
 import { CaricaPartita } from '../API/ApiPartita'
 
 import Navbar from '../Components/Varie/Navbar'
+import ErrorePartita from '../Components/Modals/ErrorePartita'
 
 import Azione from '../Components/Partita/Azione'
 import LeftPanel from '../Components/Partita/LeftPanel'
@@ -15,7 +16,6 @@ import Scoreboard from '../Components/Partita/Scoreboard'
 import Squadra from '../Components/Partita/TabellaSquadre/Squadra'
 import TimelineOrizz from '../Components/Partita/Timeline/TimelineOrizz'
 import TimelineVert from '../Components/Partita/Timeline/TimelineVert'
-import ErrorePartita from '../Components/Partita/ErrorePartita'
 
 export default class Partita extends Component {
 

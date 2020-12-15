@@ -18,7 +18,7 @@ function PARTITA() {
             idc: 0,
             girone: "",
             nome: "",
-            tempo: 0
+            tempo: 25
         },
         girone: "",
         date: { day: "", hour: "" },

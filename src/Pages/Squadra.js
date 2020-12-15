@@ -16,6 +16,9 @@ import Societa from '../Components/Squadra/Societa';
 import ClassificaSquadra from '../Components/Classifica/ClassificaSquadra';
 import MarcatoriSquadra from '../Components/Marcatori/MarcatoriSquadra';
 import SquadraBox from '../Components/Squadra/SquadraBox';
+import ErroreNotFound from '../Components/Modals/ErroreNotFound';
+import Partita from '../Components/Calendario/Partita';
+import { CaricaPartiteInCorsoSquadra } from '../API/ApiInCorso';
 
 export default class Squadra extends Component {
 
@@ -25,14 +28,21 @@ export default class Squadra extends Component {
         this.id_team = props.match.params.id;
         this.path = props.location.pathname;
         this.cached_team = getCachedSquadra(this.id_team);
+        this.title = "SQUADRA";
 
-        // campionato
-        this.id_camp = this.cached_team.camp;
-        this.cached_camp = getCachedCampionato(this.id_camp);
-        //console.log(this.cached_camp);
+        this.error = (this.cached_team === undefined);
 
-        // società
-        this.societa = getSocietaByIDT(this.id_team);
+        if (!this.error) {
+            // campionato
+            this.id_camp = this.cached_team.camp;
+            this.cached_camp = getCachedCampionato(this.id_camp);
+
+            // società
+            this.societa = getSocietaByIDT(this.id_team);
+
+            // titolo
+            this.title = this.cached_camp.abbr + ": " + this.cached_team.nome;
+        }
 
         this.state = {
             title: "Risultati hockey pista",
@@ -40,7 +50,9 @@ export default class Squadra extends Component {
             giocatori: [],
             tecnici: [],
             squadra_loaded: false,
-            calend_loaded: false
+            calend_loaded: false,
+            incorso: [],
+            incorso_load: false
         }
 
         // google analytics
@@ -51,29 +63,38 @@ export default class Squadra extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-        CaricaCalendario(this.id_camp, (cal) => {
-            cal = CampionatoSquadra(cal, this.id_team);
-            cal.forEach(g => {
-                this.state.calendario.partite.push(g);
+        if (!this.error) {
+            CaricaCalendario(this.id_camp, (cal) => {
+                cal = CampionatoSquadra(cal, this.id_team);
+                cal.forEach(g => {
+                    this.state.calendario.partite.push(g);
+                });
+                this.setState({
+                    calend_loaded: true
+                });
             });
-            this.setState({
-                calend_loaded: true
-            });
-        });
 
-        CaricaSquadra(this.id_team, this.id_camp, (gioc, tecn) => {
-            this.setState({
-                giocatori: gioc,
-                tecnici: tecn,
-                squadra_loaded: true
-            })
-        });
+            CaricaSquadra(this.id_team, this.id_camp, (gioc, tecn) => {
+                this.setState({
+                    giocatori: gioc,
+                    tecnici: tecn,
+                    squadra_loaded: true
+                })
+            });
+
+            CaricaPartiteInCorsoSquadra(this.id_camp, (partite) => {
+                console.log(partite);
+                this.state.incorso = partite;
+                this.setState({ incorso_load: true });
+            });
+        }
     }
 
     render() {
         return (
             <>
-                <Navbar title={this.cached_camp.abbr + ": " + this.cached_team.nome} canBeSaved={true} path={this.path} />
+                {(!this.error) ? null : <ErroreNotFound title="Squadra non trovata" callBack={() => { this.props.history.goBack(); }} />}
+                <Navbar title={this.title} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-7 col-xl-8 order-2 order-lg-1">
@@ -89,13 +110,13 @@ export default class Squadra extends Component {
                                     </div>
                                 </div>
                                 <div className="col col-12">
-                                    <div id="playing-parent" className="card d-none">
+                                    <div className={"card " + ((this.state.incorso_load && this.state.incorso.length !== 0) ? "" : "d-none")} >
                                         <div className="card-header">
                                             <h5 className="card-title">PARTITE IN CORSO</h5>
                                         </div>
                                         <div className="card-body">
-                                            <div className="row" id="playing">
-
+                                            <div>
+                                                {this.state.incorso.map((e, i) => <Partita key={i} {...e} />)}
                                             </div>
                                         </div>
                                     </div>
@@ -115,20 +136,23 @@ export default class Squadra extends Component {
                             </div>
                         </div>
                         <div className="col col-12 col-lg-5 col-xl-4 order-1 order-lg-2">
-                            <div className="row">
-                                <div className="col col-12">
-                                    <ClassificaSquadra team={this.id_team} camp={this.id_camp} />
-                                </div>
-                                <div className="col col-12 col-md-6 col-lg-12 col-xl-6">
-                                    <Societa {...this.societa} />
-                                </div>
-                                <div className="col col-12 col-md-6 col-lg-12 col-xl-6">
-                                    <Campionato {...this.cached_camp} />
-                                </div>
-                                <div className="col col-12">
-                                    <MarcatoriSquadra team={this.id_team} camp={this.id_camp} />
-                                </div>
-                            </div>
+                            {
+                                (this.error) ? null :
+                                    <div className="row">
+                                        <div className="col col-12">
+                                            <ClassificaSquadra team={this.id_team} camp={this.id_camp} />
+                                        </div>
+                                        <div className="col col-12 col-md-6 col-lg-12 col-xl-6">
+                                            <Societa {...this.societa} />
+                                        </div>
+                                        <div className="col col-12 col-md-6 col-lg-12 col-xl-6">
+                                            <Campionato {...this.cached_camp} />
+                                        </div>
+                                        <div className="col col-12">
+                                            <MarcatoriSquadra team={this.id_team} camp={this.id_camp} />
+                                        </div>
+                                    </div>
+                            }
                         </div>
                     </div>
                 </div>

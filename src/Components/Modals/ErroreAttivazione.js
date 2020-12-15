@@ -11,7 +11,9 @@ export default function ErroreAttivazione() {
                     </h1>
                     <h4 className="mt-1">Mmm... sembra che il sito non sia attivo...</h4>
                     <p>Consulta la guida per attivare il sito</p>
-                    <Link to="/guida" role="button" className="btn btn-sm btn-primary mt-2">guida</Link>
+                    <Link to="/guida" role="button" className="btn btn-sm btn-primary mt-2" style={{ width: "100%", maxWidth: "200px", margin: "0 auto" }}>
+                        guida
+                    </Link>
                 </div>
             </div>
         </div>

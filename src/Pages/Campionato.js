@@ -13,6 +13,7 @@ import ClassificaBox from '../Components/Classifica/ClassificaBox'
 import SquadraBox from '../Components/Campionati/SquadraBox'
 import PartiteBox from '../Components/Calendario/PartiteBox'
 import Partita from '../Components/Calendario/Partita'
+import ErroreNotFound from '../Components/Modals/ErroreNotFound'
 
 export default class Campionato extends Component {
 
@@ -24,7 +25,9 @@ export default class Campionato extends Component {
 
         // recupero il campionato di appartenenza dalla cache
         this.camp = getCachedCampionato(this.id_camp);
-        console.log(this.id_camp);
+        this.error = (this.camp === undefined);
+
+        this.title = (!this.error ? this.camp.name : "CAMPIONATO");
 
         // imposto lo stato della pagina
         this.state = {
@@ -43,25 +46,28 @@ export default class Campionato extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-        CaricaCalendario(this.id_camp, (cal) => {
-            cal = DueGiornate(cal);
-            this.setState({
-                ultima_giornata: cal[0],
-                prox_giornata: cal[1],
-                calend_loaded: true
+        if (!this.error) {
+            CaricaCalendario(this.id_camp, (cal) => {
+                cal = DueGiornate(cal);
+                this.setState({
+                    ultima_giornata: cal[0],
+                    prox_giornata: cal[1],
+                    calend_loaded: true
+                });
             });
-        });
-        CaricaPartiteInCorsoCampionato(this.id_camp, (partite) => {
-            console.log(partite);
-            this.state.incorso = partite;
-            this.setState({ incorso_load: true });
-        })
+            CaricaPartiteInCorsoCampionato(this.id_camp, (partite) => {
+                console.log(partite);
+                this.state.incorso = partite;
+                this.setState({ incorso_load: true });
+            });
+        }
     }
 
     render() {
         return (
             <>
-                <Navbar title={this.camp.name} canBeSaved={true} path={this.path} />
+                {(!this.error) ? null : <ErroreNotFound title="Campionato non trovato" callBack={() => { this.props.history.goBack(); }} />}
+                <Navbar title={this.title} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-xl-8 col-lg-7 col-md-12">
@@ -75,7 +81,8 @@ export default class Campionato extends Component {
                                             <div className="scrollbox" style={{ maxHeight: "45vh" }} >
                                                 <div className="row">
                                                     {
-                                                        this.camp.teams.sort((a, b) => (a.name > b.name) ? 1 : ((a.name < b.name) ? -1 : 0)).map((e, i) => <SquadraBox key={i} {...e} />)
+                                                        (this.error) ? null :
+                                                            this.camp.teams.sort((a, b) => (a.name > b.name) ? 1 : ((a.name < b.name) ? -1 : 0)).map((e, i) => <SquadraBox key={i} {...e} />)
                                                     }
                                                 </div>
                                             </div>
@@ -122,12 +129,16 @@ export default class Campionato extends Component {
                         <div className="col col-xl-4 col-lg-5 col-md-12">
                             <div className="row">
                                 <div className="col col-12">
-                                    <ClassificaBox idc={this.id_camp} />
+                                    {
+                                        (this.error) ? <ClassificaBox idc={0} /> : <ClassificaBox idc={this.id_camp} />
+                                    }
                                 </div>
                             </div>
                             <div className="row">
                                 <div className="col col-12">
-                                    <MarcatoriBox idc={this.id_camp} />
+                                    {
+                                        (this.error) ? <MarcatoriBox idc={0} /> : <MarcatoriBox idc={this.id_camp} />
+                                    }
                                 </div>
                             </div>
                         </div>

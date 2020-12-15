@@ -8,6 +8,7 @@ import Loader from '../Components/Varie/Loader';
 import ClassificaSocieta from '../Components/Classifica/ClassificaSocieta';
 import { CaricaPartiteRecentiSocieta, CaricaPartiteInCorsoSocieta, CaricaPartiteFutureSocieta } from '../API/ApiInCorso';
 import Partita from '../Components/Calendario/Partita';
+import ErroreNotFound from '../Components/Modals/ErroreNotFound';
 
 export default class Societa extends Component {
     constructor(props) {
@@ -17,8 +18,10 @@ export default class Societa extends Component {
         this.path = props.location.pathname;
 
         this.cached_soc = getSocieta(this.id_soc);
-        console.log(this.cached_soc);
+        this.error = (this.cached_soc === undefined);
+        if (this.error) this.cached_soc = { logo: "", nome: "societa", id: 1 }
 
+        this.title = (!this.error ? ("CALENDARIO " + this.camp.abbr) : "CALENDARIO");
         this.state = {
             recenti: [],
             recenti_load: false,
@@ -36,23 +39,26 @@ export default class Societa extends Component {
     componentDidMount() {
         window.scrollTo(0, 0);
 
-        CaricaPartiteRecentiSocieta(this.id_soc, (partite) => {
-            this.state.recenti = partite;
-            this.setState({ recenti_load: true });
-        });
-        CaricaPartiteInCorsoSocieta(this.id_soc, (partite) => {
-            this.state.incorso = partite;
-            this.setState({ incorso_load: true });
-        });
-        CaricaPartiteFutureSocieta(this.id_soc, (partite) => {
-            this.state.future = partite;
-            this.setState({ future_load: true });
-        });
+        if (!this.error) {
+            CaricaPartiteRecentiSocieta(this.id_soc, (partite) => {
+                this.state.recenti = partite;
+                this.setState({ recenti_load: true });
+            });
+            CaricaPartiteInCorsoSocieta(this.id_soc, (partite) => {
+                this.state.incorso = partite;
+                this.setState({ incorso_load: true });
+            });
+            CaricaPartiteFutureSocieta(this.id_soc, (partite) => {
+                this.state.future = partite;
+                this.setState({ future_load: true });
+            });
+        }
     }
 
     render() {
         return (
             <>
+                {(!this.error) ? null : <ErroreNotFound title="Società non trovata" callBack={() => { this.props.history.goBack(); }} />}
                 <Navbar title={this.cached_soc.nome} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">
@@ -79,7 +85,9 @@ export default class Societa extends Component {
                                 </div>
                             </div>
                             <Card title="situazione nelle classifiche">
-                                <ClassificaSocieta {...this.cached_soc} />
+                                {
+                                    (this.error) ? null : <ClassificaSocieta {...this.cached_soc} />
+                                }
                             </Card>
                         </div>
                         <div className="col col-12 col-lg-6">
