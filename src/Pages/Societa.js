@@ -21,7 +21,6 @@ export default class Societa extends Component {
         this.error = (this.cached_soc === undefined);
         if (this.error) this.cached_soc = { logo: "", nome: "societa", id: 1 }
 
-        this.title = (!this.error ? ("CALENDARIO " + this.camp.abbr) : "CALENDARIO");
         this.state = {
             recenti: [],
             recenti_load: false,
