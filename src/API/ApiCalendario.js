@@ -1,4 +1,4 @@
-import { polishString, removeTags, parseIsleTag, parseCompleteTag, extractProp } from './commons'
+import { polishString, removeTags, parseIsleTag, parseCompleteTag, extractProp, myReplaceAll } from './commons'
 import { cacheSquadra } from '../Cache/CacheSquadra'
 import $ from 'jquery'
 
@@ -13,7 +13,7 @@ export function CaricaCalendario(idc, then) {
         let rem = data.substr(data.indexOf("<thead"));
         rem = rem.substr(0, rem.indexOf("</thead>") + 8);
         data = data.replace(rem, "");
-        data = data.replaceAll('<td width="25"></td>', '');
+        data = myReplaceAll(data, '<td width="25"></td>', '');
 
         $("#retrieveCalendario").html(data);
         let calendario = parseCalendario($("#tbl-camp-xxx"), idc);
@@ -110,7 +110,7 @@ function parseCalendario(table, idc) {
         partita.hour = $(cells[1]).html();
         partita.score = $(cells[10]).html();
         // squadre
-        partita.teams = $(rows[i]).attr("class").replace("team_class", "").replaceAll("team_", "").trim();
+        partita.teams = $(rows[i]).attr("class").replace("team_class", "").replace(/team_/g, "").trim();
         var teams_id = partita.teams.split(" ");
         partita.teamA.idt = parseInt(teams_id[0]);
         partita.teamA.logo = extractProp(parseIsleTag($(cells[4]).html()), "src");

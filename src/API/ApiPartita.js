@@ -92,7 +92,7 @@ export function CaricaPartita(idp, then, error) {
 export function parsePartita(data) {
     // pulizia iniziale
     data = polishString(data);
-    data = data.replaceAll(/https:\/\/www.sidgad.com\/fisr\/images\/logo_print.gif/g, "");
+    data = data.replace(/https:\/\/www.sidgad.com\/fisr\/images\/logo_print.gif/g, "");
 
     // Oggetto finale
     let partita = new PARTITA();
@@ -188,12 +188,12 @@ function inserisciDati1(match, tables) {
     match.date.day = supp[supp.length - 1];
     let fullCamp = "";
     if (matchComp.length - 2 === 1) {
-        match.campionato.nome = matchComp[0].replace(/[0-9]{4}\/[0-9]{4}/g, "").replaceAll(" E ", " e ").trim();
+        match.campionato.nome = matchComp[0].replace(/[0-9]{4}\/[0-9]{4}/g, "").replace(/ E /g, " e ").trim();
         fullCamp = match.campionato.nome.toUpperCase();
     }
     else {
-        match.campionato.nome = matchComp[0].replaceAll(" E ", " e ").trim();
-        match.campionato.girone = matchComp[1].replace(/[0-9]{4}\/[0-9]{4}/g, "").replaceAll(" E ", " e ").trim();
+        match.campionato.nome = matchComp[0].replace(/ E /g, " e ").trim();
+        match.campionato.girone = matchComp[1].replace(/[0-9]{4}\/[0-9]{4}/g, "").replace(/ E /g, " e ").trim();
         fullCamp = match.campionato.nome.toUpperCase() + " - " + match.campionato.girone.toUpperCase();
     }
     try {

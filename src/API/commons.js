@@ -7,10 +7,10 @@ export function titleCase(str) {
 
 // ----- POLISH STRING -----
 export function polishString(str) {
-    str = str.replaceAll("<br>", " ");
-    str = str.replaceAll(/[ ]+/g, " ");
-    str = str.replaceAll(/\t/g, "");
-    str = str.replaceAll(/(\r\n|\n|\r)/gm, "");
+    str = str.replace(/<br>/g, " ");
+    str = str.replace(/[ ]+/g, " ");
+    str = str.replace(/\t/g, "");
+    str = str.replace(/(\r\n|\n|\r)/gm, "");
     str = str.trim();
     return str;
 }
@@ -22,7 +22,7 @@ export function parseCompleteTag(str) {
     var openTagStr = str.substr(0, str.indexOf(">")).trim();
     tag.type = openTagStr.substr(1, openTagStr.indexOf(" "));
     openTagStr = openTagStr.substr(openTagStr.indexOf(" ") + 1);
-    openTagStr = openTagStr.replaceAll(/=" /gm, '="');
+    openTagStr = openTagStr.replace(/=" /gm, '="');
     var props = openTagStr.split(/" /g);
     props.forEach(p => {
         tag.props.push(parseProperty(p + '"'));
@@ -47,7 +47,7 @@ export function parseIsleTag(str) {
     str = str.substr(str.indexOf(" ") + 1);
 
     str = str.substr(0, str.indexOf(">")).trim();
-    str = str.replaceAll("'", "\"");
+    str = str.replace(/'/g, "\"");
     var props = str.split(/" /g);
     props.forEach(p => {
         tag.props.push(parseProperty(p + '"'));
@@ -64,7 +64,7 @@ export function parseTable(inp) {
 
     // retrieving opening tag
     let openTagStr = str.substr(0, str.indexOf(">") + 1).trim();
-    str = str.replaceAll(openTagStr, "");
+    str = str.replace(openTagStr, "");
     openTagStr = openTagStr.substr(openTagStr.indexOf(" ") + 1);
     let props = openTagStr.split(/" /g);
     $.each(props, i => {
@@ -73,22 +73,22 @@ export function parseTable(inp) {
 
     // content
     let content = str.substr(0, str.indexOf("</table"));
-    content = content.replaceAll("<thead>", "");
-    content = content.replaceAll("</thead>", "");
-    content = content.replaceAll("<tbody>", "");
-    content = content.replaceAll("</tbody>", "");
+    content = content.replace(/<thead>/g, "");
+    content = content.replace(/<\/thead>/g, "");
+    content = content.replace(/<tbody>/g, "");
+    content = content.replace(/<\/tbody>/, "");
     content = content.substr(content.indexOf("<tr>"), content.lastIndexOf("</tr>") + 5);
 
     do {
         let current = content.substr(0, content.indexOf("</tr>") + 5);
-        content = content.replaceAll(current, "");
+        content = content.replace(current, "");
         current = current.substr(0, current.length - 5).substr(4);
         var row = { cells: [] };
         do {
             let actual = current.substr(0, current.indexOf("</td>") + 5);
-            current = current.replaceAll(actual, "");
+            current = current.replace(actual, "");
             let openTag = actual.substr(0, actual.indexOf(">") + 1)
-            let contentTag = actual.replaceAll(openTag, "");
+            let contentTag = actual.replace(openTag, "");
             openTag = openTag.substr(4);
             var cell = { props: [], content: "" };
             props = openTagStr.split(/" /g);
@@ -133,10 +133,10 @@ export function removeTags(str, tagname, multiple, removeContent) {
     if (multiple) {
         if (removeContent) {
             let re = new RegExp("<" + tagname + "[^><]*>[^><]*</" + tagname + ">", "g");
-            return polishString(str.replaceAll(re, ""));
+            return polishString(str.replace(re, ""));
         } else {
             let re = new RegExp("<[/]*" + tagname + "[^><]*>", "g");
-            return polishString(str.replaceAll(re, ""));
+            return polishString(str.replace(re, ""));
         }
     } else {
         if (removeContent) {
@@ -148,4 +148,11 @@ export function removeTags(str, tagname, multiple, removeContent) {
             return polishString(str.replace(re, ""));
         }
     }
+}
+
+export function myReplaceAll(input, search, repl) {
+    while (input.indexOf(search) >= 0) {
+        input = input.replace(search, repl);
+    }
+    return input;
 }

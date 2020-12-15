@@ -1,5 +1,5 @@
 import $ from 'jquery'
-import { polishString, parseCompleteTag, parseIsleTag, removeTags, extractProp } from './commons'
+import { polishString, parseCompleteTag, parseIsleTag, removeTags, extractProp, myReplaceAll } from './commons'
 import { getCachedCampionati } from '../Cache/CacheCampionato'
 import { getCachedSquadre } from '../Cache/CacheSquadra'
 
@@ -21,7 +21,7 @@ function caricaPartite(then) {
 function prepareStringForParsing(data) {
     // polishing the string
     data = polishString(data);
-    data = data.replaceAll("'", '"');
+    data = data.replace(/'/g, '"');
 
     // removing comments, style blocks and input tags at the beginning
     while (data.indexOf("<!--") != -1) {
@@ -34,8 +34,8 @@ function prepareStringForParsing(data) {
     data = data.substr(0, data.length - 6);
 
     // uniforming all blocks
-    data = data.replaceAll('<a href="#" ', "<div ");
-    data = data.replaceAll('</a>', "</div>");
+    data = myReplaceAll(data, '<a href="#" ', "<div ");
+    data = myReplaceAll(data, '</a>', "</div>");
 
     return data;
 }
