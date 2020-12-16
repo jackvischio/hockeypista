@@ -1,17 +1,17 @@
 {
   "files": {
     "main.css": "/hockeypista/static/css/main.9d295781.chunk.css",
-    "main.js": "/hockeypista/static/js/main.98013dc9.chunk.js",
-    "main.js.map": "/hockeypista/static/js/main.98013dc9.chunk.js.map",
+    "main.js": "/hockeypista/static/js/main.86a6d80f.chunk.js",
+    "main.js.map": "/hockeypista/static/js/main.86a6d80f.chunk.js.map",
     "runtime-main.js": "/hockeypista/static/js/runtime-main.8eab8680.js",
     "runtime-main.js.map": "/hockeypista/static/js/runtime-main.8eab8680.js.map",
     "static/css/2.20aa2d7b.chunk.css": "/hockeypista/static/css/2.20aa2d7b.chunk.css",
-    "static/js/2.2f6fa21d.chunk.js": "/hockeypista/static/js/2.2f6fa21d.chunk.js",
-    "static/js/2.2f6fa21d.chunk.js.map": "/hockeypista/static/js/2.2f6fa21d.chunk.js.map",
+    "static/js/2.75677280.chunk.js": "/hockeypista/static/js/2.75677280.chunk.js",
+    "static/js/2.75677280.chunk.js.map": "/hockeypista/static/js/2.75677280.chunk.js.map",
     "index.html": "/hockeypista/index.html",
     "static/css/2.20aa2d7b.chunk.css.map": "/hockeypista/static/css/2.20aa2d7b.chunk.css.map",
     "static/css/main.9d295781.chunk.css.map": "/hockeypista/static/css/main.9d295781.chunk.css.map",
-    "static/js/2.2f6fa21d.chunk.js.LICENSE.txt": "/hockeypista/static/js/2.2f6fa21d.chunk.js.LICENSE.txt",
+    "static/js/2.75677280.chunk.js.LICENSE.txt": "/hockeypista/static/js/2.75677280.chunk.js.LICENSE.txt",
     "static/media/guida_1.b0c6168f.jpg": "/hockeypista/static/media/guida_1.b0c6168f.jpg",
     "static/media/guida_2.cc2284fd.jpg": "/hockeypista/static/media/guida_2.cc2284fd.jpg",
     "static/media/guida_3.03e54259.jpg": "/hockeypista/static/media/guida_3.03e54259.jpg",
@@ -21,8 +21,8 @@
   "entrypoints": [
     "static/js/runtime-main.8eab8680.js",
     "static/css/2.20aa2d7b.chunk.css",
-    "static/js/2.2f6fa21d.chunk.js",
+    "static/js/2.75677280.chunk.js",
     "static/css/main.9d295781.chunk.css",
-    "static/js/main.98013dc9.chunk.js"
+    "static/js/main.86a6d80f.chunk.js"
   ]
 }
