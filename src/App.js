@@ -14,6 +14,7 @@ import Societa from './Pages/Societa';
 import Salvati from './Pages/Salvati';
 import Guida from './Pages/Guida';
 import Impostazioni from './Pages/Impostazioni';
+import Navbar from './Components/Varie/Navbar';
 
 export default class App extends Component {
 	render() {

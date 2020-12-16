@@ -21,6 +21,7 @@ import ClassificaSquadra from '../Components/Classifica/ClassificaSquadra';
 import MarcatoriSquadra from '../Components/Marcatori/MarcatoriSquadra';
 import SquadraBox from '../Components/Squadra/SquadraBox';
 import Partita from '../Components/Calendario/Partita';
+import { titleCase } from '../API/commons';
 
 export default class Squadra extends Component {
 
@@ -30,7 +31,7 @@ export default class Squadra extends Component {
         this.id_team = props.match.params.id;
         this.path = props.location.pathname;
         this.cached_team = getCachedSquadra(this.id_team);
-        this.title = "SQUADRA";
+        this.title = "Squadra";
 
         this.error = (this.cached_team === undefined);
 
@@ -46,6 +47,8 @@ export default class Squadra extends Component {
             this.title = this.cached_camp.abbr + ": " + this.cached_team.nome;
         }
 
+        document.title = titleCase(this.title) + " - HockeyPista 2.0";
+
         this.state = {
             title: "Risultati hockey pista",
             calendario: { partite: [] },
@@ -59,7 +62,7 @@ export default class Squadra extends Component {
 
         // google analytics
         ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview("squadra_" + this.id_team);
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {

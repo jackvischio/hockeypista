@@ -14,6 +14,7 @@ import SquadraBox from '../Components/Campionati/SquadraBox'
 import PartiteBox from '../Components/Calendario/PartiteBox'
 import Partita from '../Components/Calendario/Partita'
 import ErroreNotFound from '../Components/Modals/ErroreNotFound'
+import { titleCase } from '../API/commons'
 
 export default class Campionato extends Component {
 
@@ -27,7 +28,8 @@ export default class Campionato extends Component {
         this.camp = getCachedCampionato(this.id_camp);
         this.error = (this.camp === undefined);
 
-        this.title = (!this.error ? this.camp.name : "CAMPIONATO");
+        this.title = (!this.error ? titleCase(this.camp.name).replace(' E ', ' e ') : "Campionato non trovato");
+        document.title = this.title + " - HockeyPista 2.0"
 
         // imposto lo stato della pagina
         this.state = {
@@ -40,7 +42,7 @@ export default class Campionato extends Component {
 
         // google analytics
         ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview("campionato_" + this.id_camp);
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {

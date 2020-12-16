@@ -10,18 +10,11 @@ export default class Navbar extends Component {
 
         this.active = props.active;
         this.path = props.path;
-
-        // links on the navbar
-        this.links = [
-            { display: "Home", url: "/" },
-            { display: "Campionati", url: "/campionati" },
-            { display: "Società", url: "/societa" },
-            { display: "Salvati", url: "/salvati" }
-        ];
+        this.title = (props.title !== undefined) ? props.title : "Risultati hockey pista"
+        this.titleFun = props.titleFun;
 
         this.state = {
             toggle: false,
-            title: props.title,
             canBeSaved: ((props.canBeSaved) ? true : false)
         }
     }
@@ -32,6 +25,13 @@ export default class Navbar extends Component {
     }
 
     render() {
+        const links = [
+            { display: "Home", url: "/" },
+            { display: "Campionati", url: "/campionati" },
+            { display: "Società", url: "/societa" },
+            { display: "Salvati", url: "/salvati" }
+        ];
+
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light text-uppercase" style={{ padding: "10px" }}>
                 <div className="navbar-brand p-0 m-0">
@@ -39,14 +39,14 @@ export default class Navbar extends Component {
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <Link className="navbar-brand p-0 mr-2 d-none d-md-inline-block" to="/">
-                        <img src={logo} alt="home" style={{ width: "40px", margin: "0" }} />
+                        <img src={logo} alt="Torna alla home" style={{ width: "40px", margin: "0" }} />
                     </Link>
-                    <strong> {this.state.title} </strong>
+                    <strong> {(this.titleFun !== undefined) ? this.titleFun() : this.title} </strong>
                 </div>
 
                 <div className={"collapse navbar-collapse " + ((this.state.toggle) ? " show text-center" : "")}>
                     <div className="navbar-nav ml-auto mt-2 mt-lg-0 font-weight-bold">
-                        {this.links.map((l, i) => Elem(i, l.display, l.url, (l.display === this.active)))}
+                        {links.map((l, i) => Elem(i, l.display, l.url, (l.display === this.active)))}
                     </div>
                     {((this.state.canBeSaved) ? <Preferiti path={this.path} /> : <PreferitiFake />)}
                     <Config />

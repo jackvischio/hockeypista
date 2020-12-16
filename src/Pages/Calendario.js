@@ -21,12 +21,13 @@ export default class Calendario extends Component {
         this.camp = getCachedCampionato(this.id_camp);
         this.error = (this.camp === undefined);
 
-        this.title = (!this.error ? ("CALENDARIO " + this.camp.abbr) : "CALENDARIO");
+        this.title = (!this.error ? ("Calendario " + this.camp.abbr) : "Calendario");
+        document.title = this.title + " - HockeyPista 2.0"
         this.state = { calendario: [], loaded: false }
 
         // google analytics
         ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview("calendario_" + this.id_camp);
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {

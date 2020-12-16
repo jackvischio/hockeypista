@@ -3,6 +3,7 @@ export default function ProvaPartita() {
         actions: [],
         campionato: {
             idc: 0,
+            abbr: "",
             girone: "---",
             nome: "Campionato",
             tempo: 0

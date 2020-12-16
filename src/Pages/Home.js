@@ -22,6 +22,7 @@ import Societa from '../Components/Salvati/Societa'
 import GestisciCampionati from '../Components/Modals/GestisciCampionati'
 import GestisciSocieta from '../Components/Modals/GestisciSocieta'
 import ErroreAttivazione from '../Components/Modals/ErroreAttivazione'
+import { CaricaCalendario } from '../API/ApiCalendario'
 
 export default class Home extends Component {
 
@@ -40,8 +41,9 @@ export default class Home extends Component {
         };
 
         // google analytics
+        document.title = "Home - HockeyPista 2.0"
         ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview("home");
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {
@@ -55,6 +57,15 @@ export default class Home extends Component {
             if (this.state.societa_ok) {
                 this.state.societa = creaSocieta();
                 this.setState({ societa_ok: true });
+            }
+
+            if (localStorage.getItem("ns_first_time") === null) {
+                this.state.campionati.forEach(camp => {
+                    console.log(camp);
+                    console.log("calling " + camp.id);
+                    CaricaCalendario(camp.id, (a) => { console.log("loaded " + camp.id) })
+                })
+                localStorage.setItem("ns_first_time", "nope");
             }
         }, () => {
             this.setState({ erroreAttivazione: true })

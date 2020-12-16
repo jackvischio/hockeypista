@@ -125,7 +125,7 @@ export function parseParams(str) {
 export function extractProp(tag, prop) {
     try {
         return tag.props.filter(elem => elem.name === prop)[0].value;
-    } catch (e) { console.log(e); return ""; }
+    } catch (e) { return ""; }
 }
 
 // ----- REMOVE TAGS

@@ -19,7 +19,9 @@ export default class Societa extends Component {
 
         this.cached_soc = getSocieta(this.id_soc);
         this.error = (this.cached_soc === undefined);
-        if (this.error) this.cached_soc = { logo: "", nome: "societa", id: 1 }
+        if (this.error) this.cached_soc = { logo: "", nome: "Società", id: 1 }
+
+        document.title = this.cached_soc.nome + " - HockeyPista 2.0";
 
         this.state = {
             recenti: [],
@@ -32,7 +34,7 @@ export default class Societa extends Component {
 
         // google analytics
         ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview("società_" + this.id_soc);
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {

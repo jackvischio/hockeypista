@@ -29,11 +29,8 @@ export default class Partita extends Component {
         this.state = {
             partita: ProvaPartita(),
             loaded: false,
-            title: "Risultati hockey pista",
             error: false
         }
-
-
 
         // understand refresh
         this.reloaded = false;
@@ -43,7 +40,7 @@ export default class Partita extends Component {
 
         // google analytics
         ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview("partita_" + this.id_partita);
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {
@@ -56,20 +53,25 @@ export default class Partita extends Component {
         clearInterval(this.intervalID);
     }
 
+    getTitle() {
+        return "" + this.state.partita.campionato.abbr + ": " + this.state.partita.teamA.small + " vs " + this.state.partita.teamB.small;
+    }
+
     CaricaDati() {
         CaricaPartita(this.id_partita, this.reloaded, (partita) => {
             if (partita.currentTime === "FINALE") clearInterval(this.intervalID);
             this.setState({
                 partita: partita,
-                loaded: true,
-                title: ("" + partita.campionato.abbr + ": " + partita.teamA.small + " vs " + partita.teamB.small)
+                loaded: true
             });
+            document.title = this.getTitle() + " - HockeyPista 2.0";
         }, () => {
             this.setState({
                 loaded: true,
                 error: true
             });
             console.log("partita non iniziata");
+            document.title = "Partita non trovata - HockeyPista 2.0";
         });
     }
 
@@ -78,7 +80,7 @@ export default class Partita extends Component {
             <>
                 {(this.state.loaded) ? null : <ModalLoader />}
                 {(!this.state.error) ? null : <ErrorePartita callBack={() => { this.props.history.goBack(); }} />}
-                <Navbar title={this.state.title} canBeSaved={true} path={this.path} />
+                <Navbar titleFun={() => this.getTitle()} canBeSaved={true} path={this.path} />
                 <div className="container-fluid">
                     <div className="row">
                         <div className="col col-12 col-lg-9">

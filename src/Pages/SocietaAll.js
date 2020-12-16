@@ -10,15 +10,17 @@ export default class SocietaAll extends Component {
     constructor() {
         super();
 
+        document.title = "Società - HockeyPista 2.0";
+
         // google analytics
         ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview("società");
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
     }
-    
+
     render() {
         const societa = creaSocieta();
         return (

@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Navbar from '../Components/Varie/Navbar';
+import ReactGA from 'react-ga'
 
 import guida_1 from '../assets/guida/guida_1.jpg'
 import guida_2 from '../assets/guida/guida_2.jpg'
@@ -9,6 +10,14 @@ import { Link } from 'react-router-dom';
 export default class Guida extends Component {
     constructor(props) {
         super();
+
+        // Analytics
+        ReactGA.initialize('G-QGJ6R11WYD');
+        ReactGA.pageview(window.location.pathname + window.location.search);
+        ReactGA.event({
+            category: "access",
+            action: "access guide page"
+        })
     }
 
     componentDidMount() {

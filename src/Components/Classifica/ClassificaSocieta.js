@@ -46,7 +46,7 @@ function ClassificaElem(props) {
                             <td className="cls-col3">
                                 <b>{props.pos} <sup>o</sup></b>
                             </td>
-                            <td className="cls-col4">
+                            <td className="cls-col4 text-right">
                                 <b>{props.punti}</b> pti
                             </td>
                         </tr>

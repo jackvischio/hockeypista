@@ -17,9 +17,11 @@ class Campionati extends Component {
             loaded: false
         };
 
+        document.title = "Campionati - HockeyPista 2.0"
+
         // google analytics
         ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview("campionati");
+        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {
@@ -34,7 +36,7 @@ class Campionati extends Component {
     render() {
         return (
             <>
-                <Navbar title={"Campionati"} active={"Campionati"} />
+                <Navbar title={"Campionati"} active={"Campionati"} active={"Campionati"}  />
                 <div className="container">
                     <div className="row">
                         {(!this.state.loaded) ? <Loader /> : this.state.campionati.map((camp, i) => <CampElement key={i} {...camp} />)}
