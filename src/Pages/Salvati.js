@@ -9,6 +9,7 @@ import { getCachedSquadra } from '../Cache/CacheSquadra'
 
 // API
 import { CaricaPartita } from '../API/ApiPartita'
+import GtagInitialize from '../API/ApiAnalytics'
 
 // COMPONENTS
 import Navbar from '../Components/Varie/Navbar'
@@ -23,8 +24,18 @@ export default class Salvati extends Component {
     constructor() {
         super();
 
+        // URL PARAMS
+
+        // CACHED THINGS
         this.salvati = getCacheArray("ns_salvati");
 
+        // COMPONENT PARAMS
+
+        // TITLE AND ANALYTICS
+        document.title = "Salvati";
+        GtagInitialize();
+
+        // SETTING STATE
         this.state = {
             societa: this.salvati.filter(e => (e.indexOf("/societa/") === 0)).map(e => { return parseInt(e.replace("/societa/", "")); }),
             squadre: this.salvati.filter(e => (e.indexOf("/squadra/") === 0)).map(e => { return parseInt(e.replace("/squadra/", "")); }),
@@ -36,6 +47,7 @@ export default class Salvati extends Component {
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        document.title = "Salvati - HockeyPista 2.0";
 
         // caricamento partite
         this.state.partiteID.forEach(id => {

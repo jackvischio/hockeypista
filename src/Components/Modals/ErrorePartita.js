@@ -8,7 +8,7 @@ export default function ErrorePartita(props) {
                 <div className="modal-content">
                     <div className="card card-body text-center">
                         <h1 className="m-0 text-danger">
-                            <i class="fas fa-hourglass-start"></i>
+                            <i className="fas fa-hourglass-start"></i>
                         </h1>
                         <h4 className="mt-1">Partita non iniziata</h4>
                         <br />

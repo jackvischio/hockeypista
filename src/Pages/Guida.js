@@ -1,23 +1,29 @@
 import React, { Component } from 'react'
+import { Link } from 'react-router-dom';
+
+import GtagInitialize from '../API/ApiAnalytics';
+
 import Navbar from '../Components/Varie/Navbar';
-import ReactGA from 'react-ga'
 
 import guida_1 from '../assets/guida/guida_1.jpg'
 import guida_2 from '../assets/guida/guida_2.jpg'
 import guida_3 from '../assets/guida/guida_3.jpg'
-import { Link } from 'react-router-dom';
 
 export default class Guida extends Component {
     constructor(props) {
         super();
 
-        // Analytics
-        ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview(window.location.pathname + window.location.search);
-        ReactGA.event({
-            category: "access",
-            action: "access guide page"
-        })
+        // URL PARAMS
+
+        // CACHED THINGS
+
+        // COMPONENT PARAMS
+
+        // TITLE AND ANALYTICS
+        document.title = "Guida";
+        GtagInitialize();
+
+        // SETTING STATE
     }
 
     componentDidMount() {
@@ -54,17 +60,14 @@ export default class Guida extends Component {
                             <p>L'utilizzo di altri browser <i>potrebbe</i> portare a comportamenti indesiderati da parte della piattaforma.</p>
 
                             <h4 className="mt-4">1. Apri il link di attivazione</h4>
-                            <p>Clicca sul seguente pulsante rosso. Si aprirà la pagina in una nuova scheda.</p>
-                            <a href="https://www.server2.sidgad.es/fisr/fisr_ls_1.php" target="blank" className="btn btn-danger">
-                                Procedi con l'attivazione
-                            </a>
+                            <p>Clicca sul seguente pulsante rosso a fondo pagina. Si aprirà una nuova scheda. Vai in quella scheda.</p>
 
                             <h4 className="mt-4">2. Aggira l'avviso di sicurezza</h4>
                             <p>Il browser mostrerà un avviso di sicurezza come quello della prima foto.</p>
                             <ol>
                                 <li>Clicca su "avanzate".</li>
                                 <li>Clicca su "Procedi".</li>
-                                <li>Nel momento in cui visualizzi la pagina bianca, hai completato la procedura. Puoi chiudere la scheda e tornare su questa pagina</li>
+                                <li>Nel momento in cui visualizzi la pagina bianca, hai completato la procedura. Puoi chiudere la scheda e tornare su questa pagina.</li>
                             </ol>
                             <div className="row">
                                 <div className="col col-12 col-md-4 text-center">
@@ -83,7 +86,12 @@ export default class Guida extends Component {
 
                             <h4 className="mt-4">3. Utilizza HockeyPista 2.0</h4>
                             <p>A questo punto, la piattaforma è attiva e puoi iniziare ad utilizzarla.</p>
-                            <Link to="/" className="btn btn-primary">Vai alla home</Link>
+
+                            <hr />
+                            <a href="https://www.server2.sidgad.es/fisr/fisr_ls_1.php" target="blank" className="btn btn-danger m-1">
+                                Procedi con l'attivazione
+                            </a>
+                            <Link to="/" className="btn btn-primary m-1">Vai alla home</Link>
 
                             <hr />
                             <p>

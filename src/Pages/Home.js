@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import ReactGA from 'react-ga'
 
 // API
+import { CaricaCalendario } from '../API/ApiCalendario'
+import GtagInitialize from '../API/ApiAnalytics'
 import { caricaCampionati } from '../API/ApiCampionati'
 import { CaricaPartiteInCorso, CaricaPartiteRecenti } from '../API/ApiInCorso'
 
@@ -22,13 +23,25 @@ import Societa from '../Components/Salvati/Societa'
 import GestisciCampionati from '../Components/Modals/GestisciCampionati'
 import GestisciSocieta from '../Components/Modals/GestisciSocieta'
 import ErroreAttivazione from '../Components/Modals/ErroreAttivazione'
-import { CaricaCalendario } from '../API/ApiCalendario'
 
 export default class Home extends Component {
 
     constructor() {
         super();
 
+        // URL PARAMS
+
+        // CACHED THINGS
+
+        // COMPONENT PARAMS
+        this.intervalInCorso = null;
+        this.intervalRecenti = null;
+
+        // TITLE AND ANALYTICS
+        document.title = "Homepage";
+        GtagInitialize();
+
+        // SETTING STATE
         this.state = {
             campionati: [],
             loaded: false,
@@ -39,15 +52,11 @@ export default class Home extends Component {
             showSocieta: getCachedVisSocieta(), showSocieta_modal: false,
             erroreAttivazione: false
         };
-
-        // google analytics
-        document.title = "Home - HockeyPista 2.0"
-        ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        document.title = "Homepage - HockeyPista 2.0";
 
         // caricamento dei campionati
         caricaCampionati(true, (camps) => {
@@ -70,15 +79,35 @@ export default class Home extends Component {
         }, () => {
             this.setState({ erroreAttivazione: true })
         });
-        // caricamento partite in corso
+
+        this.PartiteInCorso();
+        this.intervalInCorso = setInterval(this.PartiteInCorso.bind(this), 40000);
+        this.PartiteRecenti();
+        this.intervalRecenti = setInterval(this.PartiteRecenti.bind(this), 120000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.intervalInCorso);
+        clearInterval(this.intervalRecenti);
+    }
+
+    PartiteInCorso() {
+        console.log("Refreshing partite in corso");
         CaricaPartiteInCorso((x) => {
             this.state.incorso = x;
             this.setState({ incorso_load: true });
+        }, () => {
+            this.setState({ erroreAttivazione: true })
         });
-        // caricamento partite recenti
+    }
+
+    PartiteRecenti() {
+        console.log("Refreshing partite recenti");
         CaricaPartiteRecenti((x) => {
             this.state.recenti = x;
             this.setState({ recenti_load: true });
+        }, () => {
+            this.setState({ erroreAttivazione: true })
         });
     }
 

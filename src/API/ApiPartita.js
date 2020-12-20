@@ -67,8 +67,8 @@ export function CaricaPartita(idp, forceRefresh, then, error) {
     let cache = CheckIfCachedMatch(idp);
     if (!forceRefresh && cache !== null) {
         // partita memorizzata in cache
-        console.log("found in cache");
-        console.log(cache);
+        //console.log("found in cache");
+        //console.log(cache);
         then(cache);
     }
     else {
@@ -78,7 +78,7 @@ export function CaricaPartita(idp, forceRefresh, then, error) {
         }).then(data => {
             let partita = parsePartita(data);
             partita.id = parseInt(idp);
-            console.log(partita);
+            //console.log(partita);
 
             // se possibile (= partita finita), la memorizzo in cache
             if (partita.currentTime === "FINALE") CachePartita(partita);
@@ -186,22 +186,21 @@ function inserisciDati1(match, tables) {
     match.date.hour = matchComp[matchComp.length - 1];
     let supp = (matchComp[matchComp.length - 2].split(' '));
     match.date.day = supp[supp.length - 1];
-    let fullCamp = "";
-    if (matchComp.length - 2 === 1) {
-        match.campionato.nome = matchComp[0].replace(/[0-9]{4}\/[0-9]{4}/g, "").replace(/ E /g, " e ").trim();
-        fullCamp = match.campionato.nome.toUpperCase();
-    }
-    else {
-        match.campionato.nome = matchComp[0].replace(/ E /g, " e ").trim();
-        match.campionato.girone = matchComp[1].replace(/[0-9]{4}\/[0-9]{4}/g, "").replace(/ E /g, " e ").trim();
-        fullCamp = match.campionato.nome.toUpperCase() + " - " + match.campionato.girone.toUpperCase();
-    }
+    let fullCamp = matchComp.slice(0, matchComp.length - 2).join(' - ').replace(/[0-9]{4}\/[0-9]{4}/g, "").trim();
+    console.log(fullCamp)
     try {
         let cachedCamp = getCachedCampionatoByName(fullCamp);
         match.campionato.idc = cachedCamp.id;
         match.campionato.abbr = cachedCamp.abbr;
         match.campionato.tempo = cachedCamp.dur_tempo;
     } catch (e) { }
+    if (fullCamp.indexOf(' - ') !== -1) {
+        match.campionato.nome = fullCamp.substr(0, fullCamp.indexOf(' - '));
+        match.campionato.girone = fullCamp.substr(fullCamp.indexOf(' - ') + 3);
+    }
+    else {
+        match.campionato.nome = fullCamp;
+    }
 
     try {
         match.teamA.nome = titleCase(removeTags($(cells2[0]).html(), "div", true, false));

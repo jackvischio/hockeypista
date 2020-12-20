@@ -7,7 +7,7 @@ export default function ErroreNotFound(props) {
             <div className="modal-dialog">
                 <div className="modal-content p-4 text-center">
                     <h1 className="m-0 text-danger">
-                        <i class="fas fa-bug"></i>
+                        <i className="fas fa-bug"></i>
                     </h1>
                     <h4 className="mt-1">{props.title}</h4>
                     <br />

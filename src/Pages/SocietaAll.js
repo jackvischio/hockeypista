@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import ReactGA from 'react-ga'
+
+import GtagInitialize from '../API/ApiAnalytics';
 
 import { creaSocieta } from '../Cache/CacheSocieta';
 
@@ -10,15 +11,22 @@ export default class SocietaAll extends Component {
     constructor() {
         super();
 
-        document.title = "Società - HockeyPista 2.0";
+        // URL PARAMS
 
-        // google analytics
-        ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview(window.location.pathname + window.location.search);
+        // CACHED THINGS
+
+        // COMPONENT PARAMS
+
+        // TITLE AND ANALYTICS
+        document.title = "Società";
+        GtagInitialize();
+
+        // SETTING STATE
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        document.title = "Società - HockeyPista 2.0";
     }
 
     render() {

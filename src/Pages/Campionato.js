@@ -1,37 +1,44 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import ReactGA from 'react-ga'
 
 import { getCachedCampionato } from '../Cache/CacheCampionato'
+
+import GtagInitialize from '../API/ApiAnalytics'
 import { CaricaCalendario, DueGiornate } from '../API/ApiCalendario'
+import { titleCase } from '../API/commons'
 import { CaricaPartiteInCorsoCampionato } from '../API/ApiInCorso'
 
 import Loader from '../Components/Varie/Loader'
 import Navbar from '../Components/Varie/Navbar'
+
 import MarcatoriBox from '../Components/Marcatori/MarcatoriBox'
 import ClassificaBox from '../Components/Classifica/ClassificaBox'
 import SquadraBox from '../Components/Campionati/SquadraBox'
 import PartiteBox from '../Components/Calendario/PartiteBox'
 import Partita from '../Components/Calendario/Partita'
 import ErroreNotFound from '../Components/Modals/ErroreNotFound'
-import { titleCase } from '../API/commons'
 
 export default class Campionato extends Component {
 
     constructor(props) {
         super();
 
+        // URL PARAMS
         this.id_camp = parseInt(props.match.params.id);
-        this.path = props.location.pathname;
 
-        // recupero il campionato di appartenenza dalla cache
+        // CACHED THINGS
         this.camp = getCachedCampionato(this.id_camp);
+
+        // COMPONENT PARAMS
+        this.path = props.location.pathname;
         this.error = (this.camp === undefined);
-
         this.title = (!this.error ? titleCase(this.camp.name).replace(' E ', ' e ') : "Campionato non trovato");
-        document.title = this.title + " - HockeyPista 2.0"
 
-        // imposto lo stato della pagina
+        // TITLE AND ANALYTICS
+        document.title = "Campionati";
+        GtagInitialize();
+
+        // SETTING STATE
         this.state = {
             ultima_giornata: [],
             prox_giornata: [],
@@ -39,14 +46,11 @@ export default class Campionato extends Component {
             incorso: [],
             incorso_load: false
         }
-
-        // google analytics
-        ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        document.title = this.title + " - HockeyPista 2.0"
 
         if (!this.error) {
             CaricaCalendario(this.id_camp, (cal) => {

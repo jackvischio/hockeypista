@@ -1,12 +1,13 @@
 import React, { Component, useEffect } from 'react'
-import ReactGA from 'react-ga'
+
+import GtagInitialize from '../API/ApiAnalytics';
+import { CaricaPartiteRecentiSocieta, CaricaPartiteInCorsoSocieta, CaricaPartiteFutureSocieta } from '../API/ApiInCorso';
 
 import { getSocieta } from '../Cache/CacheSocieta'
 
 import Navbar from '../Components/Varie/Navbar';
 import Loader from '../Components/Varie/Loader';
 import ClassificaSocieta from '../Components/Classifica/ClassificaSocieta';
-import { CaricaPartiteRecentiSocieta, CaricaPartiteInCorsoSocieta, CaricaPartiteFutureSocieta } from '../API/ApiInCorso';
 import Partita from '../Components/Calendario/Partita';
 import ErroreNotFound from '../Components/Modals/ErroreNotFound';
 
@@ -14,15 +15,22 @@ export default class Societa extends Component {
     constructor(props) {
         super();
 
+        // URL PARAMS
         this.id_soc = props.match.params.id;
-        this.path = props.location.pathname;
 
+        // CACHED THINGS
         this.cached_soc = getSocieta(this.id_soc);
+
+        // COMPONENT PARAMS
+        this.path = props.location.pathname;
         this.error = (this.cached_soc === undefined);
         if (this.error) this.cached_soc = { logo: "", nome: "Società", id: 1 }
 
-        document.title = this.cached_soc.nome + " - HockeyPista 2.0";
+        // TITLE AND ANALYTICS
+        document.title = "Campionati";
+        GtagInitialize();
 
+        // SETTING STATE
         this.state = {
             recenti: [],
             recenti_load: false,
@@ -31,14 +39,11 @@ export default class Societa extends Component {
             incorso: [],
             incorso_load: false
         };
-
-        // google analytics
-        ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview(window.location.pathname + window.location.search);
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        document.title = this.cached_soc.nome + " - HockeyPista 2.0";
 
         if (!this.error) {
             CaricaPartiteRecentiSocieta(this.id_soc, (partite) => {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 
+import GtagInitialize from '../API/ApiAnalytics';
+
 import { getCachedCampionati } from '../Cache/CacheCampionato';
 import { creaSocieta } from '../Cache/CacheSocieta';
 import { getCachedVisCamp, getCachedVisSocieta } from '../Cache/CacheVisualizzazioni';
@@ -14,6 +16,17 @@ export default class Impostazioni extends Component {
     constructor(props) {
         super(props);
 
+        // URL PARAMS
+
+        // CACHED THINGS
+
+        // COMPONENT PARAMS
+
+        // TITLE AND ANALYTICS
+        document.title = "Impostazioni";
+        GtagInitialize();
+
+        // SETTING STATE
         this.state = {
             campionati: getCachedCampionati(),
             societa: creaSocieta(),
@@ -25,7 +38,8 @@ export default class Impostazioni extends Component {
     }
 
     componentDidMount() {
-
+        window.scrollTo(0, 0);
+        document.title = "Impostazioni - HockeyPista 2.0";
     }
 
     updateVisCampionato() {
@@ -48,7 +62,7 @@ export default class Impostazioni extends Component {
                             <div className="card">
                                 <div className="card-body text-center">
                                     <h1 className="m-0 text-primary">
-                                        <i class="fas fa-tools"></i>
+                                        <i className="fas fa-tools"></i>
                                     </h1>
                                     <h4>
                                         Attivazione del sito

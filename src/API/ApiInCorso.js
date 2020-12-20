@@ -3,7 +3,7 @@ import { polishString, parseCompleteTag, parseIsleTag, removeTags, extractProp, 
 import { getCachedCampionati } from '../Cache/CacheCampionato'
 import { getCachedSquadre } from '../Cache/CacheSquadra'
 
-function caricaPartite(then) {
+function caricaPartite(then, err) {
     $.ajax({
         url: "https://www.server2.sidgad.es/fisr/fisr_mc_1.php",
         method: "GET",
@@ -14,6 +14,9 @@ function caricaPartite(then) {
             //campionati[0].matches[0].type = "TEMPO 1";
             //console.log(campionati);
             then(campionati);
+        },
+        error: () => {
+            err();
         }
     });
 }

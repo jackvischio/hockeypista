@@ -53,7 +53,7 @@ function parseCampionato(str) {
     // creating a new Campionato
     let camp = { id: 0, name: "", teams: [], logo: "", season: "", dur_tempo: 0, abbr: "" };
     camp.id = parseInt(extractProp(tag, "id"));
-    camp.name = extractProp(tag, "name");
+    camp.name = extractProp(tag, "name").trim();
 
     // create abbreviation for the campionato
     let ret = camp.name.match(/ (A1)|(A2)|(B)|(FEMM)|U[0-9]* /);

@@ -7,7 +7,7 @@ export default function ErroreAttivazione() {
             <div className="modal-dialog">
                 <div className="modal-content p-4 text-center">
                     <h1 className="m-0 text-warning">
-                        <i class="fas fa-exclamation"></i>
+                        <i className="fas fa-exclamation"></i>
                     </h1>
                     <h4 className="mt-1">Mmm... sembra che il sito non sia attivo...</h4>
                     <p>Consulta la guida per attivare il sito</p>

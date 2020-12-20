@@ -1,9 +1,9 @@
 import React, { Component } from 'react'
-import ReactGA from 'react-ga'
 
 import '../Components/Partita/TabellaSquadre/match.css'
-
 import ProvaPartita from '../Components/Partita/ProvaPartita'
+
+import GtagInitialize from '../API/ApiAnalytics'
 import { CaricaPartita } from '../API/ApiPartita'
 
 import Navbar from '../Components/Varie/Navbar'
@@ -22,25 +22,29 @@ export default class Partita extends Component {
     constructor(props) {
         super();
 
+        // URL PARAMS
         this.id_partita = props.match.params.id;
+
+        // CACHED THINGS
+
+        // COMPONENT PARAMS
         this.path = props.location.pathname;
         this.intervalID = null;
-
-        this.state = {
-            partita: ProvaPartita(),
-            loaded: false,
-            error: false
-        }
-
-        // understand refresh
         this.reloaded = false;
         if ((window.performance) && (performance.navigation.type == 1)) {
             this.reloaded = true;
         }
 
-        // google analytics
-        ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview(window.location.pathname + window.location.search);
+        // TITLE AND ANALYTICS
+        document.title = "Partita " + this.id_partita;
+        GtagInitialize();
+
+        // SETTING STATE
+        this.state = {
+            partita: ProvaPartita(),
+            loaded: false,
+            error: false
+        }
     }
 
     componentDidMount() {

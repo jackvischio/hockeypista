@@ -7,15 +7,24 @@
     <meta name="theme-color" content="#000000" />
 
     <meta name="google-site-verification" content="XBtuAi69VL1xPHQwQSZ6VNiXb8anR7BuZj0pimISmXk" />
-    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <!--
+        Global site tag (gtag.js) - Google Analytics-->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-QGJ6R11WYD"></script>
+    <!--
+    <script src="gtag.js"></script>
+    
     <script>
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
         gtag('js', new Date());
 
         gtag('config', 'G-QGJ6R11WYD');
+        gtag('event', 'load', {
+            'event_category': 'load',
+            'event_label': 'loaded app'
+        });
     </script>
+    -->
 
     <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo_192.jpg" />
     <!--

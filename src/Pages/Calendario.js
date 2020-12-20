@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
-import ReactGA from 'react-ga'
 
 import { CaricaCalendario } from '../API/ApiCalendario';
+import GtagInitialize from '../API/ApiAnalytics';
 
 import { getCachedCampionato } from '../Cache/CacheCampionato'
 
@@ -15,23 +15,28 @@ export default class Calendario extends Component {
     constructor(props) {
         super();
 
-        this.path = props.location.pathname;
-
+        // URL PARAMS
         this.id_camp = parseInt(props.match.params.id);
+
+        // CACHED THINGS
         this.camp = getCachedCampionato(this.id_camp);
+
+        // COMPONENT PARAMS
+        this.path = props.location.pathname;
         this.error = (this.camp === undefined);
-
         this.title = (!this.error ? ("Calendario " + this.camp.abbr) : "Calendario");
-        document.title = this.title + " - HockeyPista 2.0"
-        this.state = { calendario: [], loaded: false }
 
-        // google analytics
-        ReactGA.initialize('G-QGJ6R11WYD');
-        ReactGA.pageview(window.location.pathname + window.location.search);
+        // TITLE AND ANALYTICS
+        document.title = this.title;
+        GtagInitialize();
+
+        // SETTING STATE
+        this.state = { calendario: [], loaded: false }
     }
 
     componentDidMount() {
         window.scrollTo(0, 0);
+        document.title = this.title + " - HockeyPista 2.0"
 
         if (!this.error) {
             CaricaCalendario(this.id_camp, (cal) => {
