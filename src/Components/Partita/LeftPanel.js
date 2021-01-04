@@ -13,11 +13,11 @@ export default function LeftPanel(props) {
                         <div className="w-100">
                             <h4>
                                 <Link to={"/campionato/" + props.campionato.idc} style={{ color: "black" }}>
-                                    {props.campionato.nome}
+                                    {props.campionato.nome.replace(/ E /, ' e ')}
                                 </Link>
                             </h4>
                             <h6>
-                                {props.campionato.girone}
+                                {props.campionato.girone.replace(/ E /, ' e ')}
                             </h6>
                             <h5>
                                 {props.date.day} - {props.date.hour}

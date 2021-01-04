@@ -35,7 +35,7 @@ export default class Campionato extends Component {
         this.title = (!this.error ? titleCase(this.camp.name).replace(' E ', ' e ') : "Campionato non trovato");
 
         // TITLE AND ANALYTICS
-        document.title = "Campionati";
+        document.title = this.title;
         GtagInitialize();
 
         // SETTING STATE

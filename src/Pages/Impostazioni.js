@@ -69,7 +69,7 @@ export default class Impostazioni extends Component {
                                     </h4>
                                     <span>Per attivare completamente il sito, è necessario eseguire un paio di passaggi</span>
                                     <br />
-                                    <Link to="/guida" className="btn btn-primary btn-sm mt-2">
+                                    <Link to="/guida" className="btn btn-primary btn-sm mt-3">
                                         consulta la guida
                                     </Link>
                                 </div>
@@ -79,17 +79,17 @@ export default class Impostazioni extends Component {
                             <div className="card">
                                 <div className="card-body text-center">
                                     <h1 className="m-0 text-primary">
-                                        <i class="fas fa-paint-brush"></i>
+                                        <i className="fas fa-paint-brush"></i>
                                     </h1>
                                     <h4>
                                         Personalizza Homepage
                                         </h4>
                                     <span>Permette di selezionare gli elementi da visualizzare nella schermata home</span>
                                     <br />
-                                    <button className="btn btn-primary btn-sm d-inline-block mr-1 mt-2" onClick={() => { this.setState({ showCampionati_modal: true }) }}>
+                                    <button className="btn btn-primary btn-sm d-inline-block mr-1 mt-3" onClick={() => { this.setState({ showCampionati_modal: true }) }}>
                                         campionati
                                     </button>
-                                    <button className="btn btn-primary btn-sm d-inline-block ml-1 mt-2" onClick={() => { this.setState({ showSocieta_modal: true }) }}>
+                                    <button className="btn btn-primary btn-sm d-inline-block ml-1 mt-3" onClick={() => { this.setState({ showSocieta_modal: true }) }}>
                                         società
                                     </button>
                                 </div>

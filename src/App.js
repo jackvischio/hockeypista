@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { HashRouter as Router, Route } from 'react-router-dom'
+import { HashRouter as Router, Route, useHistory } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './assets/global.css'
 
@@ -14,7 +14,7 @@ import Societa from './Pages/Societa';
 import Salvati from './Pages/Salvati';
 import Guida from './Pages/Guida';
 import Impostazioni from './Pages/Impostazioni';
-import Navbar from './Components/Varie/Navbar';
+import PrimoAccesso from './Pages/PrimoAccesso';
 
 export default class App extends Component {
 	render() {
@@ -32,6 +32,7 @@ export default class App extends Component {
 					<Route path="/salvati" component={Salvati} />
 					<Route path="/guida" component={Guida} />
 					<Route path="/impostazioni" component={Impostazioni} />
+					<Route path="/primoaccesso" component={PrimoAccesso} />
 				</Router>
 			</>
 		)

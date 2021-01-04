@@ -126,17 +126,17 @@ function extractContentByClass(input, wclass) {
     return removeTags(str, "div", true, false);
 }
 
-export function CaricaPartiteInCorso(then) {
+export function CaricaPartiteInCorso(then, error) {
     caricaPartite((campionati) => {
         let partite = [];
         campionati.forEach(elem => {
             partite = partite.concat(elem.matches.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
         })
         then(partite);
-    });
+    }, error);
 }
 
-export function CaricaPartiteRecenti(then) {
+export function CaricaPartiteRecenti(then, error) {
     caricaPartite((campionati) => {
         let partite = [];
         campionati.forEach(elem => {

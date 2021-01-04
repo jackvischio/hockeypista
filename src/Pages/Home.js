@@ -26,8 +26,15 @@ import ErroreAttivazione from '../Components/Modals/ErroreAttivazione'
 
 export default class Home extends Component {
 
-    constructor() {
+    constructor(props) {
         super();
+
+        // FIRST ACCESS
+        if (localStorage.getItem("firstAccess") === null) {
+            console.log("primo accesso");
+            localStorage.setItem("firstAccess", "nope");
+            props.history.push('/primoaccesso');
+        }
 
         // URL PARAMS
 
@@ -70,7 +77,6 @@ export default class Home extends Component {
 
             if (localStorage.getItem("ns_first_time") === null) {
                 this.state.campionati.forEach(camp => {
-                    console.log(camp);
                     console.log("calling " + camp.id);
                     CaricaCalendario(camp.id, (a) => { console.log("loaded " + camp.id) })
                 })
