@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import { cacheGiocatore } from '../Cache/CacheGiocatori';
 import { polishString, extractProp, parseIsleTag, parseCompleteTag, titleCase, removeTags } from './commons'
 
 function GIOCATORE() {
@@ -35,6 +36,7 @@ export function CaricaSquadra(idt, idc, then) {
         $('#retrieveSquadra').html(firstTable + " " + secondTable);
 
         let giocatori = parseTableGiocatori($("#tbl-sq-gioc-xxx"), idt);
+        giocatori.map(e => cacheGiocatore({ id: e.idpl, nome: e.nome }));
 
         let tecnici = parseTableTecnici($("#tbl-sq-tecn-xxx"), idt);
 

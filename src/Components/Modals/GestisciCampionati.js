@@ -58,7 +58,7 @@ export default class GestisciCampionati extends Component {
                                         <div className="card card-body p-1 pl-3" key={i}>
                                             <div className="d-flex justify-content-between align-items-center">
                                                 <h5 className="m-0">
-                                                    {titleCase(e.name).replace(' E ', ' e ')}
+                                                    {titleCase(e.name).replace(/ E /g, ' e ')}
                                                 </h5>
                                                 <div style={{ minWidth: "100px", textAlign: "right" }}>
                                                     <button className={"btn " + ((show) ? "btn-primary" : "btn-light")} style={btnStyle} onClick={() => this.mostra(e.id)}>

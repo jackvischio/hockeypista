@@ -92,7 +92,7 @@ export default class Squadra extends Component {
             });
 
             CaricaPartiteInCorsoSquadra(this.id_camp, (partite) => {
-                console.log(partite);
+                //console.log(partite);
                 this.state.incorso = partite;
                 this.setState({ incorso_load: true });
             });

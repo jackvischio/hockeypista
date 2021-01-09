@@ -27,7 +27,7 @@ export function cacheSquadra(id, nome, logo, abbr, camp, camp_abb) {
     localStorage.setItem("ns_squadre", JSON.stringify(squadre));
 }
 
-function extractSocietaID(logo) {
+export function extractSocietaID(logo) {
     let x = logo.split('/');
     let y = x[x.length - 1];
     return parseInt(y.substr(0, y.indexOf('.')).replace(/_[0-9]+/, ""));

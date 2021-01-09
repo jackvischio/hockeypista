@@ -20,6 +20,17 @@ body {
   text-decoration: inherit;
 }
 
+.link-black,
+.link-black:link,
+.link-black:hover {
+  color: inherit;
+}
+
+.link-black:hover,
+.link-black:focus {
+  text-decoration: underline;
+}
+
 .container-fluid,
 .container {
   padding: 5px;

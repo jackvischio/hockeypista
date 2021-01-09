@@ -76,6 +76,12 @@ export default class PrimoAccesso extends Component {
                         </div>
                     </div>
                 </div>
+                <div className="fixed-bottom alert alert-info p-2 m-0" style={{ fontSize: "0.8em", right: "auto", maxWidth: "100%" }}>
+                    Questo sito utilizza cookies per mantenere le impostazioni e statistiche di utilizzo. &nbsp;
+                    <a href="https://www.privacypolicygenerator.info/live.php?token=1eJBVqZZhFACHNQ5Afz4kAufyuWHMUWo">
+                        Scopri di più
+                    </a>
+                </div>
             </>
         );
     }

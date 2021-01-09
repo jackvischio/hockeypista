@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react'
+import React, { Component } from 'react'
 
 import GtagInitialize from '../API/ApiAnalytics';
 import { CaricaPartiteRecentiSocieta, CaricaPartiteInCorsoSocieta, CaricaPartiteFutureSocieta } from '../API/ApiInCorso';

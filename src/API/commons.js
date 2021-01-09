@@ -15,6 +15,15 @@ export function polishString(str) {
     return str;
 }
 
+export function removeComments(str) {
+    while (str.indexOf("<!--") !== -1) {
+        var commento = str.substr(str.indexOf("<!--"));
+        commento = commento.substr(0, commento.indexOf("-->") + 3);
+        str = str.replace(commento, "");
+    }
+    return str;
+}
+
 // ----- PARSE A COMPLETE TAG <tag>...</tag> -----
 export function parseCompleteTag(str) {
     var tag = { type: "", props: [], params: [], content: "" };

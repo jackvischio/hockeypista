@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom';
 
 export default function SquadraBox(props) {
     return (
@@ -57,7 +58,11 @@ function Giocatore(obj) {
             <td className="col1">
                 <img src={obj.naz} alt="" />
             </td>
-            <td className="col2">{obj.nome}</td>
+            <td className="col2">
+                <Link to={"/giocatore/" + obj.idpl} className="link-black">
+                    {obj.nome}
+                </Link>
+            </td>
             <td className="col3">{f(obj.presenze, "0")}</td>
             <td className="col4">{f(obj.gol, "0")}</td>
             <td className="col5">{f(obj.assist, "0")}</td>
