@@ -128,6 +128,31 @@ export default class Home extends Component {
     }
 
     render() {
+        // ordinamento delle partite recenti
+        let sortDate = (a, b) => {
+            if (a == b) return 0;
+            return (parseDate(a) > parseDate(b)) ? -1 : 1;
+        }
+        let parseDate = (a) => {
+            let x = a.split('/');
+            let y = new Date().getFullYear();
+            return new Date(y, parseInt(x[1]), parseInt(x[0]));
+        }
+        let sortCamp = (a, b) => (translateCamp(a) < translateCamp(b)) ? -1 : 1;
+        let translateCamp = (a) => {
+            switch (a) {
+                case "A1": return 1;
+                case "A2": return 2;
+                case "B": return 3;
+                case "FEMM": return 4;
+                case "U19": return 5;
+                case "U17": return 6;
+                case "U15": return 7;
+                case "U13": return 8;
+                case "U11": return 9;
+                default: return 10;
+            }
+        }
         return (
             <>
                 <Navbar title="RISULTATI HOCKEY PISTA" active={"Home"} />
@@ -142,13 +167,15 @@ export default class Home extends Component {
                                             this.state.incorso.map((e, i) => <Partita key={i} {...e} />)
                                 }
                             </HomeCard>
-
                             <HomeCard>
                                 <h5 className="card-title">PARTITE RECENTI</h5>
                                 {
                                     (!this.state.recenti_load) ? <Loader /> :
                                         (this.state.recenti.length == 0) ? <p className="m-2 text-center"><i>Nessuna partita recente</i></p> :
-                                            this.state.recenti.map((e, i) => <Partita key={i} {...e} />)
+                                            this.state.recenti.sort((a, b) => {
+                                                let x = sortDate(a.day, b.day);
+                                                return (x == 0) ? sortCamp(a.campAbbr, b.campAbbr) : x;
+                                            }).map((e, i) => <Partita key={i} {...e} />)
                                 }
                             </HomeCard>
                         </div>

@@ -35,7 +35,7 @@ export default class Navbar extends Component {
         return (
             <nav className="navbar navbar-expand-lg navbar-light bg-light text-uppercase" style={{ padding: "10px" }}>
                 <div className="navbar-brand p-0 m-0">
-                    <button className="navbar-toggler navbar-toggler-right ml-auto" onClick={() => this.toggleNavbar()}>
+                    <button className="navbar-toggler navbar-toggler-right ml-auto mr-2" onClick={() => this.toggleNavbar()}>
                         <span className="navbar-toggler-icon"></span>
                     </button>
                     <Link className="navbar-brand p-0 mr-2 d-none d-md-inline-block" to="/">

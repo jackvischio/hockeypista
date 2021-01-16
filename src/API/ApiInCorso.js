@@ -2,6 +2,7 @@ import $ from 'jquery'
 import { polishString, parseCompleteTag, parseIsleTag, removeTags, extractProp, myReplaceAll } from './commons'
 import { getCachedCampionati } from '../Cache/CacheCampionato'
 import { getCachedSquadre } from '../Cache/CacheSquadra'
+import { CacheTitoloPartita } from '../Cache/CachePartita';
 
 function caricaPartite(then, err) {
     $.ajax({
@@ -104,6 +105,7 @@ function parsePlaying(data) {
             match.matchDayNum = extractContentByClass(tag.content, "scorer_bot_right");
 
             campionato.matches.push(match);
+            CacheTitoloPartita(match);
         }
 
         campionati.push(campionato);

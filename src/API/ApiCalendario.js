@@ -1,6 +1,7 @@
 import { polishString, removeTags, parseIsleTag, parseCompleteTag, extractProp, myReplaceAll } from './commons'
 import { cacheSquadra } from '../Cache/CacheSquadra'
 import $ from 'jquery'
+import { CacheTitoloPartita } from '../Cache/CachePartita';
 
 // MAIN FUNCTION
 export function CaricaCalendario(idc, then) {
@@ -97,12 +98,16 @@ function parseCalendario(table, idc) {
             calendario.push(giornata);
             giornata = new GIORNATA();
             giornata.giornata = this_giornata.replace(/[Gg][Jj]/, "Giornata");
+            giornata.giornata = giornata.giornata.replace("Jornada", "Giornata");
             giornata.data = parseGameDate("00000000");
         }
         lastgiornata = this_giornata;
 
-        if (giornata.data === parseGameDate("00000000"))
-            giornata.data = parseGameDate($(rows[i]).attr("gamedate"));
+        if (giornata.data === parseGameDate("00000000")) {
+            if ($(rows[i]).attr("gamedate") !== "") {
+                giornata.data = parseGameDate($(rows[i]).attr("gamedate"));
+            }
+        }
 
         // dettagli partita
         partita.idc = idc;
@@ -135,6 +140,7 @@ function parseCalendario(table, idc) {
         //cacheSquadra(teams_id[0], partita.teamA.fullname, partita.teamA.logo, partita.teamA.smallname, idc);
 
         giornata.partite.push(partita);
+        CacheTitoloPartita(partita);
     });
     calendario.push(giornata);
     calendario.splice(0, 1);

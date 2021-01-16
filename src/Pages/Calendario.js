@@ -56,15 +56,18 @@ export default class Calendario extends Component {
                 {(!this.error) ? null : <ErroreNotFound title="Calendario non trovato" callBack={() => { this.props.history.goBack(); }} />}
                 <Navbar path={this.path} title={this.title} canBeSaved={true} />
                 <div className="container p-2">
-                    <div className="card card-body mt-2 mb-2 p-2">
-                        <div className="text-center">
-                            <Link to={"/campionato/" + this.id_camp}>
-                                vai al campionato
-                            </Link>
+                    <div className="card mt-2 mb-2">
+                        <div className="card-body">
+                            <div className="text-center">
+                                <Link to={"/campionato/" + this.id_camp}>
+                                    vai al campionato
+                                </Link>
+                            </div>
+                            <div>
+                                {(this.state.loaded) ? this.state.calendario.map((g, i) => <Giornata key={i} giornata={g} />) : <Loader />}
+                            </div>
                         </div>
-                        <div>
-                            {(this.state.loaded) ? this.state.calendario.map((g, i) => <Giornata key={i} giornata={g} />) : <Loader />}
-                        </div>
+
                     </div>
                 </div>
             </>

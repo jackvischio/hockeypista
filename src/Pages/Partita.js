@@ -16,6 +16,7 @@ import Scoreboard from '../Components/Partita/Scoreboard'
 import Squadra from '../Components/Partita/TabellaSquadre/Squadra'
 import TimelineOrizz from '../Components/Partita/Timeline/TimelineOrizz'
 import TimelineVert from '../Components/Partita/Timeline/TimelineVert'
+import { GetTitoloPartita } from '../Cache/CachePartita'
 
 export default class Partita extends Component {
 
@@ -26,6 +27,8 @@ export default class Partita extends Component {
         this.id_partita = props.match.params.id;
 
         // CACHED THINGS
+        let obj = GetTitoloPartita(this.id_partita);
+        this.title = (obj !== null) ? obj.titolo : null;
 
         // COMPONENT PARAMS
         this.path = props.location.pathname;
@@ -58,7 +61,7 @@ export default class Partita extends Component {
     }
 
     getTitle() {
-        return "" + this.state.partita.campionato.abbr + ": " + this.state.partita.teamA.small + " vs " + this.state.partita.teamB.small;
+        return (this.title !== null) ? this.title : "" + this.state.partita.campionato.abbr + ": " + this.state.partita.teamA.small + " vs " + this.state.partita.teamB.small;
     }
 
     CaricaDati() {

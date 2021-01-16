@@ -53,12 +53,13 @@ function parseMarcatori(table) {
 }
 
 function sort(array) {
-    let prep = (dir, rig) => {
+    let prep = (ass, dir, rig) => {
         let x = 0;
+        x += ass * 0.2;
         let a = dir.split("/");
-        try { x += parseInt(a[0]) / parseInt(a[1]); } catch (e) { x += 0.2; }
+        x += (parseInt(a[1]) == 0) ? 0.2 : (parseInt(a[0]) / parseInt(a[1]));
         a = rig.split("/");
-        try { x += parseInt(a[0]) / parseInt(a[1]); } catch (e) { x += 0.2; }
+        x += (parseInt(a[1]) == 0) ? 0.2 : (parseInt(a[0]) / parseInt(a[1]));
         return x;
     }
 
@@ -66,16 +67,12 @@ function sort(array) {
         if (sx.goals > dx.goals) return -1;
         else if (sx.goals < dx.goals) return 1;
         else {
-            if (sx.assists > dx.assists) return -1;
-            else if (sx.assists < dx.assists) return 1;
-            else {
-                sx = prep(sx.diretti, sx.rigori);
-                dx = prep(dx.diretti, dx.rigori);
+            sx = prep(sx.assists, sx.diretti, sx.rigori);
+            dx = prep(dx.assists, dx.diretti, dx.rigori);
 
-                if (sx > dx) return -1;
-                else if (sx < dx) return 1;
-                else return 0;
-            }
+            if (sx > dx) return -1;
+            else if (sx < dx) return 1;
+            else return 0;
         }
     };
 

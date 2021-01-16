@@ -3,17 +3,35 @@ import { Link } from 'react-router-dom';
 import { titleCase } from '../../API/commons';
 
 export default function Campionato(props) {
+
+    // statistiche cumulative
+    var tot = { presenze: 0, goal: 0, assist: 0, direttiA: 0, direttiB: 0, rigoriA: 0, rigoriB: 0, blu: 0, rossi: 0 };
+    props.partite.map(p => {
+        tot.presenze++;
+        tot.goal += parseInt(p.goal);
+        tot.assist += parseInt(p.assist);
+        let rig = p.rigori.split('/');
+        tot.rigoriA += parseInt(rig[0]);
+        tot.rigoriB += parseInt(rig[1]);
+        let dir = p.diretti.split('/');
+        tot.direttiA += parseInt(dir[0]);
+        tot.direttiB += parseInt(dir[1]);
+        tot.blu += parseInt(p.blu);
+        tot.rossi += parseInt(p.rossi);
+    });
+
+    // rendering
     return (
         <>
             <Link to={"/campionato/" + props.id} className="link-black">
-                <h5 className="text-center">{titleCase(props.nome)}</h5>
+                <h5 className="text-center">{titleCase(props.nome).replace(/ E /g, " e ")}</h5>
             </Link>
             <table className="table table-striped table-bordered table-squadra">
                 <thead className="thead-light">
                     <tr style={{ borderBottom: "2px solid rgb(187, 187, 187)" }}>
                         <th className="col1 d-none d-md-table-cell"></th>
                         <th className="col2"></th>
-                        <th className="col4">Gol</th>
+                        <th className="col3">Gol</th>
                         <th className="col4">Ass</th>
                         <th className="col5">Rig</th>
                         <th className="col6">Dir</th>
@@ -26,6 +44,18 @@ export default function Campionato(props) {
                         props.partite.map((e, i) => <Partita {...e} key={i} />)
                     }
                 </tbody>
+                <thead className="thead-light">
+                    <tr style={{ borderBottom: "2px solid rgb(187, 187, 187)" }}>
+                        <th className="col1 d-none d-md-table-cell"></th>
+                        <th className="col2 text-center">{tot.presenze + " presenz" + (tot.presenze === 1 ? "a" : "e")}</th>
+                        <th className="col3">{tot.goal}</th>
+                        <th className="col4">{tot.assist}</th>
+                        <th className="col5">{tot.rigoriA + "/" + tot.rigoriB}</th>
+                        <th className="col6">{tot.direttiA + "/" + tot.direttiB}</th>
+                        <th className="col7">{tot.blu}</th>
+                        <th className="col7">{tot.rossi}</th>
+                    </tr>
+                </thead>
             </table>
         </>
     );

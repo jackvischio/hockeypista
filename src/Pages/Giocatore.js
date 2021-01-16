@@ -114,7 +114,7 @@ export default class Giocatore extends Component {
                             <Card>
                                 <h4>Stagioni precedenti</h4>
                                 {
-                                    this.state.past.sort((a, b) => (a.stagione > b.stagione) ? -1 : 1).map((e, i) => <PastSeason {...e} key={i} />)
+                                    this.state.past.sort((a, b) => (a.stagione > b.stagione) ? -1 : 1).map((e, i) => (e.societa !== "not found") ? <PastSeason {...e} key={i} /> : null)
                                 }
                             </Card>
                         </Col>

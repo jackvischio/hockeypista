@@ -6,20 +6,10 @@ import { extractProp, parseCompleteTag, parseIsleTag, polishString, removeCommen
 
 function GIOCATORE() {
     return {
-        nome: "",
-        foto: "",
-        id: 0,
-        nazione: {
-            img: "",
-            testo: ""
-        },
-        data_nascita: "",
-        eta: 0,
-        societa: {
-            nome: "",
-            logo: "",
-            ids: 0
-        },
+        nome: "", foto: "", id: 0,
+        nazione: { img: "", testo: "" },
+        data_nascita: "", eta: 0,
+        societa: { nome: "", logo: "", ids: 0 },
         campionati: []
     }
 }
@@ -86,7 +76,11 @@ export function CaricaDettagliGiocatore(idpl, idc, idt, stagione, then) {
                 giocatore.societa.nome = soc.nome;
                 giocatore.societa.ids = parseInt(soc.id);
             } catch (e) {
-                giocatore.societa.nome = $(divs[13]).html().trim();
+                try {
+                    giocatore.societa.nome = $(divs[13]).html().trim();
+                } catch (e) {
+                    giocatore.societa.nome = "not found";
+                }
             }
 
             // PARTITE DEI CAMPIONATI
@@ -127,7 +121,6 @@ export function CaricaDettagliGiocatore(idpl, idc, idt, stagione, then) {
                 }
                 giocatore.campionati.push(camp);
             }
-
 
             container.remove();
             then(giocatore);

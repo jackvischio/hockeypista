@@ -20,7 +20,7 @@ const PartitaDaFare = (obj) => {
             <div className="card-body cal-elem-inner">
                 <div className="cal-elem-row">
                     <div className="cal-date">
-                        {obj.day + " " + obj.hour + ((obj.campAbbr === undefined) ? "" : " : " + obj.campAbbr)}
+                        {obj.day + " " + ((obj.hour === undefined) ? "00:00" : obj.hour) + ((obj.campAbbr === undefined) ? "" : " : " + obj.campAbbr)}
                     </div>
                     <div className="cal-match">
                         <table>
@@ -34,7 +34,7 @@ const PartitaDaFare = (obj) => {
                                         </div>
                                     </td>
                                     <td className="text-center">
-                                        {obj.score.replace(':', ' - ')}
+                                        {(obj.score === "") ? obj.type : obj.score.replace(':', ' - ')}
                                     </td>
                                     <td>
                                         <div className="cal-flex-rev">
@@ -60,7 +60,7 @@ const PartitaAttiva = (obj) => {
                 <div className="card-body cal-elem-inner">
                     <div className="cal-elem-row">
                         <div className="cal-date">
-                            {obj.day + " " + obj.hour + ((obj.campAbbr === undefined) ? "" : " : " + obj.campAbbr)}
+                            {obj.day + " " +  ((obj.hour === undefined) ? "00:00" : obj.hour) + ((obj.campAbbr === undefined) ? "" : " : " + obj.campAbbr)}
                         </div>
                         <div className="cal-match">
                             <table>
