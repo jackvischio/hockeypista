@@ -59,4 +59,4 @@ Per segnalare un malfunzionamento, usare la sezione ['Issues'](https://github.co
 
 ## Riferimenti
 
-Piattaforma ufficiale: [hockeypista.fisr.it](hockeypista.fisr.it)
+Piattaforma ufficiale: [hockeypista.fisr.it](http://hockeypista.fisr.it)
