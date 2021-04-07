@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom'
 import { CaricaCalendario } from '../API/ApiCalendario'
 import GtagInitialize from '../API/ApiAnalytics'
 import { caricaCampionati } from '../API/ApiCampionati'
-import { CaricaPartiteInCorso, CaricaPartiteRecenti } from '../API/ApiInCorso'
+import { CaricaPartiteFuture, CaricaPartiteHome, CaricaPartiteInCorso, CaricaPartiteRecenti } from '../API/ApiInCorso'
 
 // CACHE
 import { creaSocieta } from '../Cache/CacheSocieta'
@@ -55,6 +55,7 @@ export default class Home extends Component {
             societa: creaSocieta(), societa_ok: (this.societa != []),
             incorso: [], incorso_load: false,
             recenti: [], recenti_load: false,
+            future: [], future_load: false,
             showCampionati: getCachedVisCamp(), showCampionati_modal: false,
             showSocieta: getCachedVisSocieta(), showSocieta_modal: false,
             erroreAttivazione: false
@@ -86,9 +87,18 @@ export default class Home extends Component {
             this.setState({ erroreAttivazione: true })
         });
 
-        this.PartiteInCorso();
+        // caricamento partite
+        CaricaPartiteHome((in_corso, recenti, future) => {
+            this.state.incorso = in_corso;
+            this.state.recenti = recenti;
+            this.state.future = future;
+            this.setState({ incorso_load: true, recenti_load: true, future_load: true });
+        }, () => {
+            this.setState({ erroreAttivazione: true })
+        });
+
+        // aggiornamenti automatici della home
         this.intervalInCorso = setInterval(this.PartiteInCorso.bind(this), 40000);
-        this.PartiteRecenti();
         this.intervalRecenti = setInterval(this.PartiteRecenti.bind(this), 120000);
     }
 
@@ -129,9 +139,10 @@ export default class Home extends Component {
 
     render() {
         // ordinamento delle partite recenti
-        let sortDate = (a, b) => {
+        let sortDate = (a, b, rev) => {
+            let sign = (rev ? -1 : 1);
             if (a == b) return 0;
-            return (parseDate(a) > parseDate(b)) ? -1 : 1;
+            return (parseDate(a) > parseDate(b)) ? -1 * sign : 1 * sign;
         }
         let parseDate = (a) => {
             let x = a.split('/');
@@ -173,9 +184,20 @@ export default class Home extends Component {
                                     (!this.state.recenti_load) ? <Loader /> :
                                         (this.state.recenti.length == 0) ? <p className="m-2 text-center"><i>Nessuna partita recente</i></p> :
                                             this.state.recenti.sort((a, b) => {
-                                                let x = sortDate(a.day, b.day);
+                                                let x = sortDate(a.day, b.day, false);
                                                 return (x == 0) ? sortCamp(a.campAbbr, b.campAbbr) : x;
                                             }).map((e, i) => <Partita key={i} {...e} />)
+                                }
+                            </HomeCard>
+                            <HomeCard>
+                                <h5 className="card-title">PARTITE IN PROGRAMMA</h5>
+                                {
+                                    (!this.state.future_load) ? <Loader /> :
+                                        (this.state.future.length == 0) ? <p className="m-2 text-center"><i>Nessuna partita in programma</i></p> :
+                                            this.state.future.sort((a, b) => {
+                                                let x = sortDate(a.day, b.day, true);
+                                                return (x == 0) ? sortCamp(a.campAbbr, b.campAbbr) : x;
+                                            }).map((e, i) => { e.idp = undefined; return <Partita key={i} {...e} /> })
                                 }
                             </HomeCard>
                         </div>

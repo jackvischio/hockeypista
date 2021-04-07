@@ -128,6 +128,20 @@ function extractContentByClass(input, wclass) {
     return removeTags(str, "div", true, false);
 }
 
+export function CaricaPartiteHome(then, error) {
+    caricaPartite((campionati) => {
+        let in_corso = [];
+        let recenti = [];
+        let future = [];
+        campionati.forEach(elem => {
+            in_corso = in_corso.concat(elem.matches.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
+            recenti = recenti.concat(elem.matches.filter(e => (e.type === "FINALE")));
+            future = future.concat(elem.matches.filter(e => (e.type === "NON INIZIATA" || e.type === "SOSPESA" || e.type === "RINVIATA" || e.type === "riposa")));
+        })
+        then(in_corso, recenti, future);
+    }, error);
+}
+
 export function CaricaPartiteInCorso(then, error) {
     caricaPartite((campionati) => {
         let partite = [];
@@ -144,6 +158,16 @@ export function CaricaPartiteRecenti(then, error) {
         campionati.forEach(elem => {
             partite = partite.concat(elem.matches.filter(e => (e.type === "FINALE")));
         })
+        then(partite);
+    });
+}
+
+export function CaricaPartiteFuture(then) {
+    caricaPartite((campionati) => {
+        let partite = [];
+        campionati.forEach(elem => {
+            partite = partite.concat(elem.matches.filter(e => (e.type === "NON INIZIATA" || e.type === "SOSPESA" || e.type === "RINVIATA" || e.type === "riposa")));
+        });
         then(partite);
     });
 }
@@ -177,13 +201,17 @@ function fun(e, ids) {
     return (fun2(e.teamA.logo) == ids || fun2(e.teamB.logo) == ids);
 }
 
-export function CaricaPartiteInCorsoSocieta(ids, then) {
+export function CaricaPartiteSocieta(ids, then) {
     caricaPartite((campionati) => {
-        let partite = [];
+        let in_corso = [];
+        let recenti = [];
+        let future = [];
         campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => fun(e, ids) && ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
-        });
-        then(partite);
+            in_corso = in_corso.concat(elem.matches.filter(e => fun(e, ids) && ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
+            recenti = recenti.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "FINALE")));
+            future = future.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "NON INIZIATA" || e.type === "SOSPESA" || e.type === "RINVIATA" || e.type === "riposa")));
+        })
+        then(in_corso, recenti, future);
     });
 }
 
