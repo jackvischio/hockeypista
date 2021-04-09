@@ -1,15 +1,20 @@
-# HeckeyPista 2.0
+# HockeyPista 2.0
 
 HockeyPista 2.0 è una piattaforma alternativa (non ufficiale) per la visualizzazione dei campionati e dei risultati delle partite di hockey su pista in Italia.
 
+Per accederci, clicca [qui](https://gvischio.github.io/hockeypista/)
+
 ## Obiettivi
 
-L'obiettivo principale del progetto è quello di creare una piattaforma più adatta alla visualizzazione dei contenuti su smartphone rispetto alla piattaforma originale.
+L'obiettivo del progetto è quello di creare una piattaforma più adatta alla visualizzazione dei contenuti su smartphone rispetto alla piattaforma originale.
 
-Inoltre, vengono aggiunte ulteriori possibilità di aggregazione dei contenuti, come l'aggiunta delle visualizzazioni per società.
+Inoltre, vengono aggiunte ulteriori possibilità di aggregazione dei contenuti, come le visualizzazioni per società.
 
 ## Funzionalità
 
+- Homepage:
+    - visualizzazione delle partite in corso, recenti e programmate, con refresh automatico
+    - quick links personalizzabili a campionati e società
 - Campionati:
     - visualizzare la lista dei campionati della stagione corrente
     - per ogni campionato, visualizzare:
@@ -17,13 +22,13 @@ Inoltre, vengono aggiunte ulteriori possibilità di aggregazione dei contenuti, 
         - le giornate più recenti (ultima e successiva)
         - la classifica
         - i marcatori
-- Calendario delle partite di ogni calendario
+- Calendario delle partite di ogni campionato
 - Squadre:
     - campionato di appartenenza e posizione in classifica
     - società di appartenenza
     - calendario delle partite della squadra
     - giocatori e ruoli tecnici
-    - marcatori
+    - marcatori e loro posizione nella classifica del girone
 - Società
     - aggregazione automatica dei contenuti per società
     - visualizzazione delle partite in corso, recenti e programmate per quella società
@@ -44,10 +49,9 @@ Caching automatico degli elementi più frequentemente utilizzati.
 
 ## Browser supportati
 
-HockeyPista 2.0 utilizza delle tecnologie ancora non pienamente supportate in tutti i browser.
+HockeyPista 2.0 è ancora in versione beta, ma è compatibile con tutti i principali browser nelle loro versioni più recenti.
 
-La compatibilità completa dell'applicazione è garantita (per il momento) solo con Chrome nella sua versione più aggiornata.
-In future versioni la compatibilità verrà estesa anche ad altri browser.
+Per una migliore esperienza si consiglia di usare Google Chrome.
 
 ## Disclaimer
 
