@@ -15,7 +15,7 @@ export function caricaCampionati(cache, then, error) {
 }
 
 function caricaWrapper(then, error) {
-    fetch("https://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
+    fetch("https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
         return res.text();
     }).then(data => { then(carica(data)); }).catch(e => { console.log(e); error() })
 }

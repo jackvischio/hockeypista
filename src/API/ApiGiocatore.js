@@ -26,7 +26,7 @@ export function CaricaDettagliGiocatore(idpl, idc, idt, stagione, then) {
     $("body").append("<div id='retrieveSquadra" + stagione + "' style='display: none'></div>");
     $.ajax({
         method: "POST",
-        url: "https://www.server2.sidgad.es/fisr/fisr_profileseason_1_" + stagione + ".php",
+        url: "https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_profileseason_1_" + stagione + ".php",
         data: { idm: 1, idc: idc, id_player: idpl, team_id: idt },
         success: (data) => {
 

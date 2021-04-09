@@ -6,7 +6,7 @@ import { CacheTitoloPartita } from '../Cache/CachePartita';
 
 function caricaPartite(then, err) {
     $.ajax({
-        url: "https://www.server2.sidgad.es/fisr/fisr_mc_1.php",
+        url: "https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_mc_1.php",
         method: "GET",
         success: (data) => {
             data = prepareStringForParsing(data);
@@ -212,25 +212,5 @@ export function CaricaPartiteSocieta(ids, then) {
             future = future.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "NON INIZIATA" || e.type === "SOSPESA" || e.type === "RINVIATA" || e.type === "riposa")));
         })
         then(in_corso, recenti, future);
-    });
-}
-
-export function CaricaPartiteRecentiSocieta(ids, then) {
-    caricaPartite((campionati) => {
-        let partite = [];
-        campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "FINALE")));
-        });
-        then(partite);
-    });
-}
-
-export function CaricaPartiteFutureSocieta(ids, then) {
-    caricaPartite((campionati) => {
-        let partite = [];
-        campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "NON INIZIATA")));
-        });
-        then(partite);
     });
 }

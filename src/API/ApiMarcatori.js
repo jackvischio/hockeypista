@@ -3,7 +3,7 @@ import $ from 'jquery'
 
 export function caricaMarcatori(idc, then) {
     $("body").append("<div id='retrieveMarcatori' style='display: none'></div>");
-    $('#retrieveMarcatori').load('https://www.server2.sidgad.es/fisr/fisr_stats_1_' + idc + '.php', { idc: idc, tipo_stats: "goles" },
+    $('#retrieveMarcatori').load('https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_stats_1_' + idc + '.php', { idc: idc, tipo_stats: "goles" },
         () => {
             $("#retrieveMarcatori").find(".mobile").remove();
             var data = polishString($("#retrieveMarcatori").html());

@@ -3,7 +3,7 @@ import $ from 'jquery'
 
 export function caricaClassifica(idc, then) {
     $("body").append("<div id='retrieveClassifica' style='display: none'></div>");
-    $('#retrieveClassifica').load("https://www.server2.sidgad.es/fisr/fisr_clasif_29_1.php", { idc: idc }, (data) => {
+    $('#retrieveClassifica').load("https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_clasif_29_1.php", { idc: idc }, (data) => {
         data = polishString(data);
         data = data.substr(data.indexOf("<table"));
         data = data.replace("<table ", '<table id="tbl-class-xxx" ');

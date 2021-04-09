@@ -73,7 +73,7 @@ export function CaricaPartita(idp, forceRefresh, then, error) {
     }
     else {
         // partita non già memorizzata
-        fetch("https://www.server2.sidgad.es/fisr/fisr_gr_" + idp + "_1.php").then((res) => {
+        fetch("https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_gr_" + idp + "_1.php").then((res) => {
             return res.text();
         }).then(data => {
             let partita = parsePartita(data);
