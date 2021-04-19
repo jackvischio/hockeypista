@@ -1,26 +1,15 @@
-import { polishString, parseCompleteTag, parseIsleTag, parseParams, extractProp } from './commons'
-import { cacheCampionato, getCachedCampionati } from '../Cache/CacheCampionato'
+import { polishString, parseCompleteTag, parseIsleTag, parseParams, extractProp, prepareURLforProxy } from './commons'
 
-export function caricaCampionati(cache, then, error) {
-    if (cache) {
-        let camps = getCachedCampionati();
-        if (camps.length !== 0)
-            then(camps);
-        else
-            caricaWrapper(then, error);
-    }
-    else {
-        caricaWrapper(then, error);
-    }
+const season = "29";
+
+export default function ApiCampionati(then, error) {
+    fetch(prepareURLforProxy("fisr_ls_1.php"), { redirect: 'manual' })
+        .then((res) => { return res.text(); })
+        .then(data => { then(parse(data)); })
+        .catch(e => { console.log(e); error() })
 }
 
-function caricaWrapper(then, error) {
-    fetch("https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_ls_1.php", { redirect: 'manual' }).then((res) => {
-        return res.text();
-    }).then(data => { then(carica(data)); }).catch(e => { console.log(e); error() })
-}
-
-function carica(data) {
+function parse(data) {
 
     data = polishString(data);
     let camp = [];
@@ -36,11 +25,8 @@ function carica(data) {
     }
 
     // filtering Campionati of this season
-    camp = camp.filter(elem => elem.season === "29");
+    camp = camp.filter(elem => elem.season === season);
     camp = camp.filter(elem => (elem.name !== "" && elem.name !== "\"" && elem.name !== "'" && elem.name !== " "));
-
-    // caching campionati
-    camp.map(e => cacheCampionato(e));
 
     return camp;
 }
@@ -78,7 +64,7 @@ function parseCampionato(str) {
     // extracting period duration
     try {
         camp.dur_tempo = parseInt(tag.params.filter(elem => elem.name === "tpo_reg")[0].value);
-    } catch (e) { }
+    } catch (e) { camp.dur_tempo = 25; }
 
     return camp;
 }

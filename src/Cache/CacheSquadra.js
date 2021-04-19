@@ -1,30 +1,38 @@
-import { getCacheArray, compress, expand } from './CacheCommons'
+import GeneralCache from '../Data structures/GeneralCache';
 
 export function cacheSquadra(id, nome, logo, abbr, camp, camp_abb) {
     id = parseInt(id);
 
-    let squadre = getCacheArray("ns_squadre");
-    squadre = expand(squadre, "id");
-    let selected = squadre[id];
+    let squadre = GeneralCache.Restore("c_squadre");
+    let selected = squadre.get(id);
 
+    // creating object
     let obj = null;
     if (selected == null)
-        obj = { id: parseInt(id), nome: "", logo: "", abbr: "", soc: 0, camp: 0, camp_abb: "" };
+        obj = { id: parseInt(id), nome: "", logo: "", abbr: "", soc: 0, camp: [], camp_abb: [] };
     else
         obj = selected;
 
+    // updating values
     if (nome != null) { obj.nome = nome; }
     if (logo != null) {
         obj.logo = logo;
         obj.soc = extractSocietaID(obj.logo);
     }
     if (abbr != null) { obj.abbr = abbr; }
-    if (camp != null) { obj.camp = parseInt(camp); }
-    if (camp_abb != null) { obj.camp_abb = camp_abb; }
+    if (camp != null) {
+        camp = parseInt(camp);
+        if (!obj.camp.includes(camp))
+            obj.camp.push(camp);
+    }
+    if (camp_abb != null) {
+        if (!obj.camp_abb.includes(camp_abb))
+            obj.camp_abb.push(camp_abb);
+    }
 
-    squadre[id] = obj;
-    squadre = compress(squadre)
-    localStorage.setItem("ns_squadre", JSON.stringify(squadre));
+    // saving cache
+    squadre.insert(id, obj);
+    squadre.save("c_squadre");
 }
 
 export function extractSocietaID(logo) {
@@ -34,15 +42,16 @@ export function extractSocietaID(logo) {
 }
 
 export function getCachedSquadre() {
-    return getCacheArray("ns_squadre").filter(e => e != null);
+    return GeneralCache.GetAllFrom("c_squadre");
 }
 
 export function getCachedSquadra(id) {
-    return getCacheArray("ns_squadre").filter(e => e != null).filter(e => e.id == id)[0];
+    return GeneralCache.GetFrom("c_squadre", id);
 }
 
 export function getCachedSquadraByName(nome, camp) {
     nome = nome.toUpperCase();
-    return getCacheArray("ns_squadre").filter(e => e != null).filter(e =>
-        (e.nome == nome && e.camp == camp))[0];
+    camp = parseInt(camp);
+    let cache = GeneralCache.GetAllFrom("c_squadre");
+    return cache.filter(e => e.nome == nome && e.camp.includes(camp))[0];
 }

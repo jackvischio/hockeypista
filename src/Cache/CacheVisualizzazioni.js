@@ -1,4 +1,4 @@
-import { getCachedCampionati } from './CacheCampionato';
+import { CaricaCampionati } from '../Middleware/MwCampionati';
 import { getCacheArray, expand, compress } from './CacheCommons'
 import { creaSocieta } from './CacheSocieta';
 
@@ -8,13 +8,15 @@ export function getCachedVisCamp() {
     camp = expand(camp, "id");
 
     // aggiungo eventuali campionati non già presenti
-    let cache = getCachedCampionati();
-    cache.forEach(c => {
-        if (camp[c.id] === undefined) {
-            camp[c.id] = { id: c.id, show: true };
-        }
-    });
-    return camp;
+    let cache = CaricaCampionati.GetCached();
+    if (cache != null) {
+        cache.forEach(c => {
+            if (camp[c.id] === undefined) {
+                camp[c.id] = { id: c.id, show: true };
+            }
+        });
+        return camp;
+    }
 }
 
 export function cacheVisCamp(arr) {

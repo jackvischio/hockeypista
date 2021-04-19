@@ -1,20 +1,19 @@
-import { polishString, removeTags, extractProp, parseCompleteTag, parseIsleTag } from './commons'
+import { polishString, removeTags, extractProp, parseCompleteTag, parseIsleTag, prepareURLforProxy } from './commons'
 import $ from 'jquery'
 
-export function caricaMarcatori(idc, then) {
+export default function ApiMarcatori(idc, then) {
     $("body").append("<div id='retrieveMarcatori' style='display: none'></div>");
-    $('#retrieveMarcatori').load('https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_stats_1_' + idc + '.php', { idc: idc, tipo_stats: "goles" },
-        () => {
-            $("#retrieveMarcatori").find(".mobile").remove();
-            var data = polishString($("#retrieveMarcatori").html());
-            data = data.replace("<table", '<table id="tbl-marc-xxx"');
-            $("#retrieveMarcatori").html(data);
+    $('#retrieveMarcatori').load(prepareURLforProxy("fisr_stats_1_" + idc + ".php"), { idc: idc, tipo_stats: "goles" }, () => {
+        $("#retrieveMarcatori").find(".mobile").remove();
+        var data = polishString($("#retrieveMarcatori").html());
+        data = data.replace("<table", '<table id="tbl-marc-xxx"');
 
-            var marcatori_loaded = parseMarcatori($("#tbl-marc-xxx"));
-            $("#retrieveMarcatori").remove();
+        $("#retrieveMarcatori").html(data);
+        var marcatori = parseMarcatori($("#tbl-marc-xxx"));
+        $("#retrieveMarcatori").remove();
 
-            then(marcatori_loaded);
-        });
+        then(marcatori);
+    });
 }
 
 function parseMarcatori(table) {

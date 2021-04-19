@@ -1,11 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, useMemo, useRef } from 'react'
 import { Link } from 'react-router-dom'
 
 // API
-import { CaricaCalendario } from '../API/ApiCalendario'
 import GtagInitialize from '../API/ApiAnalytics'
-import { caricaCampionati } from '../API/ApiCampionati'
-import { CaricaPartiteFuture, CaricaPartiteHome, CaricaPartiteInCorso, CaricaPartiteRecenti } from '../API/ApiInCorso'
+
+// MIDDLEWARE
+import { CaricaCalendario } from '../Middleware/MwCalendario'
+import { CaricaCampionati } from '../Middleware/MwCampionati'
 
 // CACHE
 import { creaSocieta } from '../Cache/CacheSocieta'
@@ -23,6 +24,7 @@ import Societa from '../Components/Salvati/Societa'
 import GestisciCampionati from '../Components/Modals/GestisciCampionati'
 import GestisciSocieta from '../Components/Modals/GestisciSocieta'
 import ErroreAttivazione from '../Components/Modals/ErroreAttivazione'
+import { CaricaPartite } from '../Middleware/MwInCorso'
 
 export default class Home extends Component {
 
@@ -66,36 +68,23 @@ export default class Home extends Component {
         window.scrollTo(0, 0);
         document.title = "Homepage - HockeyPista 2.0";
 
-        // caricamento dei campionati
-        caricaCampionati(true, (camps) => {
-            this.state.campionati = camps;
-            this.setState({ loaded: true });
-
-            if (this.state.societa_ok) {
-                this.state.societa = creaSocieta();
-                this.setState({ societa_ok: true });
-            }
-
-            if (localStorage.getItem("ns_first_time") === null) {
-                this.state.campionati.forEach(camp => {
-                    console.log("calling " + camp.id);
-                    CaricaCalendario(camp.id, (a) => { console.log("loaded " + camp.id) })
-                })
-                localStorage.setItem("ns_first_time", "nope");
-            }
-        }, () => {
-            this.setState({ erroreAttivazione: true })
-        });
-
         // caricamento partite
-        CaricaPartiteHome((in_corso, recenti, future) => {
-            this.state.incorso = in_corso;
-            this.state.recenti = recenti;
-            this.state.future = future;
+        CaricaPartite.Tutte(false, (array) => {
+            this.state.incorso = array.in_corso;
+            this.state.recenti = array.recenti;
+            this.state.future = array.future;
             this.setState({ incorso_load: true, recenti_load: true, future_load: true });
-        }, () => {
-            this.setState({ erroreAttivazione: true })
-        });
+        }, () => { });
+
+        // caricamento dei campionati
+        let camps = CaricaCampionati.GetCached();
+        if (camps != null) this.SetCampionati(camps);
+        else {
+            CaricaCampionati.GetAll(false,
+                (c) => { this.SetCampionati(c); },
+                () => { this.setState({ erroreAttivazione: true }); }
+            );
+        }
 
         // aggiornamenti automatici della home
         this.intervalInCorso = setInterval(this.PartiteInCorso.bind(this), 40000);
@@ -107,24 +96,38 @@ export default class Home extends Component {
         clearInterval(this.intervalRecenti);
     }
 
+    SetCampionati(camps) {
+        this.state.campionati = camps;
+        this.setState({ loaded: true });
+
+        if (this.state.societa_ok) {
+            this.state.societa = creaSocieta();
+            this.setState({ societa_ok: true });
+        }
+
+        if (localStorage.getItem("ns_first_time") === null) {
+            this.state.campionati.forEach(camp => {
+                console.log("calling " + camp.id);
+                CaricaCalendario.Campionato(camp.id, true, (a) => { console.log("loaded " + camp.id) });
+            })
+            localStorage.setItem("ns_first_time", "nope");
+        }
+    }
+
     PartiteInCorso() {
         console.log("Refreshing partite in corso");
-        CaricaPartiteInCorso((x) => {
-            this.state.incorso = x;
+        CaricaPartite.InCorso(true, (partite) => {
+            this.state.incorso = partite;
             this.setState({ incorso_load: true });
-        }, () => {
-            this.setState({ erroreAttivazione: true })
-        });
+        }, () => { });
     }
 
     PartiteRecenti() {
         console.log("Refreshing partite recenti");
-        CaricaPartiteRecenti((x) => {
-            this.state.recenti = x;
+        CaricaPartite.Recenti(true, (partite) => {
+            this.state.recenti = partite;
             this.setState({ recenti_load: true });
-        }, () => {
-            this.setState({ erroreAttivazione: true })
-        });
+        }, () => { });
     }
 
     updateVisCampionato() {

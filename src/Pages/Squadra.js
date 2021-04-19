@@ -4,12 +4,13 @@ import '../Components/Squadra/squadra.css'
 
 import { titleCase } from '../API/commons';
 import GtagInitialize from '../API/ApiAnalytics';
-import { CaricaCalendario, CampionatoSquadra } from '../API/ApiCalendario';
-import { CaricaSquadra } from '../API/ApiSquadra'
-import { CaricaPartiteInCorsoSquadra } from '../API/ApiInCorso';
+
+import { CaricaCalendario } from '../Middleware/MwCalendario';
+import { CaricaCampionati } from '../Middleware/MwCampionati';
+import { CaricaPartite } from '../Middleware/MwInCorso';
+import { CaricaSquadra } from '../Middleware/MwSquadra';
 
 import { getCachedSquadra } from '../Cache/CacheSquadra';
-import { getCachedCampionato } from '../Cache/CacheCampionato';
 import { getSocietaByIDT } from '../Cache/CacheSocieta';
 
 import Navbar from '../Components/Varie/Navbar'
@@ -34,12 +35,18 @@ export default class Squadra extends Component {
 
         // CACHED THINGS
         this.cached_team = getCachedSquadra(this.id_team);
+        console.log(this.cached_team);
         this.title = "Squadra";
-        this.error = (this.cached_team === undefined);
+        this.error = (this.cached_team === null);
+        this.reloaded = false;
+        if ((window.performance) && (performance.navigation.type == 1)) {
+            this.reloaded = true;
+        }
         if (!this.error) {
             // campionato
-            this.id_camp = this.cached_team.camp;
-            this.cached_camp = getCachedCampionato(this.id_camp);
+            this.id_camp = this.cached_team.camp[0];
+            this.cached_camp = CaricaCampionati.GetByID(this.id_camp);
+            console.log(this.cached_camp);
 
             // società
             this.societa = getSocietaByIDT(this.id_team);
@@ -73,8 +80,7 @@ export default class Squadra extends Component {
         document.title = titleCase(this.title) + " - HockeyPista 2.0";
 
         if (!this.error) {
-            CaricaCalendario(this.id_camp, (cal) => {
-                cal = CampionatoSquadra(cal, this.id_team);
+            CaricaCalendario.Squadra(this.id_camp, this.id_team, this.reloaded, (cal) => {
                 cal.forEach(g => {
                     this.state.calendario.partite.push(g);
                 });
@@ -83,15 +89,15 @@ export default class Squadra extends Component {
                 });
             });
 
-            CaricaSquadra(this.id_team, this.id_camp, (gioc, tecn) => {
+            CaricaSquadra.Squadra(this.id_team, this.id_camp, false, (obj) => {
                 this.setState({
-                    giocatori: gioc,
-                    tecnici: tecn,
+                    giocatori: obj.giocatori,
+                    tecnici: obj.tecnici,
                     squadra_loaded: true
                 })
             });
 
-            CaricaPartiteInCorsoSquadra(this.id_camp, (partite) => {
+            CaricaPartite.OraSquadra(this.id_camp, true, (partite) => {
                 //console.log(partite);
                 this.state.incorso = partite;
                 this.setState({ incorso_load: true });

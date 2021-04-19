@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 
 import GtagInitialize from '../API/ApiAnalytics';
-import { CaricaPartiteSocieta } from '../API/ApiInCorso';
+
+import { CaricaPartite } from '../Middleware/MwInCorso';
 
 import { getSocieta } from '../Cache/CacheSocieta'
 
@@ -46,10 +47,10 @@ export default class Societa extends Component {
         document.title = this.cached_soc.nome + " - HockeyPista 2.0";
 
         if (!this.error) {
-            CaricaPartiteSocieta(this.id_soc, (in_corso, recenti, future) => {
-                this.state.incorso = in_corso;
-                this.state.recenti = recenti;
-                this.state.future = future;
+            CaricaPartite.PerSocieta(this.id_soc, true, (array) => {
+                this.state.incorso = array.in_corso;
+                this.state.recenti = array.recenti;
+                this.state.future = array.future;
                 this.setState({ incorso_load: true, recenti_load: true, future_load: true });
             });
         }

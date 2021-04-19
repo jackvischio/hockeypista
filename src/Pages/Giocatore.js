@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import GtagInitialize from '../API/ApiAnalytics';
-import { CaricaDettagliGiocatore } from '../API/ApiGiocatore';
+import ApiGiocatore from '../API/ApiGiocatore';
 import { titleCase } from '../API/commons';
-import { getCachedGiocatore } from '../Cache/CacheGiocatori';
 import Campionato from '../Components/Giocatori/Campionato.giocatori';
 
 import Navbar from '../Components/Varie/Navbar';
+import { CaricaSquadra } from '../Middleware/MwSquadra';
 
 export default class Giocatore extends Component {
 
@@ -17,7 +17,7 @@ export default class Giocatore extends Component {
         this.id_gioc = parseInt(props.match.params.id);
 
         // CACHED THINGS
-        this.cached = getCachedGiocatore(this.id_gioc);
+        this.cached = CaricaSquadra.Giocatore(this.id_gioc);
 
         // COMPONENT PARAMS
         this.path = props.location.pathname;
@@ -25,7 +25,7 @@ export default class Giocatore extends Component {
             { year: "2019/2020", value: 27 },
             { year: "2018/2019", value: 25 }
         ]
-        this.title = (this.cached !== undefined ? titleCase(this.cached.nome) : "Giocatore");
+        this.title = (this.cached !== null ? titleCase(this.cached.nome) : "Giocatore");
 
         // TITLE AND ANALYTICS
         document.title = this.title;
@@ -52,13 +52,13 @@ export default class Giocatore extends Component {
         window.scrollTo(0, 0);
         document.title = this.title + " - HockeyPista 2.0";
 
-        CaricaDettagliGiocatore(this.id_gioc, 0, 0, 29, (obj) => {
+        ApiGiocatore(this.id_gioc, 29, (obj) => {
             this.setState({
                 giocatore: obj
             });
         });
         this.pastSeasons.map((e, i) => {
-            CaricaDettagliGiocatore(this.id_gioc, 0, 0, e.value, (obj) => {
+            ApiGiocatore(this.id_gioc, e.value, (obj) => {
                 this.state.past.push({
                     societa: obj.societa.nome,
                     logo: obj.societa.logo,

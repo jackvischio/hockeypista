@@ -1,12 +1,12 @@
-import { polishString, removeTags, parseIsleTag, parseCompleteTag, extractProp, myReplaceAll } from './commons'
+import { polishString, removeTags, parseIsleTag, parseCompleteTag, extractProp, myReplaceAll, prepareURLforProxy } from './commons'
 import { cacheSquadra } from '../Cache/CacheSquadra'
 import $ from 'jquery'
-import { CacheTitoloPartita } from '../Cache/CachePartita';
 
 // MAIN FUNCTION
-export function CaricaCalendario(idc, then) {
+export default function ApiCalendario(idc, then) {
+    let season = 29
     $("body").append("<div id='retrieveCalendario' style='display: none'></div>");
-    $('#retrieveCalendario').load("https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_cal_1_29.php", { idc: idc }, (data) => {
+    $('#retrieveCalendario').load(prepareURLforProxy("fisr_cal_1_" + season + ".php"), { idc: idc }, (data) => {
 
         data = polishString(data);
         data = data.substr(data.indexOf("<table"));
@@ -22,45 +22,6 @@ export function CaricaCalendario(idc, then) {
 
         then(calendario);
     });
-}
-
-// FILTERING FUNCTIONS
-export function DueGiornate(calendario) {
-    let ret = [];
-
-    let today = new Date();
-    let parseDate = (str) => {
-        let a = str.split('/');
-        return new Date(a[2], parseInt(a[1]) - 1, a[0]);
-    }
-
-    try {
-        let last = calendario.filter((elem) => parseDate(elem.data) < today);
-        let last_day = last[last.length - 1];
-        ret[0] = last_day;
-    } catch (e) {
-        ret[0] = null;
-    }
-
-    try {
-        let next_day = calendario.filter((elem) => parseDate(elem.data) >= today)[0];
-        ret[1] = next_day;
-    } catch (e) {
-        ret[1] = null;
-    }
-
-    return ret;
-}
-
-export function CampionatoSquadra(calendario, idt) {
-    let arr = [];
-    $.each(calendario, i => {
-        let x = calendario[i].partite.filter(elem => elem.teams.includes(idt));
-        $.each(x, j => {
-            arr.push(x[j]);
-        });
-    });
-    return arr;
 }
 
 // DARK SIDE
@@ -140,7 +101,6 @@ function parseCalendario(table, idc) {
             //cacheSquadra(teams_id[0], partita.teamA.fullname, partita.teamA.logo, partita.teamA.smallname, idc);
 
             giornata.partite.push(partita);
-            CacheTitoloPartita(partita);
         }
     });
     calendario.push(giornata);

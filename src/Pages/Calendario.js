@@ -1,10 +1,10 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom'
 
-import { CaricaCalendario } from '../API/ApiCalendario';
 import GtagInitialize from '../API/ApiAnalytics';
 
-import { getCachedCampionato } from '../Cache/CacheCampionato'
+import { CaricaCalendario } from '../Middleware/MwCalendario';
+import { CaricaCampionati } from '../Middleware/MwCampionati';
 
 import Giornata from '../Components/Calendario/Giornata';
 import Loader from '../Components/Varie/Loader';
@@ -19,12 +19,16 @@ export default class Calendario extends Component {
         this.id_camp = parseInt(props.match.params.id);
 
         // CACHED THINGS
-        this.camp = getCachedCampionato(this.id_camp);
+        this.camp = CaricaCampionati.GetByID(this.id_camp);
 
         // COMPONENT PARAMS
         this.path = props.location.pathname;
-        this.error = (this.camp === undefined);
+        this.error = (this.camp === null);
         this.title = (!this.error ? ("Calendario " + this.camp.abbr) : "Calendario");
+        this.reloaded = false;
+        if ((window.performance) && (performance.navigation.type == 1)) {
+            this.reloaded = true;
+        }
 
         // TITLE AND ANALYTICS
         document.title = this.title;
@@ -39,7 +43,7 @@ export default class Calendario extends Component {
         document.title = this.title + " - HockeyPista 2.0"
 
         if (!this.error) {
-            CaricaCalendario(this.id_camp, (cal) => {
+            CaricaCalendario.Campionato(this.id_camp, this.reloaded, (cal) => {
                 cal.forEach(g => {
                     this.state.calendario.push(g);
                 });
@@ -67,7 +71,6 @@ export default class Calendario extends Component {
                                 {(this.state.loaded) ? this.state.calendario.map((g, i) => <Giornata key={i} giornata={g} />) : <Loader />}
                             </div>
                         </div>
-
                     </div>
                 </div>
             </>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { caricaMarcatori } from '../../API/ApiMarcatori';
+import { CaricaMarcatori } from '../../Middleware/MwMarcatori';
 import Loader from '../Varie/Loader';
 import { Marcatore } from './Marcatore';
 
@@ -18,12 +18,9 @@ export default class MarcatoriSquadra extends Component {
     }
 
     componentDidMount() {
-        caricaMarcatori(this.id_camp, (marc) => {
-            marc = marc.filter(e => e.team.idt == this.id_team);
-            marc.forEach(m => { this.state.marcatori.push(m) });
-            this.setState({
-                loaded: true
-            });
+        CaricaMarcatori.Squadra(this.id_camp, this.id_team, false, (lista) => {
+            this.state.marcatori = lista;
+            this.setState({ loaded: true });
         });
     }
 

@@ -1,6 +1,5 @@
 import $ from 'jquery';
-import { cacheGiocatore } from '../Cache/CacheGiocatori';
-import { polishString, extractProp, parseIsleTag, parseCompleteTag, titleCase, removeTags } from './commons'
+import { polishString, extractProp, parseIsleTag, parseCompleteTag, titleCase, removeTags, prepareURLforProxy } from './commons'
 
 function GIOCATORE() {
     return { idpl: 0, nome: "", idgc: "", naz: "", presenze: 0, gol: 0, assist: 0, rigori: "", diretti: "", blu: 0, rossi: 0 }
@@ -8,9 +7,9 @@ function GIOCATORE() {
 
 function TECNICO() { return { nome: "", naz: "" }; }
 
-export function CaricaSquadra(idt, idc, then) {
+export default function ApiSquadra(idt, idc, then) {
     $("body").append("<div id='retrieveSquadra' style='display: none'></div>");
-    $('#retrieveSquadra').load('https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_stats_1_' + idc + '.php', {
+    $('#retrieveSquadra').load(prepareURLforProxy("fisr_stats_1_" + idc + ".php"), {
         idc: idc,
         idq: idt,
         filter: 3,
@@ -36,13 +35,11 @@ export function CaricaSquadra(idt, idc, then) {
         $('#retrieveSquadra').html(firstTable + " " + secondTable);
 
         let giocatori = parseTableGiocatori($("#tbl-sq-gioc-xxx"), idt);
-        giocatori.map(e => cacheGiocatore({ id: e.idpl, nome: e.nome }));
-
         let tecnici = parseTableTecnici($("#tbl-sq-tecn-xxx"), idt);
 
         $("#retrieveSquadra").remove();
 
-        then(giocatori, tecnici);
+        then({ giocatori: giocatori, tecnici: tecnici });
     });
 }
 

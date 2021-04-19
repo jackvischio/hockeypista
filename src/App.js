@@ -17,7 +17,9 @@ import Impostazioni from './Pages/Impostazioni';
 import PrimoAccesso from './Pages/PrimoAccesso';
 import Giocatore from './Pages/Giocatore';
 
-export default class App extends Component {
+import SplashScreen from './SplashScreen';
+
+class App extends Component {
 	render() {
 		return (
 			<>
@@ -43,3 +45,5 @@ export default class App extends Component {
 		)
 	}
 }
+
+export default SplashScreen(App);

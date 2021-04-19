@@ -1,9 +1,9 @@
-import { polishString, parseCompleteTag, parseIsleTag } from './commons'
+import { polishString, parseCompleteTag, parseIsleTag, prepareURLforProxy } from './commons'
 import $ from 'jquery'
 
-export function caricaClassifica(idc, then) {
+export default function ApiClassifica(idc, then) {
     $("body").append("<div id='retrieveClassifica' style='display: none'></div>");
-    $('#retrieveClassifica').load("https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_clasif_29_1.php", { idc: idc }, (data) => {
+    $('#retrieveClassifica').load(prepareURLforProxy("fisr_clasif_29_1.php"), { idc: idc }, (data) => {
         data = polishString(data);
         data = data.substr(data.indexOf("<table"));
         data = data.replace("<table ", '<table id="tbl-class-xxx" ');
@@ -15,7 +15,6 @@ export function caricaClassifica(idc, then) {
         let classifica = parseClassifica($("#tbl-class-xxx"), idc);
         $("#retrieveClassifica").remove();
 
-        //console.log(classifica);
         then(classifica);
     });
 }
@@ -51,11 +50,4 @@ function parseClassifica(table, idc) {
     });
 
     return classifica;
-}
-
-export function caricaClassificaSquadra(idc, abbr, then) {
-    caricaClassifica(idc, (clas) => {
-        let obj = clas.filter(e => e.small.toUpperCase() == abbr.toUpperCase())[0];
-        then(obj);
-    });
 }

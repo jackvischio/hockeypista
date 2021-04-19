@@ -1,24 +1,18 @@
 import $ from 'jquery'
-import { polishString, parseCompleteTag, parseIsleTag, removeTags, extractProp, myReplaceAll } from './commons'
-import { getCachedCampionati } from '../Cache/CacheCampionato'
+import { polishString, parseCompleteTag, parseIsleTag, removeTags, extractProp, myReplaceAll, prepareURLforProxy } from './commons'
 import { getCachedSquadre } from '../Cache/CacheSquadra'
-import { CacheTitoloPartita } from '../Cache/CachePartita';
+import { CaricaCampionati } from '../Middleware/MwCampionati';
 
-function caricaPartite(then, err) {
+export default function ApiInCorso(then, err) {
     $.ajax({
-        url: "https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_mc_1.php",
+        url: prepareURLforProxy("fisr_mc_1.php"),
         method: "GET",
         success: (data) => {
             data = prepareStringForParsing(data);
-            let campionati = parsePlaying(data);
-            // DEBUG 
-            //campionati[0].matches[0].type = "TEMPO 1";
-            //console.log(campionati);
-            then(campionati);
+            let partite = parsePlaying(data);
+            then(partite);
         },
-        error: () => {
-            err();
-        }
+        error: () => { err(); }
     });
 }
 
@@ -45,18 +39,14 @@ function prepareStringForParsing(data) {
 }
 
 function parsePlaying(data) {
-    let cachedCampionati = getCachedCampionati();
+    let cachedCampionati = CaricaCampionati.GetCached();
     let cachedSquadre = getCachedSquadre();
 
-    let campionati = [];
+    let matches = [];
     while (data.indexOf('<div class="scorer_apartado"') == 0) {
-        // getting campionato
+        // remove first row: campionato
         let str = data.substr(0, data.indexOf('<div class="scorer_game'));
         data = data.replace(str, "");
-
-        // new campionato
-        let campionato = { name: "", id: 0, matches: [] };
-        campionato.name = removeTags(removeTags(str, "div", true, false), "div", true, false).trim();
 
         // parsing matches of that campionato
         let maxLive = 0;
@@ -68,35 +58,43 @@ function parsePlaying(data) {
 
             let tag = parseCompleteTag("<" + current);
 
-            let cachedCamp = cachedCampionati.filter(c => c.name.toLowerCase() == extractContentByClass(tag.content, "scorer_liga").toLowerCase())[0];
-
-            // try to extract the id of the campionato from the match
+            // try to get the camp from the cache
+            let cachedCamp = null;
             try {
-                let idc = parseInt(extractProp(tag, "idc"));
-                campionato.id = (!isNaN(idc)) ? parseInt(idc) : cachedCamp.id;
+                cachedCamp = cachedCampionati.filter(c => c.name.toLowerCase() == extractContentByClass(tag.content, "scorer_liga").toLowerCase())[0];
             } catch (e) { }
 
+            // match object
             let match = {
                 idp: 0, idc: 0, day: "", hour: "", score: "", matchDayNum: "",
                 teamA: { idt: 0, logo: "", fullname: "", smallname: "" },
                 teamB: { idt: 0, logo: "", fullname: "", smallname: "" }
             };
+
+            // IDP, IDC, camp abbr
             let idp = extractProp(tag, "idp");
             match.idp = (idp == "") ? 0 : parseInt(idp);
-            match.idc = campionato.id;
+            try {
+                let idc = parseInt(extractProp(tag, "idc"));
+                match.idc = (!isNaN(idc)) ? parseInt(idc) : cachedCamp.id;
+            } catch (e) { }
             try { match.campAbbr = cachedCamp.abbr; } catch (e) { }
+
+            // Team A
             match.teamA.smallname = extractContentByClass(tag.content, "scorer_team_left");
             try {
                 match.teamA.fullname = cachedSquadre.filter((e => (e.camp == match.idc && e.abbr == match.teamA.smallname)))[0].nome;
             } catch (e) { match.teamA.fullname = match.teamA.smallname }
             match.teamA.logo = extractProp(parseIsleTag(extractContentByClass(tag.content, "scorer_logo_left")), "src");
 
+            // Team B
             match.teamB.smallname = extractContentByClass(tag.content, "scorer_team_right");
             try {
                 match.teamB.fullname = cachedSquadre.filter((e => (e.camp == match.idc && e.abbr == match.teamB.smallname)))[0].nome;
             } catch (e) { match.teamB.fullname = match.teamB.smallname }
             match.teamB.logo = extractProp(parseIsleTag(extractContentByClass(tag.content, "scorer_logo_right")), "src");
 
+            // date, hour, score, info
             match.score = extractContentByClass(tag.content, "scorer_score");
             let dayHour = extractContentByClass(tag.content, "scorer_bot_left").split(' ');
             match.day = dayHour[0];
@@ -104,14 +102,11 @@ function parsePlaying(data) {
             match.type = removeTags(extractContentByClass(tag.content, "scorer_bot_center"), "span", true, false);
             match.matchDayNum = extractContentByClass(tag.content, "scorer_bot_right");
 
-            campionato.matches.push(match);
-            CacheTitoloPartita(match);
+            // add to list
+            matches.push(match);
         }
-
-        campionati.push(campionato);
     }
-
-    return campionati;
+    return matches;
 }
 
 function min(a, b, escape) {
@@ -126,91 +121,4 @@ function extractContentByClass(input, wclass) {
     let str = input.substr(input.indexOf('<div class="' + wclass + '"'));
     str = str.substr(0, str.indexOf("</div>") + 6);
     return removeTags(str, "div", true, false);
-}
-
-export function CaricaPartiteHome(then, error) {
-    caricaPartite((campionati) => {
-        let in_corso = [];
-        let recenti = [];
-        let future = [];
-        campionati.forEach(elem => {
-            in_corso = in_corso.concat(elem.matches.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
-            recenti = recenti.concat(elem.matches.filter(e => (e.type === "FINALE")));
-            future = future.concat(elem.matches.filter(e => (e.type === "NON INIZIATA" || e.type === "SOSPESA" || e.type === "RINVIATA" || e.type === "riposa")));
-        })
-        then(in_corso, recenti, future);
-    }, error);
-}
-
-export function CaricaPartiteInCorso(then, error) {
-    caricaPartite((campionati) => {
-        let partite = [];
-        campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
-        })
-        then(partite);
-    }, error);
-}
-
-export function CaricaPartiteRecenti(then, error) {
-    caricaPartite((campionati) => {
-        let partite = [];
-        campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => (e.type === "FINALE")));
-        })
-        then(partite);
-    });
-}
-
-export function CaricaPartiteFuture(then) {
-    caricaPartite((campionati) => {
-        let partite = [];
-        campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => (e.type === "NON INIZIATA" || e.type === "SOSPESA" || e.type === "RINVIATA" || e.type === "riposa")));
-        });
-        then(partite);
-    });
-}
-
-export function CaricaPartiteInCorsoCampionato(idc, then) {
-    caricaPartite((campionati) => {
-        let campionato = campionati.filter(e => e.id === idc)[0];
-        let partite = [];
-        if (campionato != null) partite = campionato.matches.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2")));
-        then(partite);
-    })
-}
-
-export function CaricaPartiteInCorsoSquadra(idt, then) {
-    let fun3 = (e, idt) => (e.teamA.idt === idt || e.teamB.idt === idt);
-    caricaPartite((campionati) => {
-        let partite = [];
-        campionati.forEach(elem => {
-            partite = partite.concat(elem.matches.filter(e => fun3(e, idt) && ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
-        });
-        then(partite);
-    });
-}
-
-function fun(e, ids) {
-    let fun2 = (str) => {
-        let x = str.split('/');
-        let y = x[x.length - 1];
-        return parseInt(y.substr(0, y.indexOf('.')).replace(/_[0-9]+/, ""));
-    }
-    return (fun2(e.teamA.logo) == ids || fun2(e.teamB.logo) == ids);
-}
-
-export function CaricaPartiteSocieta(ids, then) {
-    caricaPartite((campionati) => {
-        let in_corso = [];
-        let recenti = [];
-        let future = [];
-        campionati.forEach(elem => {
-            in_corso = in_corso.concat(elem.matches.filter(e => fun(e, ids) && ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2"))));
-            recenti = recenti.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "FINALE")));
-            future = future.concat(elem.matches.filter(e => fun(e, ids) && (e.type === "NON INIZIATA" || e.type === "SOSPESA" || e.type === "RINVIATA" || e.type === "riposa")));
-        })
-        then(in_corso, recenti, future);
-    });
 }

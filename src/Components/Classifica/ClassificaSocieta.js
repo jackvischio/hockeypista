@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Link } from 'react-router-dom';
 
-import { caricaClassificaSquadra } from '../../API/ApiClassifica';
+import { CaricaClassifica } from '../../Middleware/MwClassifica';
 
 export default class ClassificaSocieta extends Component {
 
@@ -16,7 +16,7 @@ export default class ClassificaSocieta extends Component {
 
     componentDidMount() {
         this.state.squadre.forEach(sq => {
-            caricaClassificaSquadra(sq.camp, sq.abbr, (obj) => {
+            CaricaClassifica.Squadra(sq.camp, sq.abbr, false, (obj) => {
                 obj = (obj === undefined) ? { pos: "?", punti: "?" } : obj;
                 this.setState((prevState) => {
                     return { classifiche: prevState.classifiche.concat({ ...obj, ...sq }).sort((a, b) => (a.camp > b.camp) ? 1 : -1) };

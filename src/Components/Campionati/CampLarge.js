@@ -32,12 +32,12 @@ export function CampLarge(props) {
     return (
         <div className="col-lg-4 col-md-6 col-sm-12 p-2" style={colStyle}>
             <div className="card highlight" style={cardStyle} >
-                <Link className="link-unstyled" to={"/campionato/" + props.id} query={{nome: props.nome}}>
+                <Link className="link-unstyled" to={"/campionato/" + props.id} query={{ nome: props.nome }}>
                     <div className="card-body">
                         <h5 className="card-title text-center"> {props.name} </h5>
                         <div style={logoStyle}>
                             {
-                                props.teams.map((elem, index) => <Img key={index} {...elem} />)
+                                props.teams.filter(e => e.name != "").map((elem, index) => <Img key={index} {...elem} />)
                             }
                         </div>
                     </div>

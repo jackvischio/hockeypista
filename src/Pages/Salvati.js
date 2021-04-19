@@ -4,11 +4,9 @@ import '../Components/Calendario/Calendario.css'
 // CACHE
 import { getCacheArray } from '../Cache/CacheCommons'
 import { getSocieta } from '../Cache/CacheSocieta'
-import { getCachedCampionato } from '../Cache/CacheCampionato'
 import { getCachedSquadra } from '../Cache/CacheSquadra'
 
 // API
-import { CaricaPartita } from '../API/ApiPartita'
 import GtagInitialize from '../API/ApiAnalytics'
 
 // COMPONENTS
@@ -18,6 +16,8 @@ import Partita from '../Components/Calendario/Partita'
 import HomeCard from '../Components/Salvati/HomeCard'
 import Squadra from '../Components/Salvati/Squadra'
 import Societa from '../Components/Salvati/Societa'
+import { CaricaCampionati } from '../Middleware/MwCampionati'
+import { CaricaPartita } from '../Middleware/MwPartita'
 
 export default class Salvati extends Component {
 
@@ -51,7 +51,7 @@ export default class Salvati extends Component {
 
         // caricamento partite
         this.state.partiteID.forEach(id => {
-            CaricaPartita(id, (partita) => {
+            CaricaPartita.Partita(id, (partita) => {
                 this.setState(prev => {
                     return { partite: prev.partite.concat(partita) }
                 });
@@ -102,8 +102,8 @@ export default class Salvati extends Component {
                                 <div className="row">
                                     {
                                         this.state.campionati.map((id, i) => {
-                                            let obj = getCachedCampionato(id);
-                                            return <Campionato key={i} {...obj} />
+                                            let obj = CaricaCampionati.GetByID(id);
+                                            return ((obj != null) ? <Campionato key={i} {...obj} /> : <></>);
                                         })
                                     }
                                 </div>

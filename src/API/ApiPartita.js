@@ -1,95 +1,19 @@
-import { polishString, titleCase, removeTags, extractProp, parseIsleTag, parseCompleteTag, parseTable } from './commons'
+import { polishString, titleCase, removeTags, extractProp, parseIsleTag, parseCompleteTag, parseTable, prepareURLforProxy } from './commons'
 import $ from 'jquery'
-import { getCachedCampionatoByName } from '../Cache/CacheCampionato';
 import { getCachedSquadraByName } from '../Cache/CacheSquadra';
-import { CachePartita, CheckIfCachedMatch } from '../Cache/CachePartita';
+import { CaricaCampionati } from '../Middleware/MwCampionati';
 
-function PARTITA() {
-    return {
-        id: 0,
-        referees: {
-            ref1: "",
-            ref2: "",
-            aus: ""
-        },
-        teamA: new SQUADRA(),
-        teamB: new SQUADRA(),
-        campionato: {
-            idc: 0,
-            girone: "",
-            nome: "",
-            tempo: 25
-        },
-        girone: "",
-        date: { day: "", hour: "" },
-        place: "",
-        goalsA: 0,
-        goalsB: 0,
-        falliA: 0,
-        falliB: 0,
-        currentTime: "",
-        playing: true,
-        actions: []
-    }
+export default function ApiPartita(idp, then, error) {
+    fetch(prepareURLforProxy("fisr_gr_" + idp + "_1.php")).then((res) => {
+        return res.text();
+    }).then(data => {
+        let partita = parsePartita(data);
+        partita.id = parseInt(idp);
+        then(partita);
+    }).catch(() => { error(); });
 }
 
-function SQUADRA() {
-    return {
-        idt: 0,
-        nome: "",
-        logo: "",
-        small: "",
-        giocatori: [],
-        tecnici: []
-    }
-}
-
-function AZIONE() {
-    return {
-        period: "",
-        time: "",
-        team: {
-            name: "",
-            small: "",
-            logo: ""
-        },
-        action: "",         // fallo di squadra, gol blu, rosso, ammonizione, tiro diretto, tiro di rigore
-        action_supp: "",    // # fallo per falli, tabellone per gol
-        player: {
-            name: "",
-            number: 0,
-            id: 0
-        }
-    };
-}
-
-export function CaricaPartita(idp, forceRefresh, then, error) {
-    let cache = CheckIfCachedMatch(idp);
-    if (!forceRefresh && cache !== null) {
-        // partita memorizzata in cache
-        //console.log("found in cache");
-        //console.log(cache);
-        then(cache);
-    }
-    else {
-        // partita non già memorizzata
-        fetch("https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_gr_" + idp + "_1.php").then((res) => {
-            return res.text();
-        }).then(data => {
-            let partita = parsePartita(data);
-            partita.id = parseInt(idp);
-            //console.log(partita);
-
-            // se possibile (= partita finita), la memorizzo in cache
-            if (partita.currentTime === "FINALE") CachePartita(partita);
-
-            // restituisco il controllo al componente
-            then(partita);
-        }).catch(() => { error(); });
-    }
-}
-
-export function parsePartita(data) {
+function parsePartita(data) {
     // pulizia iniziale
     data = polishString(data);
     data = data.replace(/https:\/\/www.sidgad.com\/fisr\/images\/logo_print.gif/g, "");
@@ -189,7 +113,7 @@ function inserisciDati1(match, tables) {
     let fullCamp = matchComp.slice(0, matchComp.length - 2).join(' - ').replace(/[0-9]{4}\/[0-9]{4}/g, "").trim();
     console.log(fullCamp)
     try {
-        let cachedCamp = getCachedCampionatoByName(fullCamp);
+        let cachedCamp = CaricaCampionati.GetByName(fullCamp);
         match.campionato.idc = cachedCamp.id;
         match.campionato.abbr = cachedCamp.abbr;
         match.campionato.tempo = cachedCamp.dur_tempo;
@@ -464,4 +388,63 @@ function retrieveReferees(match, elem) {
     match.referees.aus = titleCase($($(rows[5]).find("td")[1]).html()).replace(',', '').trim();
 
     return match;
+}
+
+function PARTITA() {
+    return {
+        id: 0,
+        referees: {
+            ref1: "",
+            ref2: "",
+            aus: ""
+        },
+        teamA: new SQUADRA(),
+        teamB: new SQUADRA(),
+        campionato: {
+            idc: 0,
+            girone: "",
+            nome: "",
+            tempo: 25
+        },
+        girone: "",
+        date: { day: "", hour: "" },
+        place: "",
+        goalsA: 0,
+        goalsB: 0,
+        falliA: 0,
+        falliB: 0,
+        currentTime: "",
+        playing: true,
+        actions: []
+    }
+}
+
+function SQUADRA() {
+    return {
+        idt: 0,
+        nome: "",
+        logo: "",
+        small: "",
+        giocatori: [],
+        tecnici: []
+    }
+}
+
+function AZIONE() {
+    return {
+        period: "",
+        time: "",
+        team: {
+            name: "",
+            small: "",
+            logo: ""
+        },
+        action: "",         // fallo di squadra, gol blu, rosso, ammonizione, tiro diretto, tiro di rigore
+        action_supp: "",    // # fallo per falli, tabellone per gol
+        player: {
+            name: "",
+            number: 0,
+            id: 0
+        }
+    };
 }

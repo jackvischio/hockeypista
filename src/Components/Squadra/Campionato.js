@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import { titleCase } from '../../API/commons'
 
 export default function Campionato(props) {
-
+    console.log(props);
     return (
         <div className="card">
             <div className="card-header">

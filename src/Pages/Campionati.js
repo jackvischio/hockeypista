@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 
-import { caricaCampionati } from '../API/ApiCampionati'
 import GtagInitialize from '../API/ApiAnalytics'
+
+import { CaricaCampionati } from '../Middleware/MwCampionati'
 
 import Navbar from '../Components/Varie/Navbar'
 import Loader from '../Components/Varie/Loader'
@@ -17,6 +18,10 @@ class Campionati extends Component {
         // CACHED THINGS
 
         // COMPONENT PARAMS
+        this.reloaded = false;
+        if ((window.performance) && (performance.navigation.type == 1)) {
+            this.reloaded = true;
+        }
 
         // TITLE AND ANALYTICS
         document.title = "Campionati";
@@ -38,10 +43,10 @@ class Campionati extends Component {
         window.scrollTo(0, 0);
         document.title = "Campionati - HockeyPista 2.0"
 
-        caricaCampionati(false, (camps) => {
+        CaricaCampionati.GetAll(this.reloaded, (camps) => {
             this.state.campionati = camps;
             this.setState({ loaded: true });
-        });
+        }, () => { });
     }
 
     render() {

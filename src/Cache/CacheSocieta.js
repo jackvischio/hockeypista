@@ -1,31 +1,33 @@
-import $ from 'jquery'
-import { getCacheArray } from './CacheCommons'
+import GeneralCache from '../Data structures/GeneralCache';
 
 export function creaSocieta() {
-    let squadre = getCacheArray("ns_squadre");
+    try {
+        //let squadre = getCacheArray("c_squadre");
+        let squadre = GeneralCache.GetAllFrom("c_squadre");
 
-    let ids = groupBy(squadre, "soc");
-    let societa = [];
-    Object.keys(ids).forEach(id => {
-        id = parseInt(id);
-        let soc = { id: id, nome: "", logo: "", small: "", squadre: [] };
+        let ids = groupBy(squadre, "soc");
+        let societa = [];
+        Object.keys(ids).forEach(id => {
+            id = parseInt(id);
+            let soc = { id: id, nome: "", logo: "", small: "", squadre: [] };
 
-        // recupero le squadre della società
-        soc.squadre = squadre.filter(e => e.soc === id);
+            // recupero le squadre della società
+            soc.squadre = squadre.filter(e => e.soc === id);
 
-        // recupero il valore migliore per le varie proprietà dalle squadre
-        soc.nome = selectBestValue(soc.squadre, "nome");
-        soc.small = selectBestValue(soc.squadre, "abbr");
-        soc.logo = selectBestValue(soc.squadre, "logo");
+            // recupero il valore migliore per le varie proprietà dalle squadre
+            soc.nome = selectBestValue(soc.squadre, "nome");
+            soc.small = selectBestValue(soc.squadre, "abbr");
+            soc.logo = selectBestValue(soc.squadre, "logo");
 
-        societa.push(soc);
-    });
-    societa = societa.filter(s => s.small !== "").sort((a, b) => (a.small > b.small) ? 1 : -1).map(s => {
-        if (s.nome == "") s.nome = s.small;
-        return s;
-    });
-    localStorage.setItem("ns_societa", JSON.stringify(squadre));
-    return societa;
+            societa.push(soc);
+        });
+        societa = societa.filter(s => s.small !== "").sort((a, b) => (a.small > b.small) ? 1 : -1).map(s => {
+            if (s.nome == "") s.nome = s.small;
+            return s;
+        });
+        localStorage.setItem("c_societa", JSON.stringify(societa));
+        return societa;
+    } catch (e) { return [] }
 }
 
 function groupBy(xs, key) {

@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { caricaClassificaSquadra } from '../../API/ApiClassifica';
 import { getCachedSquadra } from '../../Cache/CacheSquadra';
+import { CaricaClassifica } from '../../Middleware/MwClassifica';
 import Loader from '../Varie/Loader';
 
 export default class ClassificaSquadra extends Component {
@@ -19,7 +19,7 @@ export default class ClassificaSquadra extends Component {
     }
 
     componentDidMount() {
-        caricaClassificaSquadra(this.id_camp, this.abbr, (clas) => {
+        CaricaClassifica.Squadra(this.id_camp, this.abbr, false, (clas) => {
             this.setState({
                 classifica: clas,
                 loaded: true

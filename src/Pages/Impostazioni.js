@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 import GtagInitialize from '../API/ApiAnalytics';
 
-import { getCachedCampionati } from '../Cache/CacheCampionato';
+import { CaricaCampionati } from '../Middleware/MwCampionati';
+
 import { creaSocieta } from '../Cache/CacheSocieta';
 import { getCachedVisCamp, getCachedVisSocieta } from '../Cache/CacheVisualizzazioni';
 
@@ -28,7 +29,7 @@ export default class Impostazioni extends Component {
 
         // SETTING STATE
         this.state = {
-            campionati: getCachedCampionati(),
+            campionati: CaricaCampionati.GetCached(),
             societa: creaSocieta(),
             showCampionati: getCachedVisCamp(),
             showSocieta: getCachedVisSocieta(),
@@ -99,7 +100,7 @@ export default class Impostazioni extends Component {
                             <div className="card">
                                 <div className="card-body text-center">
                                     <h1 className="m-0 text-primary">
-                                        <i class="fas fa-calendar-minus"></i>
+                                        <i className="fas fa-calendar-minus"></i>
                                     </h1>
                                     <h4>
                                         Seleziona stagione

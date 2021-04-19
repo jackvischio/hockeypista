@@ -60,11 +60,11 @@
 
 .cal-match > table > tbody > tr > td:nth-child(1),
 .cal-match > table > tbody > tr > td:nth-child(3) {
-  width: 45%;
+  width: 42.5%;
 }
 
 .cal-match > table > tbody > tr > td:nth-child(2) {
-  width: 10%;
+  width: 15%;
   min-width: 70px;
   text-align: center;
 }

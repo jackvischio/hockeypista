@@ -1,8 +1,8 @@
 import $ from 'jquery'
-import { getCachedCampionatoByName } from '../Cache/CacheCampionato';
 import { getSocieta } from '../Cache/CacheSocieta';
 import { extractSocietaID } from '../Cache/CacheSquadra';
-import { extractProp, parseCompleteTag, parseIsleTag, polishString, removeComments, removeTags } from './commons';
+import { CaricaCampionati } from '../Middleware/MwCampionati';
+import { extractProp, parseCompleteTag, parseIsleTag, polishString, prepareURLforProxy, removeComments, removeTags } from './commons';
 
 function GIOCATORE() {
     return {
@@ -22,12 +22,12 @@ function CAMPIONATO() {
     }
 }
 
-export function CaricaDettagliGiocatore(idpl, idc, idt, stagione, then) {
+export default function ApiGiocatore(idpl, stagione, then) {
     $("body").append("<div id='retrieveSquadra" + stagione + "' style='display: none'></div>");
     $.ajax({
         method: "POST",
-        url: "https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/fisr_profileseason_1_" + stagione + ".php",
-        data: { idm: 1, idc: idc, id_player: idpl, team_id: idt },
+        url: prepareURLforProxy("fisr_profileseason_1_" + stagione + ".php"),
+        data: { idm: 1, idc: 0, id_player: idpl, team_id: 0 },
         success: (data) => {
 
             // return object
@@ -98,7 +98,7 @@ export function CaricaDettagliGiocatore(idpl, idc, idt, stagione, then) {
                 var camp = CAMPIONATO();
                 try {
                     camp.nome = removeTags(removeTags(removeTags($(head[2 * i]).html(), "div", true, false), "th", true, false), "tr", true, false);
-                    camp.id = getCachedCampionatoByName(camp.nome).id;
+                    camp.id = CaricaCampionati.GetByName(camp.nome).id;
                 } catch (e) { }
 
                 var righe = $(body[i]).find("tr");

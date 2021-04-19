@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 
-import { caricaClassifica } from "../../API/ApiClassifica"
+import { CaricaClassifica } from '../../Middleware/MwClassifica';
 
 import Loader from "../Varie/Loader"
 import { Classifica } from "./Classifica"
@@ -18,7 +18,7 @@ export default class ClassificaBox extends Component {
     }
 
     componentDidMount() {
-        caricaClassifica(this.id_camp, (clas) => {
+        CaricaClassifica.Campionato(this.id_camp, false, (clas) => {
             clas.forEach(c => { this.state.classifica.push(c) });
             this.setState({
                 loaded: true

@@ -4,7 +4,7 @@ import '../Components/Partita/TabellaSquadre/match.css'
 import ProvaPartita from '../Components/Partita/ProvaPartita'
 
 import GtagInitialize from '../API/ApiAnalytics'
-import { CaricaPartita } from '../API/ApiPartita'
+import { CaricaPartita } from '../Middleware/MwPartita'
 
 import Navbar from '../Components/Varie/Navbar'
 import ErrorePartita from '../Components/Modals/ErrorePartita'
@@ -16,7 +16,6 @@ import Scoreboard from '../Components/Partita/Scoreboard'
 import Squadra from '../Components/Partita/TabellaSquadre/Squadra'
 import TimelineOrizz from '../Components/Partita/Timeline/TimelineOrizz'
 import TimelineVert from '../Components/Partita/Timeline/TimelineVert'
-import { GetTitoloPartita } from '../Cache/CachePartita'
 
 export default class Partita extends Component {
 
@@ -27,8 +26,8 @@ export default class Partita extends Component {
         this.id_partita = props.match.params.id;
 
         // CACHED THINGS
-        let obj = GetTitoloPartita(this.id_partita);
-        this.title = (obj !== null) ? obj.titolo : null;
+        let obj = CaricaPartita.GetTitolo(this.id_partita);
+        this.title = (obj !== null) ? obj.titolo : "Dettagli partita";
 
         // COMPONENT PARAMS
         this.path = props.location.pathname;
@@ -65,7 +64,7 @@ export default class Partita extends Component {
     }
 
     CaricaDati() {
-        CaricaPartita(this.id_partita, this.reloaded, (partita) => {
+        CaricaPartita.Partita(this.id_partita, this.reloaded, (partita) => {
             if (partita.currentTime === "FINALE") clearInterval(this.intervalID);
             this.setState({
                 partita: partita,

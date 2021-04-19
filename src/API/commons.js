@@ -5,6 +5,11 @@ export function titleCase(str) {
     return str.toLowerCase().split(' ').map(word => (word.charAt(0).toUpperCase() + word.slice(1))).join(' ');
 }
 
+// ----- PROXY FOR URL -----
+export function prepareURLforProxy(url) {
+    return "https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/" + url;
+}
+
 // ----- POLISH STRING -----
 export function polishString(str) {
     str = str.replace(/<br>/g, " ");
