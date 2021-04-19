@@ -1,28 +1,29 @@
 {
   "files": {
     "main.css": "/hockeypista/static/css/main.064aa3ba.chunk.css",
-    "main.js": "/hockeypista/static/js/main.2fd3b71a.chunk.js",
-    "main.js.map": "/hockeypista/static/js/main.2fd3b71a.chunk.js.map",
+    "main.js": "/hockeypista/static/js/main.85231b17.chunk.js",
+    "main.js.map": "/hockeypista/static/js/main.85231b17.chunk.js.map",
     "runtime-main.js": "/hockeypista/static/js/runtime-main.8eab8680.js",
     "runtime-main.js.map": "/hockeypista/static/js/runtime-main.8eab8680.js.map",
     "static/css/2.20aa2d7b.chunk.css": "/hockeypista/static/css/2.20aa2d7b.chunk.css",
-    "static/js/2.7e684f27.chunk.js": "/hockeypista/static/js/2.7e684f27.chunk.js",
-    "static/js/2.7e684f27.chunk.js.map": "/hockeypista/static/js/2.7e684f27.chunk.js.map",
+    "static/js/2.500f947e.chunk.js": "/hockeypista/static/js/2.500f947e.chunk.js",
+    "static/js/2.500f947e.chunk.js.map": "/hockeypista/static/js/2.500f947e.chunk.js.map",
     "index.html": "/hockeypista/index.html",
     "static/css/2.20aa2d7b.chunk.css.map": "/hockeypista/static/css/2.20aa2d7b.chunk.css.map",
     "static/css/main.064aa3ba.chunk.css.map": "/hockeypista/static/css/main.064aa3ba.chunk.css.map",
-    "static/js/2.7e684f27.chunk.js.LICENSE.txt": "/hockeypista/static/js/2.7e684f27.chunk.js.LICENSE.txt",
+    "static/js/2.500f947e.chunk.js.LICENSE.txt": "/hockeypista/static/js/2.500f947e.chunk.js.LICENSE.txt",
     "static/media/guida_1.b0c6168f.jpg": "/hockeypista/static/media/guida_1.b0c6168f.jpg",
     "static/media/guida_2.cc2284fd.jpg": "/hockeypista/static/media/guida_2.cc2284fd.jpg",
     "static/media/guida_3.03e54259.jpg": "/hockeypista/static/media/guida_3.03e54259.jpg",
     "static/media/logo.2444734b.png": "/hockeypista/static/media/logo.2444734b.png",
+    "static/media/logo_512.1d77acbf.jpg": "/hockeypista/static/media/logo_512.1d77acbf.jpg",
     "static/media/global.css": "/hockeypista/static/media/sfondo.fbeadff2.jpg"
   },
   "entrypoints": [
     "static/js/runtime-main.8eab8680.js",
     "static/css/2.20aa2d7b.chunk.css",
-    "static/js/2.7e684f27.chunk.js",
+    "static/js/2.500f947e.chunk.js",
     "static/css/main.064aa3ba.chunk.css",
-    "static/js/main.2fd3b71a.chunk.js"
+    "static/js/main.85231b17.chunk.js"
   ]
 }
