@@ -60,7 +60,7 @@ function ScoreboardLarge(props) {
                             </h1>
                             <br />
                             <h5 className="title-badge badge-secondary" style={{ marginTop: "10px", fontWeight: "400" }}>
-                                {props.currentTime}
+                                {props.currentTime.replace("PENALTIS", "RIGORI")}
                             </h5>
                             <br />
                             {

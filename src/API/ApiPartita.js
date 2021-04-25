@@ -61,6 +61,30 @@ function parsePartita(data) {
         partita.teamB.small = actB[0].team.small;
     } catch (e) { }
 
+    // tabella dei rigori (se presente)
+    let index = data.indexOf('<div style="width: 605px; margin-top: 5px; float: left;"><table class="competiciones_tabla_basic"');
+    if (index !== -1) {
+        partita.rigori = true;
+
+        let str_all = data.substr(data.indexOf('<div style="width: 605px; margin-top: 5px; float: left;"><table class="competiciones_tabla_basic"'));
+        str_all = str_all.substr(str_all.indexOf('<table') + 1);
+        str_all = str_all.substr(0, str_all.indexOf('</table></div>') + 8);
+
+        let rigoriA = str_all.substr(str_all.indexOf('<table '));
+        rigoriA = rigoriA.substr(0, rigoriA.indexOf('</table>') + 8);
+        str_all = str_all.replace(rigoriA, "");
+        $("body").append("<div id='contRig' style='display: none'></div>");
+        $("#contRig").html(rigoriA);
+        partita.rigoriA = (parseRigori($("#contRig"), false)).filter(e => !isNaN(e.num));
+
+        let rigoriB = str_all.substr(str_all.indexOf('<table '));
+        rigoriB = rigoriB.substr(0, rigoriB.indexOf('</table>') + 8);
+        $("#contRig").html(rigoriB);
+        partita.rigoriB = (parseRigori($("#contRig"), true)).filter(e => !isNaN(e.num));
+
+        $("#contRig").remove();
+    }
+
     // tabelle dei giocatori
     $("body").append("<div id='contTeam' style='display: none'></div>");
     {
@@ -379,6 +403,22 @@ function parseTeamTable(table) {
     return [giocatori, tecnici];
 }
 
+function parseRigori(elem, rev) {
+    let table = elem.find("table")[0];
+    let rows = $(table).find("tbody tr");
+    let arr = [];
+    $.each(rows, el => {
+        try {
+            let cells = $(rows[el]).find('td');
+            if (!rev)
+                arr.push({ num: parseInt($(cells[0]).html()), gioc: removeTags($(cells[1]).html(), "div", true, false), esito: "" });
+            else
+                arr.push({ num: parseInt($(cells[2]).html()), gioc: removeTags($(cells[1]).html(), "div", true, false), esito: "" });
+        } catch (e) { }
+    })
+    return arr;
+}
+
 function retrieveReferees(match, elem) {
     let table = elem.find("table")[0];
     let rows = $(table).find("tr");
@@ -413,6 +453,7 @@ function PARTITA() {
         goalsB: 0,
         falliA: 0,
         falliB: 0,
+        rigori: false,
         currentTime: "",
         playing: true,
         actions: []

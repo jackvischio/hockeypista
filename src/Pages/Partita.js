@@ -16,6 +16,7 @@ import Scoreboard from '../Components/Partita/Scoreboard'
 import Squadra from '../Components/Partita/TabellaSquadre/Squadra'
 import TimelineOrizz from '../Components/Partita/Timeline/TimelineOrizz'
 import TimelineVert from '../Components/Partita/Timeline/TimelineVert'
+import Rigori from '../Components/Partita/Rigori'
 
 export default class Partita extends Component {
 
@@ -98,6 +99,9 @@ export default class Partita extends Component {
                                     <Scoreboard {...this.state.partita} />
                                 </div>
                             </div>
+                            {(this.state.partita.rigori) ?
+                                <div className="row"><Rigori {...this.state.partita} /></div> :
+                                <></>}
                             <div className="row d-none d-md-block">
                                 <TimelineOrizz {...this.state.partita} />
                             </div>

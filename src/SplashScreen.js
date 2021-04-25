@@ -24,7 +24,7 @@ export default function SplashScreen(WrappedComponent) {
 
         componentDidMount() {
             window.scrollTo(0, 0);
-            document.title = "Benvenuto - HockeyPista 2.0";
+            document.title = "Homepage - HockeyPista 2.0";
 
             setTimeout(() => { this.messaggio(-1) }, 1200);
 

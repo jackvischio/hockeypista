@@ -66,7 +66,8 @@ export class CaricaPartite {
 }
 
 function filtra(partite) {
-    let ora = partite.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2")));
+    let ora = partite.filter(e => ((e.type === "TEMPO 1") || (e.type === "INTERVALLO") || (e.type === "TEMPO 2")
+        || (e.type === "OVERTIME 1") || (e.type === "OVERTIME 2") || (e.type === "PENALTIS")));
     let recenti = partite.filter(e => (e.type === "FINALE"));
     let future = partite.filter(e => (e.type === "NON INIZIATA" || e.type === "SOSPESA" || e.type === "RINVIATA" || e.type === "riposa"));
     return { in_corso: ora, recenti: recenti, future: future }
