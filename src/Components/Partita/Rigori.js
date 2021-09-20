@@ -103,16 +103,23 @@ function RigoristaA(props) {
         <tr>
             <td className="col1">{props.num}</td>
             <td>{titleCase(props.gioc)}</td>
-            <td className="col6"><i className="fas fa-square" style={{ color: "#ccc" }}></i></td>
+            <td className="col6"><Rigore {...props} /></td>
         </tr>
     )
 }
 function RigoristaB(props) {
     return (
         <tr>
-            <td className="col6"><i className="fas fa-square" style={{ color: "#ccc" }}></i></td>
+            <td className="col6"><Rigore {...props} /></td>
             <td>{titleCase(props.gioc)}</td>
             <td className="col1">{props.num}</td>
         </tr>
     )
+}
+function Rigore(props) {
+    switch (parseInt(props.esito)) {
+        case 1: { return <i className="fas fa-square text-success"></i>; break; }
+        case -1: return <i className="fas fa-square text-danger"></i>
+        default: return <i className="fas fa-square" style={{ color: "#ccc" }}></i>
+    }
 }

@@ -1,5 +1,11 @@
 import $ from 'jquery'
 
+// ----- STAGIONE -------
+export function getSeason() {
+    // return 29;       // 2020-2021
+    return 31;      // 2021-2022
+}
+
 // ----- TITLE CASE -----
 export function titleCase(str) {
     return str.toLowerCase().split(' ').map(word => (word.charAt(0).toUpperCase() + word.slice(1))).join(' ');

@@ -407,13 +407,14 @@ function parseRigori(elem, rev) {
     let table = elem.find("table")[0];
     let rows = $(table).find("tbody tr");
     let arr = [];
+    let esito = (str) => { if (str.indexOf('green') !== -1) return 1; if (str.indexOf('red') !== -1) return -1; return 0; }
     $.each(rows, el => {
         try {
             let cells = $(rows[el]).find('td');
             if (!rev)
-                arr.push({ num: parseInt($(cells[0]).html()), gioc: removeTags($(cells[1]).html(), "div", true, false), esito: "" });
+                arr.push({ num: parseInt($(cells[0]).html()), gioc: removeTags($(cells[1]).html(), "div", true, false), esito: esito($(cells[2]).html()) });
             else
-                arr.push({ num: parseInt($(cells[2]).html()), gioc: removeTags($(cells[1]).html(), "div", true, false), esito: "" });
+                arr.push({ num: parseInt($(cells[2]).html()), gioc: removeTags($(cells[1]).html(), "div", true, false), esito: esito($(cells[0]).html()) });
         } catch (e) { }
     })
     return arr;

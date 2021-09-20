@@ -1,9 +1,10 @@
-import { polishString, parseCompleteTag, parseIsleTag, prepareURLforProxy } from './commons'
+import { polishString, parseCompleteTag, parseIsleTag, prepareURLforProxy, getSeason } from './commons'
 import $ from 'jquery'
 
 export default function ApiClassifica(idc, then) {
+    let season = getSeason();
     $("body").append("<div id='retrieveClassifica' style='display: none'></div>");
-    $('#retrieveClassifica').load(prepareURLforProxy("fisr_clasif_29_1.php"), { idc: idc }, (data) => {
+    $('#retrieveClassifica').load(prepareURLforProxy("fisr_clasif_" + season + "_1.php"), { idc: idc }, (data) => {
         data = polishString(data);
         data = data.substr(data.indexOf("<table"));
         data = data.replace("<table ", '<table id="tbl-class-xxx" ');

@@ -1,10 +1,10 @@
-import { polishString, removeTags, parseIsleTag, parseCompleteTag, extractProp, myReplaceAll, prepareURLforProxy } from './commons'
+import { polishString, removeTags, parseIsleTag, parseCompleteTag, extractProp, myReplaceAll, prepareURLforProxy, getSeason } from './commons'
 import { cacheSquadra } from '../Cache/CacheSquadra'
 import $ from 'jquery'
 
 // MAIN FUNCTION
 export default function ApiCalendario(idc, then) {
-    let season = 29
+    let season = getSeason();
     $("body").append("<div id='retrieveCalendario' style='display: none'></div>");
     $('#retrieveCalendario').load(prepareURLforProxy("fisr_cal_1_" + season + ".php"), { idc: idc }, (data) => {
 

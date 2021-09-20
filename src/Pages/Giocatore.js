@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import GtagInitialize from '../API/ApiAnalytics';
 import ApiGiocatore from '../API/ApiGiocatore';
-import { titleCase } from '../API/commons';
+import { getSeason, titleCase } from '../API/commons';
 import Campionato from '../Components/Giocatori/Campionato.giocatori';
 
 import Navbar from '../Components/Varie/Navbar';
@@ -22,6 +22,7 @@ export default class Giocatore extends Component {
         // COMPONENT PARAMS
         this.path = props.location.pathname;
         this.pastSeasons = [
+            { year: "2020/2021", value: 29 },
             { year: "2019/2020", value: 27 },
             { year: "2018/2019", value: 25 }
         ]
@@ -52,7 +53,7 @@ export default class Giocatore extends Component {
         window.scrollTo(0, 0);
         document.title = this.title + " - HockeyPista 2.0";
 
-        ApiGiocatore(this.id_gioc, 29, (obj) => {
+        ApiGiocatore(this.id_gioc, getSeason(), (obj) => {
             this.setState({
                 giocatore: obj
             });

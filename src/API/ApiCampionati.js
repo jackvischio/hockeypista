@@ -1,6 +1,4 @@
-import { polishString, parseCompleteTag, parseIsleTag, parseParams, extractProp, prepareURLforProxy } from './commons'
-
-const season = "29";
+import { polishString, parseCompleteTag, parseIsleTag, parseParams, extractProp, prepareURLforProxy, getSeason } from './commons'
 
 export default function ApiCampionati(then, error) {
     fetch(prepareURLforProxy("fisr_ls_1.php"), { redirect: 'manual' })
@@ -25,7 +23,9 @@ function parse(data) {
     }
 
     // filtering Campionati of this season
-    camp = camp.filter(elem => elem.season === season);
+    let season = getSeason();
+    console.log(camp);
+    camp = camp.filter(elem => parseInt(elem.season) === season);
     camp = camp.filter(elem => (elem.name !== "" && elem.name !== "\"" && elem.name !== "'" && elem.name !== " "));
 
     return camp;
