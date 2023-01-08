@@ -13,7 +13,7 @@ export function titleCase(str) {
 
 // ----- PROXY FOR URL -----
 export function prepareURLforProxy(url) {
-    return "https://hockeypista-backend.herokuapp.com/http://www.server2.sidgad.es/fisr/" + url;
+    return "http://www.server2.sidgad.es/fisr/" + url;
 }
 
 // ----- POLISH STRING -----
